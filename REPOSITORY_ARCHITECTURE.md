@@ -5,20 +5,32 @@
 ### **1. Repository Interfaces (Application Layer)**
 ```
 src/ClinicCare.Application/Common/Interfaces/
-├── IApplicationDbContext.cs          ← Generic repository interface
-└── IAppointmentRepository.cs         ← Specific repository interface
+├── Global/
+│   ├── IGlobalDbContext.cs           ← Global DB context interface
+│   ├── IOrganizationRepository.cs    ← Organization repository
+│   └── IGlobalMedicineRepository.cs  ← Global medicine repository
+└── Tenant/
+    ├── ITenantDbContext.cs           ← Tenant DB context interface
+    ├── IAppointmentRepository.cs     ← Appointment repository
+    └── IPatientRepository.cs         ← Patient repository
 ```
 
 ### **2. Repository Implementations (Infrastructure Layer)**
 ```
-src/ClinicCare.Infrastructure/Data/Repositories/
-└── AppointmentRepository.cs          ← Specific repository implementation
+src/ClinicCare.Infrastructure/Data/
+├── GlobalRepositories/
+│   ├── OrganizationRepository.cs     ← Organization repository impl
+│   └── GlobalMedicineRepository.cs   ← Global medicine repository impl
+└── TenantRepositories/
+    ├── AppointmentRepository.cs      ← Appointment repository impl
+    └── PatientRepository.cs          ← Patient repository impl
 ```
 
-### **3. Generic Repository (DbContext)**
+### **3. Database Contexts**
 ```
 src/ClinicCare.Infrastructure/Data/
-└── ApplicationDbContext.cs           ← Generic repository implementation
+├── GlobalDbContext.cs                ← Global database context
+└── TenantDbContext.cs                ← Tenant database context
 ```
 
 ## 🎯 **Repository Pattern Types**
@@ -64,43 +76,59 @@ Task<int> GetAppointmentCountByDateRangeAsync(int? clinicId, int? doctorId, Date
 
 ## 🔄 **How to Use Repositories**
 
-### **In Command Handlers**
+### **Global Repository Example**
 ```csharp
-public class CreateAppointmentHandler : IRequestHandler<CreateAppointmentCommand, Result<AppointmentDto>>
+public class CreateOrganizationHandler 
+    : IRequestHandler<CreateOrganizationCommand, Result<OrganizationDto>>
+{
+    private readonly IOrganizationRepository _organizationRepository;
+    private readonly IGlobalDbContext _globalDbContext;
+    
+    public async Task<Result<OrganizationDto>> Handle(
+        CreateOrganizationCommand request, CancellationToken cancellationToken)
+    {
+        // Use global repository for business operations
+        var exists = await _organizationRepository.ExistsBySubdomainAsync(
+            request.Subdomain);
+            
+        if (exists)
+            return Result<OrganizationDto>.Failure(new[] { "Subdomain taken" });
+            
+        // Use global context for data operations
+        var organization = Organization.Create(request.Name, request.Subdomain);
+        await _organizationRepository.AddAsync(organization);
+        
+        return Result<OrganizationDto>.Success(dto);
+    }
+}
+```
+
+### **Tenant Repository Example**
+```csharp
+public class CreateAppointmentHandler 
+    : IRequestHandler<CreateAppointmentCommand, Result<AppointmentDto>>
 {
     private readonly IAppointmentRepository _appointmentRepository;
+    private readonly ITenantService _tenantService;
     
-    public async Task<Result<AppointmentDto>> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AppointmentDto>> Handle(
+        CreateAppointmentCommand request, CancellationToken cancellationToken)
     {
-        // Use repository for business operations
+        // Tenant context is already set by middleware
+        var tenantId = _tenantService.GetTenantId();
+        
+        // Use tenant repository for business operations
         var hasConflict = await _appointmentRepository.HasConflictingAppointmentAsync(
             request.DoctorId, request.ClinicId, request.AppointmentDate, request.TokenNumber);
             
         if (hasConflict)
             return Result<AppointmentDto>.Failure(new[] { "Slot not available" });
             
-        // Use repository for data operations
-        var appointment = Appointment.Create(...);
+        // Use tenant repository for data operations
+        var appointment = Appointment.Create(tenantId, request.DoctorId, ...);
         await _appointmentRepository.AddAsync(appointment);
         
         return Result<AppointmentDto>.Success(dto);
-    }
-}
-```
-
-### **In Query Handlers**
-```csharp
-public class GetAppointmentsHandler : IRequestHandler<GetAppointmentsQuery, Result<List<AppointmentDto>>>
-{
-    private readonly IAppointmentRepository _appointmentRepository;
-    
-    public async Task<Result<List<AppointmentDto>>> Handle(GetAppointmentsQuery request, CancellationToken cancellationToken)
-    {
-        // Use repository for complex queries
-        var appointments = await _appointmentRepository.GetByDoctorAndDateAsync(
-            request.DoctorId, request.Date);
-            
-        return Result<List<AppointmentDto>>.Success(appointments.Select(MapToDto).ToList());
     }
 }
 ```
@@ -127,24 +155,92 @@ public class GetAppointmentsHandler : IRequestHandler<GetAppointmentsQuery, Resu
 - ✅ **Caching**: Repository can implement caching strategies
 - ✅ **Lazy Loading**: Can control when related data is loaded
 
-## 📁 **File Structure**
+## � **Database Strategy**
+
+### **1. Global Database**
+- **Purpose**: Manages system-wide data and tenant information
+- **Name**: `ClinicCare_Global`
+- **Key Tables**:
+  ```sql
+  Organizations         -- Healthcare organizations using the system
+  Subscriptions        -- Subscription plans and billing
+  GlobalMedicines      -- Common medicine database
+  SystemUsers          -- Super admin and global system users
+  AuditLogs           -- System-wide audit trail
+  ```
+
+### **2. Tenant Databases**
+- **Purpose**: Isolated clinic data per organization
+- **Naming**: `ClinicCare_{tenantId}`
+- **Key Tables**:
+  ```sql
+  Clinics             -- Clinics in the organization
+  Doctors             -- Doctors working in clinics
+  Patients           -- Patient records
+  Appointments       -- Appointments and tokens
+  Prescriptions      -- Patient prescriptions
+  Inventory          -- Per-clinic medicine inventory
+  ```
+
+## 📁 **Project Structure**
 
 ```
 ClinicCare.sln
-├── ClinicCare.Application/
-│   └── Common/
-│       └── Interfaces/
-│           ├── IApplicationDbContext.cs      ← Generic repository
-│           └── IAppointmentRepository.cs     ← Specific repository
-├── ClinicCare.Infrastructure/
-│   └── Data/
-│       ├── ApplicationDbContext.cs           ← Generic repository implementation
-│       └── Repositories/
-│           └── AppointmentRepository.cs      ← Specific repository implementation
-└── ClinicCare.API/
-    └── Controllers/
-        └── Appointments/
-            └── AppointmentsController.cs     ← Uses repositories through handlers
+├── src/
+│   ├── ClinicCare.Domain/                    ← Domain Layer
+│   │   ├── Common/
+│   │   │   └── BaseEntity.cs
+│   │   ├── Global/                           ← Global Domain Entities
+│   │   │   ├── Organization.cs
+│   │   │   ├── Subscription.cs
+│   │   │   └── GlobalMedicine.cs
+│   │   └── Tenant/                           ← Tenant Domain Entities
+│   │       ├── Appointment.cs
+│   │       ├── Patient.cs
+│   │       └── Prescription.cs
+│   │
+│   ├── ClinicCare.Application/               ← Application Layer
+│   │   ├── Common/
+│   │   │   └── Interfaces/
+│   │   │       ├── IGlobalDbContext.cs       ← Global DB context
+│   │   │       └── ITenantDbContext.cs       ← Tenant DB context
+│   │   ├── Global/                           ← Global Features
+│   │   │   ├── Organizations/
+│   │   │   └── Subscriptions/
+│   │   └── Tenant/                           ← Tenant Features
+│   │       ├── Appointments/
+│   │       └── Patients/
+│   │
+│   ├── ClinicCare.Infrastructure/            ← Infrastructure Layer
+│   │   ├── Data/
+│   │   │   ├── GlobalDbContext.cs           ← Global DB implementation
+│   │   │   ├── TenantDbContext.cs           ← Tenant DB implementation
+│   │   │   ├── GlobalRepositories/          ← Global repositories
+│   │   │   └── TenantRepositories/          ← Tenant repositories
+│   │   └── Services/
+│   │       ├── TenantService.cs             ← Tenant resolution
+│   │       └── DatabaseManager.cs            ← DB management
+│   │
+│   └── ClinicCare.API/                       ← API Layer
+│       ├── Modules/                          ← Feature modules
+│       │   ├── Global/                       ← Global endpoints
+│       │   │   ├── Organizations/
+│       │   │   └── Subscriptions/
+│       │   └── Tenant/                       ← Tenant endpoints
+│       │       ├── Appointments/
+│       │       └── Patients/
+│       └── Middleware/
+│           └── TenantMiddleware.cs           ← Tenant resolution
+│
+└── frontend/                                 ← Frontend
+    ├── src/
+    │   ├── apps/
+    │   │   ├── global/                      ← Global admin app
+    │   │   └── tenant/                      ← Tenant clinic app
+    │   ├── components/                      ← Shared components
+    │   └── services/
+    │       ├── globalApi.ts                 ← Global API client
+    │       └── tenantApi.ts                 ← Tenant API client
 ```
 
 ## 🎯 **Next Steps**

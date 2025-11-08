@@ -1,7 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authService } from '../../services/authService'
-import { useAuthStore } from '../../stores/authStore'
+import { useAuth } from '@core/stores/authStore'
 import toast from 'react-hot-toast'
+import type { ApiResponse } from '@core/types/common'
+import type { Clinic, LoginResponse, User } from '@core/types/auth'
+
+type ErrorResponse = {
+  response: {
+    data: ApiResponse
+  }
+}
 
 // Query keys
 export const authKeys = {
@@ -12,7 +20,8 @@ export const authKeys = {
 
 // Get current user query
 export const useCurrentUser = () => {
-  const { token, isAuthenticated } = useAuthStore()
+  const auth = useAuth()
+  const { token, isAuthenticated } = auth
   
   return useQuery({
     queryKey: authKeys.user(),
@@ -25,14 +34,14 @@ export const useCurrentUser = () => {
 
 // Login mutation
 export const useLogin = () => {
-  const { login } = useAuthStore()
+  const auth = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: authService.login,
     onSuccess: (data) => {
       console.log('Login response data:', data)
-      login(data.user, data.accessToken, data.availableClinics)
+      auth.login(data.user, data.accessToken, data.availableClinics)
       queryClient.setQueryData(authKeys.user(), data.user)
       toast.success('Login successful!')
     },
@@ -46,19 +55,19 @@ export const useLogin = () => {
 
 // Logout mutation
 export const useLogout = () => {
-  const { logout } = useAuthStore()
+  const auth = useAuth()
   const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: authService.logout,
     onSuccess: () => {
-      logout()
+      auth.logout()
       queryClient.clear()
       toast.success('Logged out successfully')
     },
     onError: () => {
       // Even if logout fails on server, clear local state
-      logout()
+      auth.logout()
       queryClient.clear()
     }
   })
@@ -66,32 +75,33 @@ export const useLogout = () => {
 
 // Refresh token mutation
 export const useRefreshToken = () => {
-  const { setToken } = useAuthStore()
-  
+  const auth = useAuth()
+
   return useMutation({
     mutationFn: authService.refreshToken,
     onSuccess: (data) => {
-      setToken(data.accessToken)
+      auth.setToken(data.accessToken)
     },
     onError: () => {
       // If refresh fails, logout user
-      useAuthStore.getState().logout()
+      auth.logout()
     }
   })
 }
 
 // Switch clinic mutation
 export const useSwitchClinic = () => {
-  const { updateUser, selectClinic, availableClinics } = useAuthStore()
+  const auth = useAuth()
+  const { availableClinics } = auth
   const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: authService.switchClinic,
     onSuccess: (updatedUser) => {
-      updateUser(updatedUser)
-      const clinic = availableClinics.find(c => c.id === updatedUser.selectedClinicId)
+      auth.updateUser(updatedUser)
+      const clinic = availableClinics.find((c: Clinic) => c.id === updatedUser.selectedClinicId)
       if (clinic) {
-        selectClinic(clinic)
+        auth.selectClinic(clinic)
       }
       queryClient.setQueryData(authKeys.user(), updatedUser)
       toast.success('Clinic switched successfully')

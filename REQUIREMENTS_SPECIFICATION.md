@@ -7,7 +7,7 @@
 
 **ClinicCare** is a comprehensive multi-tenant homoeopathy clinic management system designed to handle multiple organizations, each with multiple clinics, supporting doctors who work across different clinics. The system manages patient registration, appointments, medical records, prescriptions, inventory, billing, and communication.
 
-**Business Model**: Multiple clinic groups (organizations) can use the same software instance, with each organization having its own subdomain and complete data isolation.
+**Business Model**: Multiple clinic groups (organizations) can use the same software instance, with each organization having its own subdomain and dedicated database for complete data isolation.
 
 ---
 
@@ -16,16 +16,34 @@
 ### **Technology Stack**
 - **Backend**: .NET 9 Web API with Clean Architecture
 - **Frontend**: React Latest with TypeScript
-- **Database**: Microsoft SQL Server (Multi-tenant single database)
+- **Database**: 
+  - Global Database: SQL Server (Organizations, Subscriptions, Global Medicines)
+  - Tenant Databases: Separate SQL Server database per tenant
 - **Deployment**: On-premises or cloud deployment support
 - **Authentication**: JWT-based authentication with role-based authorization
 
 ### **Architecture Pattern**
-- **Clean Architecture**: Domain, Application, Infrastructure, API layers
-- **Multi-Tenancy**: Subdomain-based tenant resolution
+- **Clean Architecture**: 
+  - Domain Layer: Separate Global and Tenant entities
+  - Application Layer: Distinct Global and Tenant features
+  - Infrastructure Layer: Separate database contexts and services
+  - API Layer: Area-based separation for Global and Tenant endpoints
+- **Multi-Tenancy**: 
+  - Global System: Accessed via yourapp.com
+  - Tenant System: Accessed via {tenant}.yourapp.com
+  - Separate database per tenant for complete isolation
+  - Dynamic database context management
+- **Module Separation**:
+  - Clear separation between Global and Tenant features
+  - Shared core functionality
+  - Independent routing and authentication flows
 - **CQRS**: Command Query Responsibility Segregation with MediatR
-- **Repository Pattern**: Generic repository with tenant filtering
+- **Repository Pattern**: Separate repositories for Global and Tenant data
 - **SignalR**: Real-time communication for queue updates
+- **Frontend Structure**:
+  - Shared component library
+  - Separate entry points for Global and Tenant apps
+  - Common authentication and state management
 
 ---
 
@@ -199,10 +217,18 @@
 - **Hybrid**: Combination of on-premises and cloud services
 
 ### **18. Scalability Features**
-- **Multi-Tenant Architecture**: Efficient resource sharing
-- **Database Optimization**: Tenant-specific indexing and query optimization
-- **Caching Strategies**: Tenant-scoped caching for performance
-- **Load Balancing**: Support for horizontal scaling
+- **Multi-Database Architecture**: 
+  - Independent scaling per tenant
+  - Ability to move tenant databases between servers
+  - Support for different performance tiers per tenant
+- **Database Management**:
+  - Automated database creation
+  - Migration management across tenant DBs
+  - Backup/restore per tenant
+- **Connection Management**:
+  - Connection pooling per tenant
+  - Dynamic connection string resolution
+  - High availability support
 
 ---
 
@@ -255,7 +281,15 @@
 ## 🔧 **TECHNICAL REQUIREMENTS**
 
 ### **19. Database Design**
-- **Multi-Tenant Schema**: Single database with tenant isolation
+- **Separate Tenant Databases**: 
+  - Each tenant gets dedicated database
+  - Database created automatically on tenant registration
+  - Standard schema applied via migrations
+  - No tenant ID columns needed (physical isolation)
+- **Connection Management**:
+  - Dynamic connection string resolution
+  - Connection pooling per tenant
+  - Database name template: `ClinicCare_{tenant}`
 - **Entity Relationships**: Proper foreign key constraints and indexes
 - **Audit Fields**: Created/Updated timestamps and user tracking
 - **Soft Deletes**: Data retention and recovery capabilities
@@ -337,16 +371,24 @@
 - **SQL Server Compatibility**: Minimum SQL Server 2016 required
 - **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
 - **Mobile Support**: Responsive design for mobile devices
+- **Database Management**: 
+  - Requires permissions to create new databases
+  - Sufficient disk space for multiple databases
+  - Regular maintenance window for each tenant
 
 ### **Business Constraints**
 - **Data Privacy**: Medical data must be handled securely
 - **Compliance**: Follow local healthcare data regulations
 - **Performance**: System must handle multiple concurrent users per clinic
+- **Storage**: Plan for database growth per tenant
 
 ### **Assumptions**
+- **Database Creation**: System has permissions to create new databases
+- **Storage Capacity**: Sufficient storage for multiple tenant databases
+- **Backup Management**: Separate backup strategy per tenant database
 - **Internet Connectivity**: Stable internet connection for cloud features
 - **User Training**: Staff will receive basic system training
-- **Data Migration**: Existing patient data can be imported
+- **Data Migration**: Existing patient data can be imported to new tenant DB
 
 ---
 

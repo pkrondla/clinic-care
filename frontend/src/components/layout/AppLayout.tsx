@@ -136,7 +136,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           label: 'System Reports'
         }
       ],
-      [UserRole.Admin]: [
+      [UserRole.OrganizationAdmin]: [
         ...commonItems,
         {
           key: 'clinics',
@@ -177,7 +177,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           label: 'Prescriptions'
         }
       ],
-      [UserRole.Staff]: [
+      [UserRole.Reception]: [
         ...commonItems,
         {
           key: 'appointments',
@@ -188,6 +188,14 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'patients',
           icon: <TeamOutlined />,
           label: 'Patients'
+        }
+      ],
+      [UserRole.Pharmacy]: [
+        ...commonItems,
+        {
+          key: 'prescriptions',
+          icon: <MedicineBoxOutlined />,
+          label: 'Prescriptions'
         },
         {
           key: 'inventory',
@@ -250,7 +258,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   ]
 
   // Clinic switch dropdown (for users with multiple clinics)
-  const clinicMenuItems = user?.availableClinics?.map((clinic: any) => ({
+  const clinicMenuItems = user?.availableClinics?.map((clinic) => ({
     key: clinic.id.toString(),
     label: clinic.name,
     onClick: () => handleClinicSwitch(clinic.id)
@@ -348,9 +356,12 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
                   <br />
                   <Text type="secondary" style={{ fontSize: 12 }}>
                     {user?.role === UserRole.SuperAdmin && 'Super Admin'}
-                    {user?.role === UserRole.Admin && 'Admin'}
+                    {user?.role === UserRole.SuperAdmin && 'Super Admin'}
+                    {user?.role === UserRole.SystemAdmin && 'System Admin'}
+                    {user?.role === UserRole.OrganizationAdmin && 'Organization Admin'}
                     {user?.role === UserRole.Doctor && 'Doctor'}
-                    {user?.role === UserRole.Staff && 'Staff'}
+                    {user?.role === UserRole.Reception && 'Reception'}
+                    {user?.role === UserRole.Pharmacy && 'Pharmacy'}
                     {user?.role === UserRole.Patient && 'Patient'}
                   </Text>
                 </div>

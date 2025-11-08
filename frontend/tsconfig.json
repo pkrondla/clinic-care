@@ -12,14 +12,16 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@core/*": ["./src/core/*"],
       "@components/*": ["./src/components/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@services/*": ["./src/services/*"],
-      "@stores/*": ["./src/stores/*"],
-      "@types/*": ["./src/types/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@constants/*": ["./src/constants/*"]
+      "@shared/*": ["./src/components/shared/*"],
+      "@auth/*": ["./src/components/auth/*"],
+      "@apps/*": ["./src/apps/*"],
+      "@hooks/*": ["./src/core/hooks/*"],
+      "@services/*": ["./src/core/services/*"],
+      "@stores/*": ["./src/core/stores/*"],
+      "@types/*": ["./src/core/types/*"],
+      "@providers/*": ["./src/core/providers/*"]
     }
   }
 }

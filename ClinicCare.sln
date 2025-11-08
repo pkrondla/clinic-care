@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.API", "src\ClinicCare.API\ClinicCare.API.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.API", "backend\\ClinicCare.API\ClinicCare.API.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Application", "src\ClinicCare.Application\ClinicCare.Application.csproj", "{B2C3D4E5-F6A7-8901-BCDE-F23456789012}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Application", "backend\\ClinicCare.Application\ClinicCare.Application.csproj", "{B2C3D4E5-F6A7-8901-BCDE-F23456789012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Domain", "src\ClinicCare.Domain\ClinicCare.Domain.csproj", "{C3D4E5F6-A7B8-9012-CDEF-345678901234}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Domain", "backend\\ClinicCare.Domain\ClinicCare.Domain.csproj", "{C3D4E5F6-A7B8-9012-CDEF-345678901234}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Infrastructure", "src\ClinicCare.Infrastructure\ClinicCare.Infrastructure.csproj", "{D4E5F6A7-B8C9-0123-DEF4-456789012345}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicCare.Infrastructure", "backend\\ClinicCare.Infrastructure\ClinicCare.Infrastructure.csproj", "{D4E5F6A7-B8C9-0123-DEF4-456789012345}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E5F6A7B8-C9D0-1234-EF45-567890123456}"
 EndProject
@@ -44,3 +44,4 @@ Global
 		{D4E5F6A7-B8C9-0123-DEF4-456789012345} = {E5F6A7B8-C9D0-1234-EF45-567890123456}
 	EndGlobalSection
 EndGlobal
+

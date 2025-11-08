@@ -1,95 +1,56 @@
 using ClinicCare.Application.Common.Interfaces;
+using ClinicCare.Application.Common.Interfaces.Global;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace ClinicCare.API.Middleware;
 
 public class TenantMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<TenantMiddleware> _logger;
-    private readonly ITenantService _tenantService;
 
-    public TenantMiddleware(RequestDelegate next, ILogger<TenantMiddleware> logger, ITenantService tenantService)
+    public TenantMiddleware(RequestDelegate next)
     {
         _next = next;
-        _logger = logger;
-        _tenantService = tenantService;
     }
 
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(
+        HttpContext context,
+        ITenantService tenantService,
+        IGlobalDbContext globalDbContext)
     {
-        try
+        var host = context.Request.Host.Value;
+
+        // Check if this is the global domain
+        if (!host.StartsWith("www.") && !host.Contains("."))
         {
-            // Debug logging
-            Console.WriteLine($"TenantMiddleware: ENTERED for path: {context.Request.Path}");
-            _logger.LogInformation("TenantMiddleware processing path: {Path}", context.Request.Path);
-            
-            // Skip tenant resolution for certain paths
-            if (ShouldSkipTenantResolution(context.Request.Path))
-            {
-                Console.WriteLine($"TenantMiddleware: SKIPPING tenant resolution for path: {context.Request.Path}");
-                _logger.LogInformation("Skipping tenant resolution for path: {Path}", context.Request.Path);
-                Console.WriteLine($"TenantMiddleware: About to call next() for path: {context.Request.Path}");
-                try
-                {
-                    await _next(context);
-                    Console.WriteLine($"TenantMiddleware: Completed for path: {context.Request.Path}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"TenantMiddleware: EXCEPTION when calling next() for path: {context.Request.Path}: {ex.GetType().Name} - {ex.Message}");
-                    Console.WriteLine($"TenantMiddleware: Stack trace: {ex.StackTrace}");
-                    throw; // Re-throw to let other middleware handle it
-                }
-                return;
-            }
-
-            // Resolve tenant
-            var organizationId = await _tenantService.GetOrganizationIdAsync();
-            
-            _logger.LogInformation("Request processed for Organization ID: {OrganizationId}, Subdomain: {Subdomain}", 
-                organizationId, _tenantService.Subdomain);
-
             await _next(context);
+            return;
         }
-        catch (UnauthorizedAccessException ex)
-        {
-            _logger.LogWarning("Tenant resolution failed: {Message}", ex.Message);
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync("Invalid tenant or subdomain");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Critical error in tenant middleware for path: {Path}. Error: {Message}", 
-                context.Request.Path, ex.Message);
-            
-            // Log the full exception details
-            _logger.LogError(ex, "Full exception details for tenant middleware");
-            
-            // Set a 500 status and return error details
-            context.Response.StatusCode = 500;
-            context.Response.ContentType = "application/json";
-            var errorResponse = new { error = "Internal server error", details = ex.Message };
-            await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(errorResponse));
-        }
-    }
 
-    private static bool ShouldSkipTenantResolution(PathString path)
-    {
-        var skipPaths = new[]
+        // Extract subdomain
+        var subdomain = host.Split('.')[0];
+        if (subdomain == "www")
         {
-            "/health",
-            "/swagger",
-            "/api/auth",  // Skip ALL auth endpoints
-            "/api/global"
-        };
+            await _next(context);
+            return;
+        }
 
-        // Debug logging to see what path is being checked
-        var pathValue = path.Value?.ToLowerInvariant();
-        var shouldSkip = skipPaths.Any(skipPath => 
-            pathValue?.StartsWith(skipPath.ToLowerInvariant()) == true);
-        
-        Console.WriteLine($"TenantMiddleware: Path: '{path.Value}' -> Lower: '{pathValue}' -> ShouldSkip: {shouldSkip}");
-        
-        return shouldSkip;
+        // Verify tenant exists and is active
+        var organization = await globalDbContext.Organizations
+            .FirstOrDefaultAsync(o => o.Subdomain == subdomain && o.IsActive);
+
+        if (organization == null)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsJsonAsync(new { error = "Tenant not found" });
+            return;
+        }
+
+        // Set tenant ID for the request
+        tenantService.SetTenantId(organization.Id.ToString());
+
+        await _next(context);
     }
 }
