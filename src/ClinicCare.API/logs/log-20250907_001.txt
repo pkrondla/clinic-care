@@ -1,0 +1,328 @@
+2025-09-07 12:49:26.600 +10:00 [INF] Starting ClinicCare API...
+2025-09-07 12:49:26.764 +10:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-07 12:49:26.901 +10:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:51537: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2025-09-07 12:49:26.937 +10:00 [FTL] Application terminated unexpectedly
+System.IO.IOException: Failed to bind to address http://127.0.0.1:51537: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Program.<Main>$(String[] args) in C:\PK\Source\clinic-care\src\ClinicCare.API\Program.cs:line 239
+2025-09-07 12:51:07.328 +10:00 [INF] Starting ClinicCare API...
+2025-09-07 12:51:07.448 +10:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-07 12:51:07.616 +10:00 [INF] Now listening on: http://localhost:51537
+2025-09-07 12:51:07.618 +10:00 [INF] Now listening on: https://localhost:51536
+2025-09-07 12:51:07.622 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-07 12:51:07.625 +10:00 [INF] Hosting environment: Development
+2025-09-07 12:51:07.627 +10:00 [INF] Content root path: C:\PK\Source\clinic-care\src\ClinicCare.API
+2025-09-07 12:51:15.144 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/ - null null
+2025-09-07 12:51:16.936 +10:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserOrganization'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2025-09-07 12:51:17.057 +10:00 [WRN] No store type was specified for the decimal property 'PurchasePrice' on entity type 'ClinicMedicine'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.064 +10:00 [WRN] No store type was specified for the decimal property 'SellingPrice' on entity type 'ClinicMedicine'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.074 +10:00 [WRN] No store type was specified for the decimal property 'ConsultationFee' on entity type 'Consultation'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.078 +10:00 [WRN] No store type was specified for the decimal property 'ConsultationFeeInPerson' on entity type 'DoctorProfile'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.080 +10:00 [WRN] No store type was specified for the decimal property 'ConsultationFeeTele' on entity type 'DoctorProfile'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.084 +10:00 [WRN] No store type was specified for the decimal property 'FollowupFeeInPerson' on entity type 'DoctorProfile'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.090 +10:00 [WRN] No store type was specified for the decimal property 'FollowupFeeTele' on entity type 'DoctorProfile'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.096 +10:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'GlobalMedicine'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.098 +10:00 [WRN] No store type was specified for the decimal property 'PurchasePrice' on entity type 'Inventory'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.100 +10:00 [WRN] No store type was specified for the decimal property 'SellingPrice' on entity type 'Inventory'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.101 +10:00 [WRN] No store type was specified for the decimal property 'BalanceAmount' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.104 +10:00 [WRN] No store type was specified for the decimal property 'ConsultationAmount' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.109 +10:00 [WRN] No store type was specified for the decimal property 'CourierCharges' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.117 +10:00 [WRN] No store type was specified for the decimal property 'MedicineAmount' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.122 +10:00 [WRN] No store type was specified for the decimal property 'PaidAmount' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.126 +10:00 [WRN] No store type was specified for the decimal property 'TotalAmount' on entity type 'Invoice'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.129 +10:00 [WRN] No store type was specified for the decimal property 'TotalPrice' on entity type 'InvoiceItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.131 +10:00 [WRN] No store type was specified for the decimal property 'UnitPrice' on entity type 'InvoiceItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.133 +10:00 [WRN] No store type was specified for the decimal property 'TotalPrice' on entity type 'PrescriptionItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.136 +10:00 [WRN] No store type was specified for the decimal property 'UnitPrice' on entity type 'PrescriptionItem'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.141 +10:00 [WRN] No store type was specified for the decimal property 'UnitPrice' on entity type 'StockTransaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-09-07 12:51:17.640 +10:00 [INF] Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 12:51:18.123 +10:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 12:51:18.313 +10:00 [INF] Executed DbCommand (23ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:51:18.499 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/ - 404 0 null 3357.1156ms
+2025-09-07 12:51:18.530 +10:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:51537/, Response status code: 404
+2025-09-07 12:51:30.224 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger - null null
+2025-09-07 12:51:30.240 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger - 301 0 null 16.3586ms
+2025-09-07 12:51:30.250 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/index.html - null null
+2025-09-07 12:51:30.423 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/index.html - 200 null text/html;charset=utf-8 173.2442ms
+2025-09-07 12:51:30.477 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui.css - null null
+2025-09-07 12:51:30.498 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui-bundle.js - null null
+2025-09-07 12:51:30.499 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/index.css - null null
+2025-09-07 12:51:30.499 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui-standalone-preset.js - null null
+2025-09-07 12:51:30.502 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/index.js - null null
+2025-09-07 12:51:30.517 +10:00 [INF] Sending file. Request path: '/index.css'. Physical path: 'N/A'
+2025-09-07 12:51:30.541 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/index.js - 200 null application/javascript;charset=utf-8 38.5288ms
+2025-09-07 12:51:30.603 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/index.css - 200 202 text/css 104.119ms
+2025-09-07 12:51:30.620 +10:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-09-07 12:51:30.625 +10:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-09-07 12:51:30.691 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui-standalone-preset.js - 200 230007 text/javascript 191.2195ms
+2025-09-07 12:51:30.695 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui.css - 200 152035 text/css 217.7706ms
+2025-09-07 12:51:30.719 +10:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-09-07 12:51:30.725 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/swagger-ui-bundle.js - 200 1426001 text/javascript 226.2238ms
+2025-09-07 12:51:32.517 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/v1/swagger.json - null null
+2025-09-07 12:51:32.597 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/favicon-32x32.png - null null
+2025-09-07 12:51:32.605 +10:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-07 12:51:32.608 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/favicon-32x32.png - 200 628 image/png 11.1177ms
+2025-09-07 12:51:32.781 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 263.4119ms
+2025-09-07 12:58:06.396 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/api/Auth/me - null null
+2025-09-07 12:58:06.465 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.GetCurrentUser (ClinicCare.API)'
+2025-09-07 12:58:06.515 +10:00 [INF] Route matched with {action = "GetCurrentUser", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCurrentUser() on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 12:58:06.547 +10:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType12`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-07 12:58:06.592 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.GetCurrentUser (ClinicCare.API) in 59.0845ms
+2025-09-07 12:58:06.597 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.GetCurrentUser (ClinicCare.API)'
+2025-09-07 12:58:06.609 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/api/Auth/me - 200 null application/json; charset=utf-8 213.5629ms
+2025-09-07 12:58:19.576 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/Auth/login - application/json 89
+2025-09-07 12:58:19.691 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 12:58:19.707 +10:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 12:58:19.718 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:58:19.728 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 12:58:19.745 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 12:58:19.980 +10:00 [INF] Executed DbCommand (18ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:58:20.065 +10:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType10`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String[], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-07 12:58:20.078 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 328.6416ms
+2025-09-07 12:58:20.082 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 12:58:20.088 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/Auth/login - 400 null application/json; charset=utf-8 512.3794ms
+2025-09-07 12:59:48.585 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/Auth/login - application/json 89
+2025-09-07 12:59:48.714 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 12:59:48.720 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 12:59:48.726 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:59:48.730 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 12:59:48.731 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 12:59:48.748 +10:00 [INF] Executed DbCommand (9ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:59:48.788 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Id] = @__userId_0
+2025-09-07 12:59:48.875 +10:00 [INF] Executed DbCommand (62ms) [Parameters=[@__organizationId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[Name], [c].[Code]
+FROM [Clinics] AS [c]
+WHERE [c].[OrganizationId] = @__organizationId_0 AND [c].[IsActive] = CAST(1 AS bit)
+2025-09-07 12:59:48.926 +10:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType11`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ClinicCare.Application.Features.Authentication.Commands.LoginResponse, ClinicCare.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-07 12:59:48.959 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 225.4811ms
+2025-09-07 12:59:48.965 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 12:59:48.969 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/Auth/login - 200 null application/json; charset=utf-8 384.8486ms
+2025-09-07 13:00:33.705 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/index.html - null null
+2025-09-07 13:00:33.713 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/index.html - 200 null text/html;charset=utf-8 7.3894ms
+2025-09-07 13:00:33.773 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/index.js - null null
+2025-09-07 13:00:33.794 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/index.js - 200 null application/javascript;charset=utf-8 20.2662ms
+2025-09-07 13:00:35.240 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:51537/swagger/v1/swagger.json - null null
+2025-09-07 13:00:35.252 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:51537/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 11.7739ms
+2025-09-07 13:01:01.113 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/Auth/login - application/json 85
+2025-09-07 13:01:01.121 +10:00 [INF] CORS policy execution successful.
+2025-09-07 13:01:01.134 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 13:01:01.152 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 13:01:01.173 +10:00 [INF] Executed DbCommand (10ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:01:01.215 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:01:01.236 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 13:01:01.291 +10:00 [INF] Executed DbCommand (27ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:01:01.321 +10:00 [INF] Executed DbCommand (10ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Id] = @__userId_0
+2025-09-07 13:01:01.338 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[@__organizationId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[Name], [c].[Code]
+FROM [Clinics] AS [c]
+WHERE [c].[OrganizationId] = @__organizationId_0 AND [c].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:01:01.353 +10:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType11`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ClinicCare.Application.Features.Authentication.Commands.LoginResponse, ClinicCare.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-07 13:01:01.358 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 111.6384ms
+2025-09-07 13:01:01.361 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:01:01.363 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/Auth/login - 200 null application/json; charset=utf-8 250.5244ms
+2025-09-07 13:03:22.399 +10:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-09-07 13:03:22.406 +10:00 [INF] CORS policy execution successful.
+2025-09-07 13:03:22.410 +10:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 10.9774ms
+2025-09-07 13:03:22.416 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 59
+2025-09-07 13:03:22.422 +10:00 [INF] CORS policy execution successful.
+2025-09-07 13:03:22.433 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 13:03:22.445 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 13:03:22.457 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:03:22.462 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:03:22.466 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 13:03:22.483 +10:00 [INF] Executed DbCommand (10ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:03:22.502 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Id] = @__userId_0
+2025-09-07 13:03:22.514 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[@__organizationId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[Name], [c].[Code]
+FROM [Clinics] AS [c]
+WHERE [c].[OrganizationId] = @__organizationId_0 AND [c].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:03:22.519 +10:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType11`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ClinicCare.Application.Features.Authentication.Commands.LoginResponse, ClinicCare.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-07 13:03:22.523 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 52.2036ms
+2025-09-07 13:03:22.526 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:03:22.528 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 200 null application/json; charset=utf-8 112.1113ms
+2025-09-07 13:04:38.112 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/Auth/login - application/json 2
+2025-09-07 13:04:38.123 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 13:04:38.130 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 13:04:38.140 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:04:38.147 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:04:38.150 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 13:04:38.159 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2025-09-07 13:04:38.184 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 30.5037ms
+2025-09-07 13:04:38.187 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:04:38.190 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/Auth/login - 400 null application/problem+json; charset=utf-8 78.7905ms
+2025-09-07 13:05:28.308 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/Auth/login - application/json 89
+2025-09-07 13:05:28.318 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-07 13:05:28.322 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Organizations] AS [o]
+2025-09-07 13:05:28.328 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt]
+FROM [Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:05:28.332 +10:00 [INF] Executing endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:05:28.333 +10:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ClinicCare.Application.Features.Authentication.Commands.LoginCommand) on controller ClinicCare.API.Controllers.AuthController (ClinicCare.API).
+2025-09-07 13:05:28.344 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:05:28.360 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[Role], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Id] = @__userId_0
+2025-09-07 13:05:28.367 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__organizationId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[Name], [c].[Code]
+FROM [Clinics] AS [c]
+WHERE [c].[OrganizationId] = @__organizationId_0 AND [c].[IsActive] = CAST(1 AS bit)
+2025-09-07 13:05:28.370 +10:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType11`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ClinicCare.Application.Features.Authentication.Commands.LoginResponse, ClinicCare.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-07 13:05:28.372 +10:00 [INF] Executed action ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API) in 36.4974ms
+2025-09-07 13:05:28.374 +10:00 [INF] Executed endpoint 'ClinicCare.API.Controllers.AuthController.Login (ClinicCare.API)'
+2025-09-07 13:05:28.375 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/Auth/login - 200 null application/json; charset=utf-8 67.3362ms

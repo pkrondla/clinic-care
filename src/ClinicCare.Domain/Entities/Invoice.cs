@@ -1,0 +1,47 @@
+using ClinicCare.Domain.Common;
+using ClinicCare.Domain.Enums;
+
+namespace ClinicCare.Domain.Entities;
+
+public class Invoice : TenantEntity
+{
+    public int ClinicId { get; set; }
+    public int PatientId { get; set; }
+    public int? ConsultationId { get; set; }
+    public string InvoiceNumber { get; set; } = string.Empty;
+    public decimal ConsultationAmount { get; set; }
+    public decimal MedicineAmount { get; set; }
+    public decimal CourierCharges { get; set; }
+    public decimal TotalAmount { get; set; }
+    public decimal PaidAmount { get; set; }
+    public decimal BalanceAmount { get; set; }
+    public InvoiceStatus Status { get; set; }
+    public string PaymentMethod { get; set; } = string.Empty;
+    public string PaymentReference { get; set; } = string.Empty;
+    public DateTime InvoiceDate { get; set; }
+    public DateTime? PaymentDate { get; set; }
+
+    public bool IsFullyPaid => BalanceAmount <= 0;
+    public bool IsPartiallyPaid => PaidAmount > 0 && BalanceAmount > 0;
+
+    // Navigation Properties
+    public Organization Organization { get; set; } = null!;
+    public Clinic Clinic { get; set; } = null!;
+    public Patient Patient { get; set; } = null!;
+    public Consultation? Consultation { get; set; }
+    public ICollection<InvoiceItem> InvoiceItems { get; set; } = new List<InvoiceItem>();
+}
+
+public class InvoiceItem : TenantEntity
+{
+    public int InvoiceId { get; set; }
+    public string ItemType { get; set; } = string.Empty; // Consultation, Medicine, Courier
+    public string Description { get; set; } = string.Empty;
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+    public decimal TotalPrice { get; set; }
+
+    // Navigation Properties
+    public Organization Organization { get; set; } = null!;
+    public Invoice Invoice { get; set; } = null!;
+}

@@ -1,0 +1,12 @@
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\bin\Debug\net9.0\ClinicCare.Domain.deps.json
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\bin\Debug\net9.0\ClinicCare.Domain.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\bin\Debug\net9.0\ClinicCare.Domain.pdb
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.AssemblyInfoInputs.cache
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.AssemblyInfo.cs
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.csproj.CoreCompileInputs.cache
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\refint\ClinicCare.Domain.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.pdb
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ref\ClinicCare.Domain.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Domain\obj\Debug\net9.0\ClinicCare.Domain.csproj.AssemblyReference.cache

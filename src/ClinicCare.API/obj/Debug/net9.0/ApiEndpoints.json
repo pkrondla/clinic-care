@@ -1,0 +1,1245 @@
+[
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "CreateAppointment",
+    "RelativePath": "api/appointments/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Appointments.Commands.CreateAppointment.CreateAppointmentCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "CreateAppointment",
+    "Summary": "Create a new appointment"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "GetAppointments",
+    "RelativePath": "api/appointments/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "doctorId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "date",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "GetAppointments",
+    "Summary": "Get appointments with optional filtering"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "GetAppointment",
+    "RelativePath": "api/appointments/{id:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "GetAppointment",
+    "Summary": "Get a specific appointment by ID"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "UpdateAppointment",
+    "RelativePath": "api/appointments/{id:int}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Appointments.Commands.UpdateAppointment.UpdateAppointmentCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "UpdateAppointment",
+    "Summary": "Update an appointment"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "CancelAppointment",
+    "RelativePath": "api/appointments/{id:int}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "CancelAppointment",
+    "Summary": "Cancel an appointment"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpointsAdvanced",
+    "Method": "GetAppointmentAnalytics",
+    "RelativePath": "api/appointments/analytics",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "doctorId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments - Advanced"
+    ],
+    "EndpointName": "GetAppointmentAnalytics",
+    "Description": "Get comprehensive appointment analytics and insights",
+    "Summary": "Get detailed appointment analytics"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpointsAdvanced",
+    "Method": "ExportAppointments",
+    "RelativePath": "api/appointments/export",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "doctorId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "format",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments - Advanced"
+    ],
+    "EndpointName": "ExportAppointments",
+    "Description": "Export appointments to CSV, Excel, or PDF formats",
+    "Summary": "Export appointments to various formats"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpointsAdvanced",
+    "Method": "GetDoctorQueue",
+    "RelativePath": "api/appointments/queue/{doctorId:int}/{clinicId:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "doctorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "clinicId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "date",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments - Advanced"
+    ],
+    "EndpointName": "GetDoctorQueue",
+    "Description": "Get real-time appointment queue for a specific doctor and clinic",
+    "Summary": "Get doctor\u0027s appointment queue"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpointsAdvanced",
+    "Method": "SearchAppointments",
+    "RelativePath": "api/appointments/search",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "doctorId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "patientId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortOrder",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments - Advanced"
+    ],
+    "EndpointName": "SearchAppointments",
+    "Description": "Search appointments with multiple filters, sorting, and pagination",
+    "Summary": "Search appointments with advanced filtering"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Appointments.AppointmentsEndpoints",
+    "Method": "GetAppointmentStats",
+    "RelativePath": "api/appointments/stats",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "doctorId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Appointments"
+    ],
+    "EndpointName": "GetAppointmentStats",
+    "Summary": "Get appointment statistics"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Auth.AuthEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAuthEndpoints\u003Eb__0_0",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Authentication.Commands.LoginCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ClinicCare.Application.Features.Authentication.Commands.LoginResponse",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 401
+      }
+    ],
+    "Tags": [
+      "Authentication"
+    ],
+    "EndpointName": "Login",
+    "Description": "Authenticates a user with email and password, returns JWT token and user information",
+    "Summary": "Authenticate user and return JWT token"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Auth.AuthEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAuthEndpoints\u003Eb__0_2",
+    "RelativePath": "api/auth/logout",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Authentication.Commands.LogoutCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Authentication"
+    ],
+    "EndpointName": "Logout",
+    "Description": "Logs out a user and invalidates their refresh token",
+    "Summary": "Logout user"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Auth.AuthEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAuthEndpoints\u003Eb__0_1",
+    "RelativePath": "api/auth/refresh",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Authentication.Commands.RefreshTokenCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ClinicCare.Application.Features.Authentication.Commands.LoginResponse",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 401
+      }
+    ],
+    "Tags": [
+      "Authentication"
+    ],
+    "EndpointName": "RefreshToken",
+    "Description": "Refreshes an expired JWT token using a valid refresh token",
+    "Summary": "Refresh JWT token"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Billing.BillingEndpoints",
+    "Method": "GetInvoices",
+    "RelativePath": "api/billing/invoices",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Billing"
+    ],
+    "EndpointName": "GetInvoices",
+    "Summary": "Get all invoices"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Billing.BillingEndpoints",
+    "Method": "CreateInvoice",
+    "RelativePath": "api/billing/invoices",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "invoice",
+        "Type": "System.Object",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Billing"
+    ],
+    "EndpointName": "CreateInvoice",
+    "Summary": "Create a new invoice"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Billing.BillingEndpoints",
+    "Method": "GetInvoice",
+    "RelativePath": "api/billing/invoices/{id:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Billing"
+    ],
+    "EndpointName": "GetInvoice",
+    "Summary": "Get a specific invoice by ID"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Billing.BillingEndpoints",
+    "Method": "UpdateInvoice",
+    "RelativePath": "api/billing/invoices/{id:int}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "invoice",
+        "Type": "System.Object",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Billing"
+    ],
+    "EndpointName": "UpdateInvoice",
+    "Summary": "Update an invoice"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Billing.BillingEndpoints",
+    "Method": "PayInvoice",
+    "RelativePath": "api/billing/invoices/{id:int}/pay",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Billing"
+    ],
+    "EndpointName": "PayInvoice",
+    "Summary": "Mark an invoice as paid"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Inventory.InventoryEndpoints",
+    "Method": "GetInventory",
+    "RelativePath": "api/inventory/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Inventory"
+    ],
+    "EndpointName": "GetInventory",
+    "Summary": "Get all inventory items"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Inventory.InventoryEndpoints",
+    "Method": "CreateInventoryItem",
+    "RelativePath": "api/inventory/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "item",
+        "Type": "System.Object",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Inventory"
+    ],
+    "EndpointName": "CreateInventoryItem",
+    "Summary": "Create a new inventory item"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Inventory.InventoryEndpoints",
+    "Method": "GetInventoryItem",
+    "RelativePath": "api/inventory/{id:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Inventory"
+    ],
+    "EndpointName": "GetInventoryItem",
+    "Summary": "Get a specific inventory item by ID"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Inventory.InventoryEndpoints",
+    "Method": "UpdateInventoryItem",
+    "RelativePath": "api/inventory/{id:int}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "item",
+        "Type": "System.Object",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Inventory"
+    ],
+    "EndpointName": "UpdateInventoryItem",
+    "Summary": "Update an inventory item"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Inventory.InventoryEndpoints",
+    "Method": "DeleteInventoryItem",
+    "RelativePath": "api/inventory/{id:int}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Inventory"
+    ],
+    "EndpointName": "DeleteInventoryItem",
+    "Summary": "Delete an inventory item"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "GetPatients",
+    "RelativePath": "api/patients/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Gender",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "BloodGroup",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MinAge",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaxAge",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortOrder",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "GetPatients",
+    "Summary": "Get all patients with filtering and pagination"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "CreatePatient",
+    "RelativePath": "api/patients/",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Patients.Commands.CreatePatient.CreatePatientCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "CreatePatient",
+    "Summary": "Create a new patient"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "GetPatient",
+    "RelativePath": "api/patients/{id:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "GetPatient",
+    "Summary": "Get a specific patient by ID with detailed information"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "UpdatePatient",
+    "RelativePath": "api/patients/{id:int}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "ClinicCare.Application.Features.Patients.Commands.UpdatePatient.UpdatePatientCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "UpdatePatient",
+    "Summary": "Update a patient"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "DeletePatient",
+    "RelativePath": "api/patients/{id:int}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "DeletePatient",
+    "Summary": "Delete a patient (soft delete)"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Modules.Patients.PatientsEndpoints",
+    "Method": "SearchPatients",
+    "RelativePath": "api/patients/search",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "SearchTerm",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "Limit",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 400
+      }
+    ],
+    "Tags": [
+      "Patients"
+    ],
+    "EndpointName": "SearchPatients",
+    "Summary": "Search patients by name, email, phone, or patient code"
+  },
+  {
+    "ContainingType": "ClinicCare.API.Endpoints.TestEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapTestEndpoints\u003Eb__0_0",
+    "RelativePath": "api/test/tenant",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Test"
+    ],
+    "EndpointName": "TestTenantResolution",
+    "Description": "Tests if the tenant service can resolve the current tenant",
+    "Summary": "Test tenant resolution"
+  }
+]

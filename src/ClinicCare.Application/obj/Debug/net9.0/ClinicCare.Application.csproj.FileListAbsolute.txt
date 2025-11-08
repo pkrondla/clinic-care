@@ -1,0 +1,15 @@
+C:\PK\Source\clinic-care\src\ClinicCare.Application\bin\Debug\net9.0\ClinicCare.Application.deps.json
+C:\PK\Source\clinic-care\src\ClinicCare.Application\bin\Debug\net9.0\ClinicCare.Application.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Application\bin\Debug\net9.0\ClinicCare.Application.pdb
+C:\PK\Source\clinic-care\src\ClinicCare.Application\bin\Debug\net9.0\ClinicCare.Domain.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Application\bin\Debug\net9.0\ClinicCare.Domain.pdb
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.csproj.AssemblyReference.cache
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.AssemblyInfoInputs.cache
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.AssemblyInfo.cs
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.csproj.CoreCompileInputs.cache
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCa.71C1186A.Up2Date
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\refint\ClinicCare.Application.dll
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ClinicCare.Application.pdb
+C:\PK\Source\clinic-care\src\ClinicCare.Application\obj\Debug\net9.0\ref\ClinicCare.Application.dll

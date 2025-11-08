@@ -1,0 +1,209 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\PK\\Source\\clinic-care\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\modules\\billing\\billingendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\modules\\billing\\billingendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.application\\common\\interfaces\\itenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|solutionrelative:src\\cliniccare.application\\common\\interfaces\\itenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.application\\features\\authentication\\commands\\logincommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|solutionrelative:src\\cliniccare.application\\features\\authentication\\commands\\logincommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4E5F6A7-B8C9-0123-DEF4-456789012345}|src\\ClinicCare.Infrastructure\\ClinicCare.Infrastructure.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.infrastructure\\services\\tenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4E5F6A7-B8C9-0123-DEF4-456789012345}|src\\ClinicCare.Infrastructure\\ClinicCare.Infrastructure.csproj|solutionrelative:src\\cliniccare.infrastructure\\services\\tenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\middleware\\tenantmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\middleware\\tenantmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.api\\middleware\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|src\\ClinicCare.API\\ClinicCare.API.csproj|solutionrelative:src\\cliniccare.api\\middleware\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|c:\\pk\\source\\clinic-care\\src\\cliniccare.application\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F23456789012}|src\\ClinicCare.Application\\ClinicCare.Application.csproj|solutionrelative:src\\cliniccare.application\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Program.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\Program.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Program.cs",
+              "RelativeToolTip": "src\\ClinicCare.API\\Program.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAswFUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T07:00:25.866Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BillingEndpoints.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Modules\\Billing\\BillingEndpoints.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\Modules\\Billing\\BillingEndpoints.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Modules\\Billing\\BillingEndpoints.cs",
+              "RelativeToolTip": "src\\ClinicCare.API\\Modules\\Billing\\BillingEndpoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T12:32:55.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ITenantService.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\Common\\Interfaces\\ITenantService.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.Application\\Common\\Interfaces\\ITenantService.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\Common\\Interfaces\\ITenantService.cs",
+              "RelativeToolTip": "src\\ClinicCare.Application\\Common\\Interfaces\\ITenantService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T11:09:28.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.Application\\DependencyInjection.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\DependencyInjection.cs",
+              "RelativeToolTip": "src\\ClinicCare.Application\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T10:49:27.189Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TenantMiddleware.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Middleware\\TenantMiddleware.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\Middleware\\TenantMiddleware.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Middleware\\TenantMiddleware.cs",
+              "RelativeToolTip": "src\\ClinicCare.API\\Middleware\\TenantMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T07:05:23.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginCommand.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\Features\\Authentication\\Commands\\LoginCommand.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.Application\\Features\\Authentication\\Commands\\LoginCommand.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Application\\Features\\Authentication\\Commands\\LoginCommand.cs",
+              "RelativeToolTip": "src\\ClinicCare.Application\\Features\\Authentication\\Commands\\LoginCommand.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAYwEoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T06:09:26.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\appsettings.Development.json",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\appsettings.Development.json",
+              "RelativeToolTip": "src\\ClinicCare.API\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-16T11:58:14.618Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "TenantService.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Infrastructure\\Services\\TenantService.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.Infrastructure\\Services\\TenantService.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.Infrastructure\\Services\\TenantService.cs",
+              "RelativeToolTip": "src\\ClinicCare.Infrastructure\\Services\\TenantService.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAzwB0AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T11:09:30.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\appsettings.json",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\appsettings.json",
+              "RelativeToolTip": "src\\ClinicCare.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAACMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-16T11:58:34.179Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ExceptionMiddleware.cs",
+              "DocumentMoniker": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Middleware\\ExceptionMiddleware.cs",
+              "RelativeDocumentMoniker": "src\\ClinicCare.API\\Middleware\\ExceptionMiddleware.cs",
+              "ToolTip": "C:\\PK\\Source\\clinic-care\\src\\ClinicCare.API\\Middleware\\ExceptionMiddleware.cs",
+              "RelativeToolTip": "src\\ClinicCare.API\\Middleware\\ExceptionMiddleware.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAwwF4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-16T08:22:19.05Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
