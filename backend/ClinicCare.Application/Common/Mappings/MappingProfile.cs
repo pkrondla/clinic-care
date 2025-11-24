@@ -8,6 +8,9 @@ using ClinicCare.Application.Features.Appointments.Commands.UpdateAppointment;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointments;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointment;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointmentStats;
+using ClinicCare.Application.Features.Organizations.Commands.CreateOrganization;
+using ClinicCare.Application.Features.GlobalMedicines.Commands.CreateGlobalMedicine;
+using ClinicCare.Application.Features.Clinics.Commands.CreateClinic;
 
 namespace ClinicCare.Application.Common.Mappings;
 
@@ -30,6 +33,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => AppointmentDate.Create(src.AppointmentDate)))
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => (AppointmentType)src.Type))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => AppointmentStatus.Scheduled))
+            .ForMember(dest => dest.TokenNumber, opt => opt.MapFrom(src => src.TokenNumber ?? 0)) // Will be set by handler
             .ForMember(dest => dest.OrganizationId, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
@@ -67,9 +71,36 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.FullName))
             .ForMember(dest => dest.PatientCode, opt => opt.MapFrom(src => src.PatientCode));
 
+        // Organization mappings
+        CreateMap<Organization, OrganizationDto>()
+            .ForMember(dest => dest.SubscriptionStatus, opt => opt.MapFrom(src => src.SubscriptionStatus.ToString()));
+
+        // GlobalMedicine mappings
+        CreateMap<GlobalMedicine, GlobalMedicineDto>();
+
+        // Organization mappings (reverse for create/update)
+        CreateMap<CreateOrganizationCommand, Organization>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.DatabaseName, opt => opt.Ignore())
+            .ForMember(dest => dest.SubscriptionStatus, opt => opt.MapFrom(src => SubscriptionStatus.Trial))
+            .ForMember(dest => dest.TrialEndDate, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true))
+            .ForMember(dest => dest.Clinics, opt => opt.Ignore())
+            .ForMember(dest => dest.Users, opt => opt.Ignore())
+            .ForMember(dest => dest.UserOrganizations, opt => opt.Ignore())
+            .ForMember(dest => dest.Subscriptions, opt => opt.Ignore())
+            .ForMember(dest => dest.PaymentTransactions, opt => opt.Ignore());
+
         // Clinic mappings
         CreateMap<Clinic, ClinicCare.Application.Features.Appointments.Queries.GetAppointments.ClinicDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code));
+
+        // Clinic to ClinicDto mapping (for GetClinics)
+        CreateMap<Clinic, ClinicCare.Application.Features.Clinics.Commands.CreateClinic.ClinicDto>()
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.ContactPhone))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ContactEmail));
     }
 }

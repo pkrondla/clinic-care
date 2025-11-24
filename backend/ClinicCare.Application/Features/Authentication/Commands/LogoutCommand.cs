@@ -8,38 +8,51 @@ namespace ClinicCare.Application.Features.Authentication.Commands;
 
 public class LogoutCommand : IRequest<Result<bool>>
 {
-    [Required]
-    public string RefreshToken { get; set; } = string.Empty;
+    public string? RefreshToken { get; set; }
 }
 
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<bool>>
 {
     private readonly IApplicationDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
 
-    public LogoutCommandHandler(IApplicationDbContext context)
+    public LogoutCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
     {
         _context = context;
+        _currentUserService = currentUserService;
     }
 
     public async Task<Result<bool>> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            // Find user by refresh token
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.RefreshToken == request.RefreshToken, cancellationToken);
+            // Get user from JWT token (if authenticated) or from refresh token
+            var userId = _currentUserService.UserId;
+            Domain.Entities.User? user = null;
 
-            if (user == null)
+            if (userId.HasValue)
             {
-                return Result<bool>.Failure("Invalid refresh token");
+                // User is authenticated via JWT, get user by ID
+                user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId.Value, cancellationToken);
+            }
+            else if (!string.IsNullOrEmpty(request.RefreshToken))
+            {
+                // Fallback: find user by refresh token if provided
+                user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.RefreshToken == request.RefreshToken, cancellationToken);
             }
 
-            // Clear refresh token
-            user.RefreshToken = null;
-            user.RefreshTokenExpiryTime = null;
+            if (user != null)
+            {
+                // Clear refresh token
+                user.RefreshToken = null;
+                user.RefreshTokenExpiryTime = null;
 
-            await _context.SaveChangesAsync(cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
 
+            // Always return success, even if user not found (token might already be cleared)
             return Result<bool>.Success(true);
         }
         catch (Exception ex)

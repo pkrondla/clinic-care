@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@core/config';
+import { API_BASE_URL } from '@core/config/index';
 import type { Patient, PatientFilters } from '../types/patient';
 import type { Appointment, AppointmentFilters } from '../types/appointment';
 import type { Clinic, ClinicFilters } from '../types/clinic';

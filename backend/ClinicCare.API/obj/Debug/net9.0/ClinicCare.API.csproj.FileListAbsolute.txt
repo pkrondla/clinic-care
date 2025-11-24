@@ -378,3 +378,5 @@ C:\PK\Source\clinic-care\backend\ClinicCare.API\obj\Debug\net9.0\refint\ClinicCa
 C:\PK\Source\clinic-care\backend\ClinicCare.API\obj\Debug\net9.0\ClinicCare.API.pdb
 C:\PK\Source\clinic-care\backend\ClinicCare.API\obj\Debug\net9.0\ClinicCare.API.genruntimeconfig.cache
 C:\PK\Source\clinic-care\backend\ClinicCare.API\obj\Debug\net9.0\ref\ClinicCare.API.dll
+C:\PK\Source\clinic-care\backend\ClinicCare.API\bin\Debug\net9.0\appsettings.example.json
+C:\PK\Source\clinic-care\backend\ClinicCare.API\bin\Debug\net9.0\appsettings.Azure.json

@@ -38,6 +38,9 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
             .IsRequired();
 
         // Configure one-to-one relationship with Appointment
+        // Explicitly map AppointmentId property to avoid shadow property
+        builder.Property(x => x.AppointmentId)
+            .IsRequired();
         builder.HasOne(x => x.Appointment)
             .WithOne(x => x.Consultation)
             .HasForeignKey<Consultation>(x => x.AppointmentId)
@@ -56,20 +59,25 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
             .OnDelete(DeleteBehavior.Restrict);
 
         // Configure many-to-one relationship with Patient
+        // Explicitly map PatientId property to avoid shadow property
+        builder.Property(x => x.PatientId)
+            .IsRequired();
         builder.HasOne(x => x.Patient)
             .WithMany()
             .HasForeignKey(x => x.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Configure one-to-many relationship with Prescriptions
+        // Note: Prescription.ConsultationId foreign key is configured in PrescriptionConfiguration
         builder.HasMany(x => x.Prescriptions)
-            .WithOne()
+            .WithOne(x => x.Consultation)
             .HasForeignKey(x => x.ConsultationId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Configure one-to-one relationship with Invoice
+        // Note: Invoice.ConsultationId foreign key is configured in InvoiceConfiguration
         builder.HasOne(x => x.Invoice)
-            .WithOne()
+            .WithOne(x => x.Consultation)
             .HasForeignKey<Invoice>(x => x.ConsultationId)
             .OnDelete(DeleteBehavior.Restrict);
 

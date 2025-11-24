@@ -1,7 +1,41 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { useAuth } from '../stores/authStore'
+import { useGlobalAuthStore, useTenantAuthStore } from '../stores/authStore'
 import toast from 'react-hot-toast'
 import type { ApiResponse } from '../types/common'
+
+// Helper function to get auth state without using hooks (for use in interceptors)
+// This should match the logic in useAuth() hook
+const getAuthState = () => {
+  const globalAuth = useGlobalAuthStore.getState()
+  const tenantAuth = useTenantAuthStore.getState()
+  
+  // Check for tenant query parameter or path (for local development)
+  const urlParams = new URLSearchParams(window.location.search)
+  const tenantParam = urlParams.get('tenant')
+  const isTenantPath = window.location.pathname.startsWith('/tenant')
+  
+  // Priority 1: If tenant user is authenticated, use tenant store
+  if (tenantAuth.isAuthenticated && !tenantAuth.isGlobalSystem) {
+    return tenantAuth
+  }
+  
+  // Priority 2: If global user is authenticated, use global store
+  if (globalAuth.isAuthenticated && globalAuth.isGlobalSystem) {
+    return globalAuth
+  }
+  
+  // Priority 3: Determine based on domain/params (for unauthenticated users)
+  const hostname = window.location.hostname
+  const parts = hostname.split('.')
+  const isGlobalDomain = (hostname === 'localhost' || 
+                         hostname === '127.0.0.1' ||
+                         parts.length === 2 || // e.g., domain.com
+                         (parts.length === 3 && parts[0] === 'www')) && // e.g., www.domain.com
+                         !tenantParam && // Not explicitly requesting tenant
+                         !isTenantPath // Not using tenant path
+  
+  return isGlobalDomain ? globalAuth : tenantAuth
+}
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -15,20 +49,29 @@ const apiClient: AxiosInstance = axios.create({
 // Request interceptor to add auth token and tenant info
 apiClient.interceptors.request.use(
   (config) => {
-    const auth = useAuth()
-    const token = auth.token
-    const selectedClinic = auth.selectedClinic
+    // Access store state directly (not using hooks)
+    const authState = getAuthState()
+    const token = authState.token
+    const selectedClinic = authState.selectedClinic
     
-    console.log('API Request:', config.method?.toUpperCase(), config.url, config.data)
+    console.log('API Request:', config.method?.toUpperCase(), config.url, {
+      hasToken: !!token,
+      tokenLength: token?.length,
+      isAuthenticated: authState.isAuthenticated,
+      user: authState.user?.email
+    })
     
     // Add authorization header
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+      console.log('API Request: Added Authorization header')
+    } else {
+      console.warn('API Request: No token available for request', config.url)
     }
     
     // Add tenant subdomain header for development
     if (import.meta.env.DEV) {
-      config.headers['X-Tenant-Subdomain'] = 'healthcareplus'
+      config.headers['X-Tenant-Subdomain'] = 'demo'
     }
     
     // Add clinic context if available
@@ -53,10 +96,13 @@ apiClient.interceptors.response.use(
     const { response } = error
     
     if (response?.status === 401) {
-      // Unauthorized - clear auth and redirect to login
-      useAuth().logout()
-      toast.error('Session expired. Please login again.')
-      window.location.href = '/login'
+      // Unauthorized - only redirect if we're not already on login page
+      if (!window.location.pathname.includes('/login')) {
+        const authState = getAuthState()
+        authState.logout()
+        toast.error('Session expired. Please login again.')
+        window.location.href = '/login'
+      }
     } else if (response?.status === 403) {
       // Forbidden
       toast.error('Access denied. You do not have permission to perform this action.')

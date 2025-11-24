@@ -1,4 +1,5 @@
 using ClinicCare.Application.Common.Interfaces;
+using ClinicCare.Application.Common.Interfaces.Global;
 using ClinicCare.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -8,15 +9,15 @@ namespace ClinicCare.Infrastructure.Services;
 public class TenantService : ITenantService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IApplicationDbContext _context;
+    private readonly IGlobalDbContext _globalContext;
     private int? _organizationId;
     private string? _subdomain;
 
-    public TenantService(IHttpContextAccessor httpContextAccessor, IApplicationDbContext context)
+    public TenantService(IHttpContextAccessor httpContextAccessor, IGlobalDbContext globalContext)
     {
-        Console.WriteLine($"TenantService: Constructor called with HttpContextAccessor: {httpContextAccessor != null}, DbContext: {context != null}");
+        Console.WriteLine($"TenantService: Constructor called with HttpContextAccessor: {httpContextAccessor != null}, GlobalDbContext: {globalContext != null}");
         _httpContextAccessor = httpContextAccessor;
-        _context = context;
+        _globalContext = globalContext;
         Console.WriteLine($"TenantService: Constructor completed successfully");
     }
 
@@ -41,81 +42,16 @@ public class TenantService : ITenantService
         if (string.IsNullOrEmpty(subdomain))
         {
             Console.WriteLine($"TenantService: Subdomain is null or empty, using default subdomain for development");
-            subdomain = "healthcareplus"; // Default development subdomain
+            subdomain = "demo"; // Default development subdomain
         }
 
         try
         {
             Console.WriteLine($"TenantService: Starting database operations for subdomain: {subdomain}");
-            Console.WriteLine($"TenantService: Context is null: {_context == null}");
-            Console.WriteLine($"TenantService: Context type: {_context?.GetType().Name ?? "null"}");
+            Console.WriteLine($"TenantService: GlobalContext is null: {_globalContext == null}");
             
-            // Test database connection first
-            Console.WriteLine($"TenantService: Testing database connection...");
-            Console.WriteLine($"TenantService: Context type: {_context.GetType().Name}");
-            
-            // Cast to concrete type to access Database property
-            if (_context is ApplicationDbContext dbContext)
-            {
-                Console.WriteLine($"TenantService: Successfully cast to ApplicationDbContext");
-                Console.WriteLine($"TenantService: Database provider: {dbContext.Database.ProviderName}");
-                
-                try
-                {
-                    var canConnect = await dbContext.Database.CanConnectAsync();
-                    Console.WriteLine($"TenantService: Database can connect: {canConnect}");
-                    
-                    if (!canConnect)
-                    {
-                        throw new Exception("Cannot connect to database");
-                    }
-                }
-                catch (Exception dbEx)
-                {
-                    Console.WriteLine($"TenantService: Database connection test failed: {dbEx.GetType().Name} - {dbEx.Message}");
-                    Console.WriteLine($"TenantService: Database connection stack trace: {dbEx.StackTrace}");
-                    throw;
-                }
-            }
-            else
-            {
-                Console.WriteLine($"TenantService: Failed to cast to ApplicationDbContext. Context is: {_context?.GetType().Name ?? "null"}");
-                throw new Exception("Invalid DbContext type");
-            }
-            
-            // Check if Organizations table has any data
-            var totalOrganizations = await _context.Organizations.CountAsync();
-            Console.WriteLine($"TenantService: Total organizations in database: {totalOrganizations}");
-            
-            if (totalOrganizations == 0)
-            {
-                Console.WriteLine($"TenantService: No organizations in database, creating default organization...");
-                
-                // Create default organization for development
-                var defaultOrganization = new ClinicCare.Domain.Entities.Organization
-                {
-                    Name = "Healthcare Plus",
-                    Subdomain = "healthcareplus",
-                    IsActive = true,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                };
-
-                _context.Organizations.Add(defaultOrganization);
-                await _context.SaveChangesAsync();
-                
-                Console.WriteLine($"TenantService: Created default organization with ID: {defaultOrganization.Id}");
-                
-                // Use the default organization if subdomain matches
-                if (subdomain == "healthcareplus")
-                {
-                    _organizationId = defaultOrganization.Id;
-                    _subdomain = subdomain;
-                    return _organizationId.Value;
-                }
-            }
-            
-            var organization = await _context.Organizations
+            // Query organization from Global database
+            var organization = await _globalContext.Organizations
                 .FirstOrDefaultAsync(x => x.Subdomain == subdomain && x.IsActive);
 
             Console.WriteLine($"TenantService: Query result - Organization found: {organization != null}");
@@ -143,7 +79,7 @@ public class TenantService : ITenantService
 
     public async Task<bool> IsValidTenantAsync(string subdomain)
     {
-        return await _context.Organizations
+        return await _globalContext.Organizations
             .AnyAsync(x => x.Subdomain == subdomain && x.IsActive);
     }
 
@@ -155,7 +91,7 @@ public class TenantService : ITenantService
         if (_httpContextAccessor == null)
         {
             Console.WriteLine($"TenantService: HttpContextAccessor is null, returning default subdomain");
-            return "healthcareplus"; // Default development subdomain
+            return "demo"; // Default development subdomain
         }
         
         Console.WriteLine($"TenantService: About to access HttpContext...");
@@ -165,7 +101,7 @@ public class TenantService : ITenantService
         if (httpContext == null)
         {
             Console.WriteLine($"TenantService: HttpContext is null, returning default subdomain");
-            return "healthcareplus"; // Default development subdomain
+            return "demo"; // Default development subdomain
         }
         
         Console.WriteLine($"TenantService: About to access Request...");
@@ -192,7 +128,7 @@ public class TenantService : ITenantService
             host.StartsWith("localhost:", StringComparison.OrdinalIgnoreCase))
         {
             // For localhost, use a default subdomain for development
-            var devSubdomain = "healthcareplus";
+            var devSubdomain = "demo";
             Console.WriteLine($"TenantService: Using development subdomain: {devSubdomain}");
             return devSubdomain; // Default development subdomain
         }

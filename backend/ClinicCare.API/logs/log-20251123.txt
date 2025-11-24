@@ -1,0 +1,574 @@
+2025-11-23 12:06:36.341 +11:00 [INF] Database seeding skipped - databases are pre-seeded via SQL scripts
+2025-11-23 12:06:36.579 +11:00 [INF] Starting ClinicCare API...
+2025-11-23 12:06:36.672 +11:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-23 12:06:38.259 +11:00 [INF] Now listening on: http://localhost:51537
+2025-11-23 12:06:38.283 +11:00 [INF] Now listening on: https://localhost:51536
+2025-11-23 12:06:38.328 +11:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-23 12:06:38.342 +11:00 [INF] Hosting environment: Development
+2025-11-23 12:06:38.365 +11:00 [INF] Content root path: C:\PK\Source\clinic-care\backend\ClinicCare.API
+2025-11-23 12:33:23.865 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-11-23 12:33:24.410 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:33:24.431 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 570.7657ms
+2025-11-23 12:33:24.489 +11:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 49
+2025-11-23 12:33:24.520 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:33:24.634 +11:00 [INF] Executing endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:33:24.679 +11:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-23 12:33:28.409 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:28.415 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId1' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:28.426 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:28.435 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:28.441 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:28.447 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:33:30.908 +11:00 [ERR] An error occurred using the connection to database 'ClinicCare_Global' on server 'localhost'.
+2025-11-23 12:33:30.981 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.GlobalDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Login failed for user 'sa'.
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.CompleteLogin(Boolean enlistOK)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:9d854764-1092-4908-a84b-b9105eea295f
+Error Number:18456,State:1,Class:14
+Microsoft.Data.SqlClient.SqlException (0x80131904): Login failed for user 'sa'.
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.CompleteLogin(Boolean enlistOK)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, DbConnectionPool pool)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.ProviderBase.DbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:9d854764-1092-4908-a84b-b9105eea295f
+Error Number:18456,State:1,Class:14
+2025-11-23 12:33:31.041 +11:00 [INF] Setting HTTP status code 400.
+2025-11-23 12:33:31.052 +11:00 [INF] Writing value of type 'String[]' as Json.
+2025-11-23 12:33:31.070 +11:00 [INF] Executed endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:33:31.111 +11:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 400 null application/json; charset=utf-8 6622.6018ms
+2025-11-23 12:34:28.149 +11:00 [INF] Application is shutting down...
+2025-11-23 12:41:11.404 +11:00 [INF] Database seeding skipped - databases are pre-seeded via SQL scripts
+2025-11-23 12:41:11.480 +11:00 [INF] Starting ClinicCare API...
+2025-11-23 12:41:11.507 +11:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-23 12:41:11.874 +11:00 [INF] Now listening on: http://localhost:51537
+2025-11-23 12:41:12.170 +11:00 [INF] Now listening on: https://localhost:51536
+2025-11-23 12:41:12.198 +11:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-23 12:41:12.203 +11:00 [INF] Hosting environment: Development
+2025-11-23 12:41:12.205 +11:00 [INF] Content root path: C:\PK\Source\clinic-care\backend\ClinicCare.API
+2025-11-23 12:42:00.723 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-11-23 12:42:01.301 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:42:01.322 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 601.4898ms
+2025-11-23 12:42:01.395 +11:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 49
+2025-11-23 12:42:01.423 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:42:01.530 +11:00 [INF] Executing endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:42:01.573 +11:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-23 12:42:05.216 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:05.226 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId1' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:05.237 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:05.244 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:05.249 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:05.256 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:08.021 +11:00 [INF] Executed DbCommand (142ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[Email], [s].[FirstName], [s].[IsActive], [s].[LastLoginAt], [s].[LastName], [s].[PasswordHash], [s].[Phone], [s].[Role], [s].[UpdatedAt]
+FROM [SystemUsers] AS [s]
+WHERE [s].[Email] = @__8__locals1_request_Email_0
+2025-11-23 12:42:08.271 +11:00 [INF] Executed DbCommand (48ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:42:10.097 +11:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserOrganization'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2025-11-23 12:42:10.119 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.127 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId2' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.131 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.136 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.141 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.148 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:42:10.257 +11:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'PaymentTransaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 12:42:10.264 +11:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'SubscriptionPlan'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 12:42:11.058 +11:00 [ERR] Failed executing DbCommand (80ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [dbo].[Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:42:11.125 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'dbo.Organizations'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:73b5c605-55be-4ccf-bdd4-6a4670245038
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'dbo.Organizations'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:73b5c605-55be-4ccf-bdd4-6a4670245038
+Error Number:208,State:1,Class:16
+2025-11-23 12:42:11.260 +11:00 [ERR] Failed executing DbCommand (6ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+INNER JOIN [dbo].[Organizations] AS [o] ON [u].[OrganizationId] = [o].[Id]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:42:11.275 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'dbo.Organizations'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:73b5c605-55be-4ccf-bdd4-6a4670245038
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'dbo.Organizations'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:73b5c605-55be-4ccf-bdd4-6a4670245038
+Error Number:208,State:1,Class:16
+2025-11-23 12:42:11.314 +11:00 [INF] Setting HTTP status code 400.
+2025-11-23 12:42:11.330 +11:00 [INF] Writing value of type 'String[]' as Json.
+2025-11-23 12:42:11.350 +11:00 [INF] Executed endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:42:11.384 +11:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 400 null application/json; charset=utf-8 9988.4264ms
+2025-11-23 12:44:59.258 +11:00 [INF] Application is shutting down...
+2025-11-23 12:45:11.554 +11:00 [INF] Database seeding skipped - databases are pre-seeded via SQL scripts
+2025-11-23 12:45:11.605 +11:00 [INF] Starting ClinicCare API...
+2025-11-23 12:45:11.622 +11:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-23 12:45:11.991 +11:00 [INF] Now listening on: http://localhost:51537
+2025-11-23 12:45:11.992 +11:00 [INF] Now listening on: https://localhost:51536
+2025-11-23 12:45:11.995 +11:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-23 12:45:11.997 +11:00 [INF] Hosting environment: Development
+2025-11-23 12:45:11.998 +11:00 [INF] Content root path: C:\PK\Source\clinic-care\backend\ClinicCare.API
+2025-11-23 12:45:33.096 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-11-23 12:45:33.415 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:45:33.432 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 336.1389ms
+2025-11-23 12:45:33.469 +11:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 49
+2025-11-23 12:45:33.493 +11:00 [INF] CORS policy execution successful.
+2025-11-23 12:45:33.548 +11:00 [INF] Executing endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:45:33.580 +11:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-23 12:45:35.235 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:35.239 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId1' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:35.245 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:35.247 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:35.250 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:35.256 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:36.338 +11:00 [INF] Executed DbCommand (55ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[Email], [s].[FirstName], [s].[IsActive], [s].[LastLoginAt], [s].[LastName], [s].[PasswordHash], [s].[Phone], [s].[Role], [s].[UpdatedAt]
+FROM [SystemUsers] AS [s]
+WHERE [s].[Email] = @__8__locals1_request_Email_0
+2025-11-23 12:45:36.443 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:45:37.200 +11:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserOrganization'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2025-11-23 12:45:37.211 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.213 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId2' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.215 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.216 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.222 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.224 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 12:45:37.258 +11:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'PaymentTransaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 12:45:37.260 +11:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'SubscriptionPlan'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 12:45:37.526 +11:00 [ERR] Failed executing DbCommand (12ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:45:37.557 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'RefreshToken'.
+Invalid column name 'RefreshTokenExpiryTime'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eadd5f63-d66a-49cc-acf8-efdc54597e67
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'RefreshToken'.
+Invalid column name 'RefreshTokenExpiryTime'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eadd5f63-d66a-49cc-acf8-efdc54597e67
+Error Number:207,State:1,Class:16
+2025-11-23 12:45:37.613 +11:00 [ERR] Failed executing DbCommand (2ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 12:45:37.621 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'RefreshToken'.
+Invalid column name 'RefreshTokenExpiryTime'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eadd5f63-d66a-49cc-acf8-efdc54597e67
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'OrganizationId'.
+Invalid column name 'RefreshToken'.
+Invalid column name 'RefreshTokenExpiryTime'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eadd5f63-d66a-49cc-acf8-efdc54597e67
+Error Number:207,State:1,Class:16
+2025-11-23 12:45:37.638 +11:00 [INF] Setting HTTP status code 400.
+2025-11-23 12:45:37.649 +11:00 [INF] Writing value of type 'String[]' as Json.
+2025-11-23 12:45:37.662 +11:00 [INF] Executed endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 12:45:37.689 +11:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 400 null application/json; charset=utf-8 4220.2701ms
+2025-11-23 13:11:59.714 +11:00 [INF] Application is shutting down...
+2025-11-23 13:12:21.716 +11:00 [INF] Database seeding skipped - databases are pre-seeded via SQL scripts
+2025-11-23 13:12:21.776 +11:00 [INF] Starting ClinicCare API...
+2025-11-23 13:12:21.798 +11:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-23 13:12:22.078 +11:00 [INF] Now listening on: http://localhost:51537
+2025-11-23 13:12:22.079 +11:00 [INF] Now listening on: https://localhost:51536
+2025-11-23 13:12:22.083 +11:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-23 13:12:22.084 +11:00 [INF] Hosting environment: Development
+2025-11-23 13:12:22.085 +11:00 [INF] Content root path: C:\PK\Source\clinic-care\backend\ClinicCare.API
+2025-11-23 13:12:43.540 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-11-23 13:12:43.801 +11:00 [INF] CORS policy execution successful.
+2025-11-23 13:12:43.811 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 276.3759ms
+2025-11-23 13:12:43.851 +11:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 49
+2025-11-23 13:12:43.863 +11:00 [INF] CORS policy execution successful.
+2025-11-23 13:12:43.911 +11:00 [INF] Executing endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 13:12:43.934 +11:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-23 13:12:45.424 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:45.428 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId1' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:45.432 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:45.434 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:45.440 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:45.442 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:46.508 +11:00 [INF] Executed DbCommand (63ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[Email], [s].[FirstName], [s].[IsActive], [s].[LastLoginAt], [s].[LastName], [s].[PasswordHash], [s].[Phone], [s].[Role], [s].[UpdatedAt]
+FROM [SystemUsers] AS [s]
+WHERE [s].[Email] = @__8__locals1_request_Email_0
+2025-11-23 13:12:46.597 +11:00 [INF] Executed DbCommand (9ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-11-23 13:12:47.308 +11:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserOrganization'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2025-11-23 13:12:47.319 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.321 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId2' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.323 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.330 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.332 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.333 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:12:47.365 +11:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'PaymentTransaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 13:12:47.367 +11:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'SubscriptionPlan'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 13:12:47.616 +11:00 [ERR] Failed executing DbCommand (12ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 13:12:47.640 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:3cb370b0-2e92-48c1-8897-7f22aa030dca
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:3cb370b0-2e92-48c1-8897-7f22aa030dca
+Error Number:207,State:1,Class:16
+2025-11-23 13:12:47.689 +11:00 [ERR] Failed executing DbCommand (1ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 13:12:47.696 +11:00 [ERR] An exception occurred while iterating over the results of a query for context type 'ClinicCare.Infrastructure.Data.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:3cb370b0-2e92-48c1-8897-7f22aa030dca
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'IsActive'.
+Invalid column name 'OrganizationId'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:3cb370b0-2e92-48c1-8897-7f22aa030dca
+Error Number:207,State:1,Class:16
+2025-11-23 13:12:47.711 +11:00 [INF] Setting HTTP status code 400.
+2025-11-23 13:12:47.723 +11:00 [INF] Writing value of type 'String[]' as Json.
+2025-11-23 13:12:47.733 +11:00 [INF] Executed endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 13:12:47.751 +11:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 400 null application/json; charset=utf-8 3899.4675ms
+2025-11-23 13:22:53.895 +11:00 [INF] Application is shutting down...
+2025-11-23 13:23:06.963 +11:00 [INF] Database seeding skipped - databases are pre-seeded via SQL scripts
+2025-11-23 13:23:07.005 +11:00 [INF] Starting ClinicCare API...
+2025-11-23 13:23:07.024 +11:00 [INF] User profile is available. Using 'C:\Users\windows\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-11-23 13:23:07.247 +11:00 [INF] Now listening on: http://localhost:51537
+2025-11-23 13:23:07.248 +11:00 [INF] Now listening on: https://localhost:51536
+2025-11-23 13:23:07.251 +11:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-11-23 13:23:07.252 +11:00 [INF] Hosting environment: Development
+2025-11-23 13:23:07.253 +11:00 [INF] Content root path: C:\PK\Source\clinic-care\backend\ClinicCare.API
+2025-11-23 13:23:17.853 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - null null
+2025-11-23 13:23:18.106 +11:00 [INF] CORS policy execution successful.
+2025-11-23 13:23:18.120 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:51537/api/auth/login - 204 null null 266.3942ms
+2025-11-23 13:23:18.153 +11:00 [INF] Request starting HTTP/1.1 POST http://localhost:51537/api/auth/login - application/json 49
+2025-11-23 13:23:18.175 +11:00 [INF] CORS policy execution successful.
+2025-11-23 13:23:18.223 +11:00 [INF] Executing endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 13:23:18.252 +11:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2025-11-23 13:23:19.802 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:19.809 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId1' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:19.813 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:19.818 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:19.822 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:19.823 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:20.874 +11:00 [INF] Executed DbCommand (63ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[Email], [s].[FirstName], [s].[IsActive], [s].[LastLoginAt], [s].[LastName], [s].[PasswordHash], [s].[Phone], [s].[Role], [s].[UpdatedAt]
+FROM [SystemUsers] AS [s]
+WHERE [s].[Email] = @__8__locals1_request_Email_0
+2025-11-23 13:23:20.976 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-11-23 13:23:21.740 +11:00 [WRN] Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserOrganization'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2025-11-23 13:23:21.752 +11:00 [WRN] The foreign key property 'ClinicMedicine.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.754 +11:00 [WRN] The foreign key property 'Consultation.AppointmentId2' was created in shadow state because a conflicting property with the simple name 'AppointmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.756 +11:00 [WRN] The foreign key property 'Consultation.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.763 +11:00 [WRN] The foreign key property 'Inventory.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.765 +11:00 [WRN] The foreign key property 'Invoice.ClinicId1' was created in shadow state because a conflicting property with the simple name 'ClinicId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.767 +11:00 [WRN] The foreign key property 'Invoice.PatientId1' was created in shadow state because a conflicting property with the simple name 'PatientId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-11-23 13:23:21.809 +11:00 [WRN] No store type was specified for the decimal property 'Amount' on entity type 'PaymentTransaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 13:23:21.812 +11:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'SubscriptionPlan'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-11-23 13:23:22.106 +11:00 [INF] Executed DbCommand (38ms) [Parameters=[@__8__locals1_request_Email_0='?' (Size = 255), @__organizationId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt], [d0].[Id], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId]
+FROM [Users] AS [u]
+LEFT JOIN (
+    SELECT [d].[Id], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [u].[Id] = [d0].[UserId]
+WHERE [u].[Email] = @__8__locals1_request_Email_0 AND [u].[OrganizationId] = @__organizationId_1 AND [u].[IsActive] = CAST(1 AS bit)
+2025-11-23 13:23:22.183 +11:00 [INF] Setting HTTP status code 400.
+2025-11-23 13:23:22.189 +11:00 [INF] Writing value of type 'String[]' as Json.
+2025-11-23 13:23:22.198 +11:00 [INF] Executed endpoint 'HTTP: POST /api/auth/login'
+2025-11-23 13:23:22.215 +11:00 [INF] Request finished HTTP/1.1 POST http://localhost:51537/api/auth/login - 400 null application/json; charset=utf-8 4060.045ms
+2025-11-23 13:28:28.618 +11:00 [INF] Application is shutting down...

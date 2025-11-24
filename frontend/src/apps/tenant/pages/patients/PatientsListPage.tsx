@@ -21,10 +21,10 @@ import {
   ReloadOutlined,
   FilterOutlined
 } from '@ant-design/icons'
-import { usePatients, useDeletePatient } from '../../hooks/queries/usePatients'
+import { usePatients, useDeletePatient } from '@core/hooks/queries/usePatients'
 import { useNavigate } from 'react-router-dom'
-import type { Patient, PatientFilters } from '../../types/patient'
-import { GENDER_OPTIONS, BLOOD_GROUP_OPTIONS } from '../../types/patient'
+import type { Patient, PatientFilters } from '@core/types/patient'
+import { GENDER_OPTIONS, BLOOD_GROUP_OPTIONS } from '@core/types/patient'
 import dayjs from 'dayjs'
 
 const { Title } = Typography

@@ -2,6 +2,7 @@ using MediatR;
 using AutoMapper;
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Domain.Modules.Appointments.Entities;
 using ClinicCare.Domain.Modules.Appointments.ValueObjects;
 using ClinicCare.Domain.Enums;
@@ -16,13 +17,23 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
+        private readonly ITokenNumberService _tokenNumberService;
+        private readonly IQueueNotificationService _queueNotificationService;
 
-        public CreateAppointmentHandler(IApplicationDbContext context, IAppointmentRepository appointmentRepository, ICurrentUserService currentUserService, IMapper mapper)
+        public CreateAppointmentHandler(
+            IApplicationDbContext context, 
+            IAppointmentRepository appointmentRepository, 
+            ICurrentUserService currentUserService, 
+            IMapper mapper,
+            ITokenNumberService tokenNumberService,
+            IQueueNotificationService queueNotificationService)
         {
             _context = context;
             _appointmentRepository = appointmentRepository;
             _currentUserService = currentUserService;
             _mapper = mapper;
+            _tokenNumberService = tokenNumberService;
+            _queueNotificationService = queueNotificationService;
         }
 
         public async Task<Result<AppointmentDto>> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
@@ -34,10 +45,29 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
                 if (!validationResult.Succeeded)
                     return Result<AppointmentDto>.Failure(validationResult.Errors);
 
-                // 2. Create domain entity using AutoMapper
+                // 2. Auto-generate token number if not provided
+                var tokenNumber = request.TokenNumber ?? 
+                    await _tokenNumberService.GetNextTokenNumberAsync(
+                        request.DoctorId, 
+                        request.ClinicId, 
+                        request.AppointmentDate, 
+                        cancellationToken);
+
+                // 3. Create domain entity using Appointment.Create (since TokenNumber has private setter)
                 var organizationId = _currentUserService.OrganizationId ?? throw new UnauthorizedAccessException("User not associated with any organization");
-                var appointment = _mapper.Map<Appointment>(request);
-                appointment.OrganizationId = organizationId;
+                var appointmentDate = AppointmentDate.Create(request.AppointmentDate);
+                var appointmentType = (AppointmentType)request.Type;
+                
+                var appointment = Appointment.Create(
+                    organizationId,
+                    request.ClinicId,
+                    request.DoctorId,
+                    request.PatientId,
+                    appointmentDate,
+                    tokenNumber,
+                    appointmentType,
+                    request.Notes ?? string.Empty
+                );
 
                 // 3. Save to database using repository
                 await _appointmentRepository.AddAsync(appointment, cancellationToken);
@@ -45,7 +75,14 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
                 // 4. Load related data for response using repository
                 var appointmentWithDetails = await _appointmentRepository.GetByIdWithDetailsAsync(appointment.Id, cancellationToken);
 
-                // 5. Return DTO using AutoMapper
+                // 5. Broadcast queue update via SignalR
+                await _queueNotificationService.BroadcastQueueUpdateAsync(
+                    organizationId,
+                    request.ClinicId,
+                    request.DoctorId,
+                    cancellationToken);
+
+                // 6. Return DTO using AutoMapper
                 var dto = _mapper.Map<ClinicCare.Application.Features.Appointments.Queries.GetAppointments.AppointmentDto>(appointmentWithDetails);
                 return Result<AppointmentDto>.Success(new AppointmentDto
                 {
@@ -92,17 +129,21 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
             if (!clinicExists)
                 return Result<bool>.Failure(new[] { "Clinic not found" });
 
-            // Check for conflicting appointments using repository
-            var hasConflict = await _appointmentRepository.HasConflictingAppointmentAsync(
-                request.DoctorId, 
-                request.ClinicId, 
-                request.AppointmentDate, 
-                request.TokenNumber, 
-                null, 
-                cancellationToken);
+            // Note: Token number conflict check is not needed since we auto-generate sequential tokens
+            // If token number is provided manually, we still validate it
+            if (request.TokenNumber.HasValue)
+            {
+                var hasConflict = await _appointmentRepository.HasConflictingAppointmentAsync(
+                    request.DoctorId, 
+                    request.ClinicId, 
+                    request.AppointmentDate, 
+                    request.TokenNumber.Value, 
+                    null, 
+                    cancellationToken);
 
-            if (hasConflict)
-                return Result<bool>.Failure(new[] { "Appointment slot is already taken" });
+                if (hasConflict)
+                    return Result<bool>.Failure(new[] { "Token number is already taken for this doctor on this date" });
+            }
 
             return Result<bool>.Success(true);
         }

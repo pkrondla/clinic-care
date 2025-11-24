@@ -44,6 +44,8 @@ export interface Appointment {
   type: AppointmentType
   status: AppointmentStatus
   notes?: string
+  createdAt: string
+  updatedAt?: string
   doctor: Doctor
   patient: AppointmentPatient
   clinic: {

@@ -3,10 +3,12 @@ export enum UserRole {
   SuperAdmin = 'SuperAdmin',
   SystemAdmin = 'SystemAdmin',
   
-  // Tenant roles
+  // Tenant roles (aliases for compatibility)
+  Admin = 'OrganizationAdmin',
   OrganizationAdmin = 'OrganizationAdmin',
   Doctor = 'Doctor',
   Reception = 'Reception',
+  Staff = 'Reception', // Staff is an alias for Reception
   Pharmacy = 'Pharmacy',
   Patient = 'Patient'
 }

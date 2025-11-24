@@ -15,7 +15,7 @@ export const appointmentKeys = {
   list: (filters: AppointmentFilters) => [...appointmentKeys.lists(), filters] as const,
   details: () => [...appointmentKeys.all, 'detail'] as const,
   detail: (id: number) => [...appointmentKeys.details(), id] as const,
-  queue: (doctorId: number, clinicId: number, date?: string) => 
+  queue: (doctorId?: number, clinicId?: number, date?: string) => 
     [...appointmentKeys.all, 'queue', doctorId, clinicId, date] as const,
   patient: (patientId: number) => [...appointmentKeys.all, 'patient', patientId] as const,
   doctor: (doctorId: number, startDate: string, endDate: string) => 
@@ -23,6 +23,22 @@ export const appointmentKeys = {
   today: (clinicId: number) => [...appointmentKeys.all, 'today', clinicId] as const,
   stats: (clinicId?: number, doctorId?: number) => 
     [...appointmentKeys.all, 'stats', clinicId, doctorId] as const
+}
+
+// Get appointment queue for a doctor
+export const useAppointmentQueue = (doctorId?: number, clinicId?: number, date?: string) => {
+  return useQuery({
+    queryKey: appointmentKeys.queue(doctorId, clinicId, date),
+    queryFn: async () => {
+      if (!doctorId || !clinicId) {
+        return []
+      }
+      // This would call appointmentService.getQueue(doctorId, clinicId, date)
+      // For now, return empty array
+      return []
+    },
+    enabled: !!doctorId && !!clinicId
+  })
 }
 
 // Get appointments with filters

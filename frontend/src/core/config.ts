@@ -1,5 +1,7 @@
 // API Configuration
-export const API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
+// Note: This file is deprecated - use config/index.ts instead
+// Keeping for backward compatibility
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:51537/api'
 export const API_TIMEOUT = 30000 // 30 seconds
 
 // Authentication
@@ -8,8 +10,8 @@ export const REFRESH_TOKEN_KEY = 'refresh_token'
 export const TOKEN_EXPIRY_KEY = 'token_expiry'
 
 // Feature Flags
-export const ENABLE_NOTIFICATIONS = process.env.VITE_ENABLE_NOTIFICATIONS === 'true'
-export const ENABLE_SIGNALR = process.env.VITE_ENABLE_SIGNALR === 'true'
+export const ENABLE_NOTIFICATIONS = import.meta.env.VITE_ENABLE_NOTIFICATIONS === 'true'
+export const ENABLE_SIGNALR = import.meta.env.VITE_ENABLE_SIGNALR === 'true'
 
 // SignalR Hub URLs
 export const QUEUE_HUB_URL = `${API_BASE_URL}/queueHub`

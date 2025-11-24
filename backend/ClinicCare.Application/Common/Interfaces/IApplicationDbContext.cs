@@ -13,6 +13,7 @@ public interface IApplicationDbContext
     DbSet<Clinic> Clinics { get; }
     DbSet<User> Users { get; }
     DbSet<UserOrganization> UserOrganizations { get; }
+    DbSet<UserClinicAccess> UserClinicAccess { get; }
     DbSet<DoctorProfile> DoctorProfiles { get; }
     DbSet<DoctorAvailability> DoctorAvailabilities { get; }
     DbSet<Patient> Patients { get; }

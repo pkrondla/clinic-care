@@ -1,4 +1,5 @@
 using ClinicCare.Application.Common.Interfaces;
+using ClinicCare.Application.Common.Interfaces.Global;
 using ClinicCare.Application.Common.Models;
 using ClinicCare.Domain.Enums;
 using MediatR;
@@ -52,17 +53,20 @@ public class ClinicInfo
 public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IGlobalDbContext _globalContext;
     private readonly ITenantService _tenantService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
 
     public LoginCommandHandler(
         IApplicationDbContext context,
+        IGlobalDbContext globalContext,
         ITenantService tenantService,
         IPasswordHasher passwordHasher,
         ITokenService tokenService)
     {
         _context = context;
+        _globalContext = globalContext;
         _tenantService = tenantService;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
@@ -72,8 +76,61 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
     {
         try
         {
-            // For login, we need to resolve tenant from the request context
-            // This is different from other endpoints that rely on middleware
+            // First, check Global SystemUsers for superadmin login
+            var systemUser = await _globalContext.SystemUsers
+                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+
+            if (systemUser != null)
+            {
+                // Verify password
+                if (!_passwordHasher.VerifyPassword(request.Password, systemUser.PasswordHash))
+                {
+                    return Result<LoginResponse>.Failure("Invalid email or password");
+                }
+
+                // Update last login
+                systemUser.LastLoginAt = DateTime.UtcNow;
+                await _globalContext.SaveChangesAsync(cancellationToken);
+
+                // Generate tokens for system user
+                // Create a temporary User-like object for token generation
+                var tempUser = new Domain.Entities.User
+                {
+                    Id = systemUser.Id,
+                    Email = systemUser.Email,
+                    FirstName = systemUser.FirstName,
+                    LastName = systemUser.LastName,
+                    Role = (UserRole)systemUser.Role, // Convert int to UserRole enum
+                    OrganizationId = 0 // System users don't belong to an organization
+                };
+
+                var (systemAccessToken, systemRefreshToken, systemExpiresAt) = await _tokenService.GenerateTokensAsync(tempUser, null);
+
+                var systemResponse = new LoginResponse
+                {
+                    AccessToken = systemAccessToken,
+                    RefreshToken = systemRefreshToken,
+                    ExpiresAt = systemExpiresAt,
+                    User = new UserInfo
+                    {
+                        Id = systemUser.Id,
+                        Email = systemUser.Email,
+                        FirstName = systemUser.FirstName,
+                        LastName = systemUser.LastName,
+                        FullName = systemUser.FullName,
+                        Role = (UserRole)systemUser.Role,
+                        OrganizationId = 0,
+                        OrganizationName = "System",
+                        SelectedClinicId = null,
+                        SelectedClinicName = null
+                    },
+                    AvailableClinics = new List<ClinicInfo>() // System users don't have clinics
+                };
+
+                return Result<LoginResponse>.Success(systemResponse);
+            }
+
+            // If not a system user, check tenant users
             int organizationId;
             Domain.Entities.User user;
             
@@ -82,17 +139,17 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
                 organizationId = await _tenantService.GetOrganizationIdAsync();
                 
                 // Find user by email within the tenant
+                // Note: Don't include Organization - it's in Global DB, not tenant DB
                 user = await _context.Users
-                    .Include(x => x.Organization)
                     .Include(x => x.DoctorProfile)
                     .FirstOrDefaultAsync(x => x.Email == request.Email && x.OrganizationId == organizationId && x.IsActive, cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
                 // If tenant resolution fails, try to find user by email across all organizations
                 // This allows login to work even if tenant resolution fails
+                // Note: Don't include Organization - it's in Global DB, not tenant DB
                 user = await _context.Users
-                    .Include(x => x.Organization)
                     .Include(x => x.DoctorProfile)
                     .FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive, cancellationToken);
 
@@ -118,7 +175,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
             // Get available clinics for the user
             var availableClinics = await GetAvailableClinicsAsync(user.Id, organizationId, cancellationToken);
 
-            // Validate selected clinic if provided
+            // Determine selected clinic:
+            // 1. Use request.ClinicId if provided and valid
+            // 2. Use user's SelectedClinicId if it's in available clinics
+            // 3. Auto-select if only one clinic available
+            // 4. Otherwise, leave null (user must select)
             int? selectedClinicId = null;
             string? selectedClinicName = null;
             
@@ -131,6 +192,32 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
                     selectedClinicName = selectedClinic.Name;
                 }
             }
+            else if (user.SelectedClinicId.HasValue)
+            {
+                // Check if user's saved clinic is still available
+                var savedClinic = availableClinics.FirstOrDefault(x => x.Id == user.SelectedClinicId.Value);
+                if (savedClinic != null)
+                {
+                    selectedClinicId = savedClinic.Id;
+                    selectedClinicName = savedClinic.Name;
+                }
+            }
+            
+            // Auto-select if only one clinic available
+            if (!selectedClinicId.HasValue && availableClinics.Count == 1)
+            {
+                selectedClinicId = availableClinics[0].Id;
+                selectedClinicName = availableClinics[0].Name;
+                
+                // Update user's selected clinic in database
+                user.SelectedClinicId = selectedClinicId;
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
+            // Get organization name from Global database (Organization is not in tenant DB)
+            var organization = await _globalContext.Organizations
+                .FirstOrDefaultAsync(x => x.Id == organizationId, cancellationToken);
+            var organizationName = organization?.Name ?? "Unknown Organization";
 
             // Generate tokens
             var (accessToken, refreshToken, expiresAt) = await _tokenService.GenerateTokensAsync(user, selectedClinicId);
@@ -149,7 +236,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
                     FullName = user.FullName,
                     Role = user.Role,
                     OrganizationId = user.OrganizationId,
-                    OrganizationName = user.Organization.Name,
+                    OrganizationName = organizationName,
                     SelectedClinicId = selectedClinicId,
                     SelectedClinicName = selectedClinicName
                 },
@@ -170,26 +257,61 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
     private async Task<List<ClinicInfo>> GetAvailableClinicsAsync(int userId, int organizationId, CancellationToken cancellationToken)
     {
-        var query = _context.Clinics
-            .Where(x => x.OrganizationId == organizationId && x.IsActive);
+        // Check if user has explicit clinic access mappings via UserClinicAccess
+        var hasExplicitAccess = await _context.UserClinicAccess
+            .AnyAsync(x => x.UserId == userId && x.CanAccess && x.IsActive, cancellationToken);
 
-        // For doctors, only show clinics they have availability for
+        // If user has explicit clinic access mappings, use those
+        if (hasExplicitAccess)
+        {
+            // Use a join instead of Contains to avoid OPENJSON issues with SQL Server
+            return await (from clinic in _context.Clinics
+                         join access in _context.UserClinicAccess
+                             on clinic.Id equals access.ClinicId
+                         where access.UserId == userId 
+                             && access.CanAccess 
+                             && access.IsActive
+                             && clinic.OrganizationId == organizationId 
+                             && clinic.IsActive
+                         select new ClinicInfo
+                         {
+                             Id = clinic.Id,
+                             Name = clinic.Name,
+                             Code = clinic.Code
+                         })
+                         .Distinct()
+                         .ToListAsync(cancellationToken);
+        }
+
+        // Fallback: For doctors, show clinics they have availability for
+        // For other roles, show all active clinics in the organization
         var user = await _context.Users
             .Include(x => x.DoctorProfile)
             .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
 
         if (user?.Role == UserRole.Doctor && user.DoctorProfile != null)
         {
-            var doctorClinicIds = await _context.DoctorAvailabilities
-                .Where(x => x.DoctorId == user.DoctorProfile.Id && x.AvailableDate >= DateOnly.FromDateTime(DateTime.Today))
-                .Select(x => x.ClinicId)
-                .Distinct()
-                .ToListAsync(cancellationToken);
-
-            query = query.Where(x => doctorClinicIds.Contains(x.Id));
+            // Use a join instead of Contains to avoid OPENJSON issues
+            return await (from clinic in _context.Clinics
+                         join availability in _context.DoctorAvailabilities
+                             on clinic.Id equals availability.ClinicId
+                         where availability.DoctorId == user.DoctorProfile.Id
+                             && availability.AvailableDate >= DateOnly.FromDateTime(DateTime.Today)
+                             && clinic.OrganizationId == organizationId
+                             && clinic.IsActive
+                         select new ClinicInfo
+                         {
+                             Id = clinic.Id,
+                             Name = clinic.Name,
+                             Code = clinic.Code
+                         })
+                         .Distinct()
+                         .ToListAsync(cancellationToken);
         }
 
-        return await query
+        // Default: Return all active clinics in the organization
+        return await _context.Clinics
+            .Where(x => x.OrganizationId == organizationId && x.IsActive)
             .Select(x => new ClinicInfo
             {
                 Id = x.Id,

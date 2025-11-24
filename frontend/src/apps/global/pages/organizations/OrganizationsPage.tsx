@@ -1,134 +1,121 @@
 import { useState } from 'react'
-import { 
-  Card, 
-  Table, 
-  Button, 
-  Input, 
-  Space, 
-  Tag, 
-  Typography, 
-  Row, 
-  Col, 
-  Tooltip,
-  Popconfirm,
-  Modal,
-  Form,
-  Select,
-  message
-} from 'antd'
-import { 
-  PlusOutlined, 
-  EditOutlined, 
-  DeleteOutlined, 
-  GlobalOutlined,
-  ReloadOutlined
-} from '@ant-design/icons'
-import { globalApi } from '../../../../services/globalApi'
+import { Button, Table, Tag, Space, Input, Modal, Form, message } from 'antd'
+import { PlusOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { Organization, CreateOrganizationDto, SubscriptionPlan } from '../../../../types/organization'
+import { organizationService, type Organization, type CreateOrganizationRequest } from '@core/services/organizationService'
 import dayjs from 'dayjs'
-
-const { Title } = Typography
-const { Search } = Input
 
 export const OrganizationsPage = () => {
   const [searchText, setSearchText] = useState('')
-  const [modalVisible, setModalVisible] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null)
   const [form] = Form.useForm()
   const queryClient = useQueryClient()
 
-  // Get organizations
-  const { data: orgsData, isLoading, refetch } = useQuery<Organization[]>({
+  const { data: organizations, isLoading } = useQuery({
     queryKey: ['organizations'],
-    queryFn: async () => {
-      const response = await globalApi.organizations.getAll()
-      return response.data
-    }
+    queryFn: organizationService.getAll
   })
 
-  // Get subscription plans
-  const { data: subscriptionPlans } = useQuery<SubscriptionPlan[]>({
-    queryKey: ['subscription-plans'],
-    queryFn: async () => {
-      const response = await globalApi.subscriptions.getAll()
-      return response.data
-    }
-  })
-
-  // Create organization mutation
   const createMutation = useMutation({
-    mutationFn: (data: CreateOrganizationDto) => globalApi.organizations.create(data),
+    mutationFn: organizationService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['organizations'] })
       message.success('Organization created successfully')
-      setModalVisible(false)
+      queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      setIsModalOpen(false)
       form.resetFields()
     },
-    onError: (error: Error) => {
-      message.error(error.message || 'Failed to create organization')
+    onError: () => {
+      message.error('Failed to create organization')
     }
   })
 
-  // Delete organization mutation
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => globalApi.organizations.delete(id),
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: any }) => 
+      organizationService.update(id, data),
     onSuccess: () => {
+      message.success('Organization updated successfully')
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
-      message.success('Organization deleted successfully')
+      setIsModalOpen(false)
+      setEditingOrg(null)
+      form.resetFields()
     },
-    onError: (error: Error) => {
-      message.error(error.message || 'Failed to delete organization')
+    onError: () => {
+      message.error('Failed to update organization')
     }
   })
 
-  const handleSearch = (value: string) => {
-    setSearchText(value)
+  const handleCreate = () => {
+    setEditingOrg(null)
+    form.resetFields()
+    setIsModalOpen(true)
   }
 
-  const handleCreate = async (values: CreateOrganizationDto) => {
-    await createMutation.mutateAsync(values)
+  const handleEdit = (org: Organization) => {
+    setEditingOrg(org)
+    form.setFieldsValue(org)
+    setIsModalOpen(true)
   }
 
-  const handleDelete = async (id: string) => {
-    await deleteMutation.mutateAsync(id)
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields()
+      
+      if (editingOrg) {
+        updateMutation.mutate({ id: editingOrg.id, data: values })
+      } else {
+        createMutation.mutate({ ...values, createDatabase: true })
+      }
+    } catch (error) {
+      console.error('Validation failed:', error)
+    }
   }
+
+  const filteredOrganizations = organizations?.filter(org =>
+    org.name.toLowerCase().includes(searchText.toLowerCase()) ||
+    org.subdomain.toLowerCase().includes(searchText.toLowerCase()) ||
+    org.contactEmail.toLowerCase().includes(searchText.toLowerCase())
+  )
 
   const columns = [
     {
-      title: 'Organization',
+      title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (name: string, record: Organization) => (
-        <div>
-          <div style={{ fontWeight: 500 }}>{name}</div>
-          <div style={{ fontSize: 12, color: '#666' }}>
-            <GlobalOutlined style={{ marginRight: 8 }} />
-            {record.subdomain}.yourapp.com
-          </div>
-        </div>
+      sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name)
+    },
+    {
+      title: 'Subdomain',
+      dataIndex: 'subdomain',
+      key: 'subdomain',
+      render: (subdomain: string) => (
+        <Tag color="blue">{subdomain}.cliniccare.com</Tag>
       )
     },
     {
-      title: 'Contact',
-      key: 'contact',
-      render: (record: Organization) => (
-        <div>
-          <div>{record.contactEmail}</div>
-          <div style={{ fontSize: 12, color: '#666' }}>{record.contactPhone}</div>
-        </div>
-      )
+      title: 'Contact Email',
+      dataIndex: 'contactEmail',
+      key: 'contactEmail'
     },
     {
       title: 'Subscription',
-      dataIndex: ['subscription', 'name'],
-      key: 'subscription',
-      render: (plan: string) => <Tag color="blue">{plan}</Tag>
+      dataIndex: 'subscriptionStatus',
+      key: 'subscriptionStatus',
+      render: (status: string) => {
+        const color = status === 'Trial' ? 'orange' : status === 'Active' ? 'green' : 'red'
+        return <Tag color={color}>{status}</Tag>
+      }
+    },
+    {
+      title: 'Trial End Date',
+      dataIndex: 'trialEndDate',
+      key: 'trialEndDate',
+      render: (date: string) => date ? dayjs(date).format('MMM DD, YYYY') : '-'
     },
     {
       title: 'Status',
       dataIndex: 'isActive',
-      key: 'status',
+      key: 'isActive',
       render: (isActive: boolean) => (
         <Tag color={isActive ? 'green' : 'red'}>
           {isActive ? 'Active' : 'Inactive'}
@@ -144,168 +131,137 @@ export const OrganizationsPage = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 120,
-      render: (record: Organization) => (
-        <Space size="small">
-          <Tooltip title="Edit">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
-              onClick={() => {
-                setEditingOrg(record)
-                setModalVisible(true)
-              }}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Delete Organization"
-              description="Are you sure? This will delete all associated data."
-              onConfirm={() => handleDelete(record.id.toString())}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                type="text"
-                danger
-                icon={<DeleteOutlined />}
-                loading={deleteMutation.isPending}
-              />
-            </Popconfirm>
-          </Tooltip>
+      render: (_: any, record: Organization) => (
+        <Space>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+          >
+            Edit
+          </Button>
         </Space>
       )
     }
   ]
 
-  const filteredOrgs = (orgsData || []).filter(org =>
-    org.name.toLowerCase().includes(searchText.toLowerCase()) ||
-    org.subdomain.toLowerCase().includes(searchText.toLowerCase())
-  )
-  
   return (
-    <div>
-      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={2} style={{ margin: 0 }}>Organizations</Title>
+    <div style={{ padding: '24px' }}>
+      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600 }}>Organizations</h1>
+          <p style={{ margin: '8px 0 0 0', color: '#666' }}>
+            Manage clinic organizations and their subscriptions
+          </p>
+        </div>
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={() => {
-            setEditingOrg(null)
-            setModalVisible(true)
-          }}
+          onClick={handleCreate}
+          size="large"
         >
-          Add Organization
+          Create Organization
         </Button>
       </div>
 
-      <Card>
-        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-          <Col flex="1">
-            <Search
-              placeholder="Search organizations..."
-              allowClear
-              onSearch={handleSearch}
-              style={{ width: '100%' }}
-            />
-          </Col>
-          <Col>
-            <Button
-              icon={<ReloadOutlined />}
-              onClick={() => refetch()}
-              loading={isLoading}
-            >
-              Refresh
-            </Button>
-          </Col>
-        </Row>
-
-        <Table
-          columns={columns}
-          dataSource={filteredOrgs}
-          rowKey="id"
-          loading={isLoading}
+      <div style={{ marginBottom: '16px' }}>
+        <Input
+          placeholder="Search by name, subdomain, or email..."
+          prefix={<SearchOutlined />}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ maxWidth: '400px' }}
+          size="large"
         />
-      </Card>
+      </div>
+
+      <Table
+        columns={columns}
+        dataSource={filteredOrganizations}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showTotal: (total) => `Total ${total} organizations`
+        }}
+      />
 
       <Modal
-        title={editingOrg ? 'Edit Organization' : 'Add Organization'}
-        open={modalVisible}
+        title={editingOrg ? 'Edit Organization' : 'Create New Organization'}
+        open={isModalOpen}
+        onOk={handleSubmit}
         onCancel={() => {
-          setModalVisible(false)
-          form.resetFields()
+          setIsModalOpen(false)
           setEditingOrg(null)
+          form.resetFields()
         }}
-        footer={null}
+        confirmLoading={createMutation.isPending || updateMutation.isPending}
+        width={600}
       >
         <Form
           form={form}
           layout="vertical"
-          onFinish={handleCreate}
-          initialValues={editingOrg || {}}
+          style={{ marginTop: '24px' }}
         >
           <Form.Item
-            name="name"
             label="Organization Name"
+            name="name"
             rules={[{ required: true, message: 'Please enter organization name' }]}
           >
-            <Input />
+            <Input placeholder="e.g., City Hospital Group" />
           </Form.Item>
 
-          <Form.Item
-            name="subdomain"
-            label="Subdomain"
-            rules={[
-              { required: true, message: 'Please enter subdomain' },
-              { pattern: /^[a-z0-9-]+$/, message: 'Only lowercase letters, numbers, and hyphens allowed' }
-            ]}
-          >
-            <Input addonAfter=".yourapp.com" />
-          </Form.Item>
+          {!editingOrg && (
+            <Form.Item
+              label="Subdomain"
+              name="subdomain"
+              help="Leave empty to auto-generate from organization name"
+            >
+              <Input 
+                placeholder="e.g., cityhospital" 
+                addonAfter=".cliniccare.com"
+              />
+            </Form.Item>
+          )}
 
           <Form.Item
-            name="subscriptionPlanId"
-            label="Subscription Plan"
-            rules={[{ required: true, message: 'Please select a subscription plan' }]}
-          >
-            <Select>
-              {subscriptionPlans?.map(plan => (
-                <Select.Option key={plan.id} value={plan.id}>
-                  {plan.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="contactEmail"
             label="Contact Email"
+            name="contactEmail"
             rules={[
               { required: true, message: 'Please enter contact email' },
               { type: 'email', message: 'Please enter a valid email' }
             ]}
           >
-            <Input />
+            <Input placeholder="admin@example.com" />
           </Form.Item>
 
-          <Form.Item name="contactPhone" label="Contact Phone">
-            <Input />
+          <Form.Item
+            label="Contact Phone"
+            name="contactPhone"
+          >
+            <Input placeholder="+1234567890" />
           </Form.Item>
 
-          <Form.Item style={{ marginBottom: 0 }}>
-            <Space>
-              <Button type="primary" htmlType="submit" loading={createMutation.isPending}>
-                {editingOrg ? 'Update' : 'Create'}
-              </Button>
-              <Button onClick={() => {
-                setModalVisible(false)
-                form.resetFields()
-                setEditingOrg(null)
-              }}>
-                Cancel
-              </Button>
-            </Space>
+          <Form.Item
+            label="Address"
+            name="address"
+          >
+            <Input.TextArea 
+              rows={3} 
+              placeholder="Organization headquarters address"
+            />
           </Form.Item>
+
+          {editingOrg && (
+            <Form.Item
+              label="Status"
+              name="isActive"
+              valuePropName="checked"
+            >
+              <Input type="checkbox" />
+            </Form.Item>
+          )}
         </Form>
       </Modal>
     </div>

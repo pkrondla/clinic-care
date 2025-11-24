@@ -9,8 +9,12 @@ if (!rootElement) {
   throw new Error('Failed to find the root element')
 }
 
+console.log('main.tsx: Starting app render', { rootElement: !!rootElement })
+
 createRoot(rootElement).render(
   <StrictMode>
     <App />
   </StrictMode>,
 )
+
+console.log('main.tsx: App rendered')

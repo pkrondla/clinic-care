@@ -9,6 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 using Serilog;
+using Hangfire;
+using Hangfire.SqlServer;
+using ClinicCare.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -108,6 +111,29 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add Memory Cache
 builder.Services.AddMemoryCache();
+
+// Add Hangfire for background jobs
+var hangfireConnectionString = builder.Configuration.GetConnectionString("GlobalConnection")
+    ?? throw new InvalidOperationException("GlobalConnection connection string is required for Hangfire");
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(hangfireConnectionString, new SqlServerStorageOptions
+    {
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        DisableGlobalLocks = true
+    }));
+
+builder.Services.AddHangfireServer(options =>
+{
+    options.WorkerCount = Environment.ProcessorCount * 5;
+    options.Queues = new[] { "default", "notifications", "reports" };
+});
 
 var app = builder.Build();
 
@@ -221,31 +247,25 @@ static bool ShouldSkipTenantResolution(PathString path)
 {
     var skipPaths = new[]
     {
-        "health",
-        "swagger",
-        "api/auth/login",   // Skip login endpoint - doesn't need tenant context
-        "api/auth/me",      // Skip only specific auth endpoints that don't need tenant context
-        "api/auth/refresh", // Skip only specific auth endpoints that don't need tenant context
-        "api/global"
+        "/health",
+        "/swagger",
+        "/api/auth/login",   // Skip login endpoint - doesn't need tenant context
+        "/api/auth/me",      // Skip only specific auth endpoints that don't need tenant context
+        "/api/auth/refresh", // Skip only specific auth endpoints that don't need tenant context
+        "/api/global",
+        "/hangfire" // Skip tenant resolution for Hangfire dashboard
     };
 
-    // Normalize the path by removing double slashes and trimming
-    var pathValue = path.Value?.Replace("//", "/").TrimStart('/').ToLowerInvariant();
+    // Normalize the path
+    var pathValue = path.Value?.ToLowerInvariant() ?? "";
     
-    Console.WriteLine($"TenantMiddleware: Normalized path: '{path.Value}' -> '{pathValue}'");
+    Console.WriteLine($"TenantMiddleware: Checking path: '{pathValue}'");
     
-    // Debug: Show what we're comparing
-    foreach (var skipPath in skipPaths)
-    {
-        var skipPathLower = skipPath.ToLowerInvariant();
-        var startsWith = pathValue?.StartsWith(skipPathLower) == true;
-        Console.WriteLine($"TenantMiddleware: Comparing '{pathValue}' with '{skipPathLower}' -> {startsWith}");
-    }
-    
+    // Check if path starts with any skip path
     var shouldSkip = skipPaths.Any(skipPath => 
-        pathValue?.StartsWith(skipPath.ToLowerInvariant()) == true);
+        pathValue.StartsWith(skipPath.ToLowerInvariant()));
     
-    Console.WriteLine($"TenantMiddleware: Final result: {shouldSkip}");
+    Console.WriteLine($"TenantMiddleware: Should skip: {shouldSkip}");
     
     return shouldSkip;
 }
@@ -262,7 +282,28 @@ app.MapAllEndpoints();
 // SignalR Hubs
 app.MapHub<QueueHub>("/queueHub");
 
-// Seed database
+// Hangfire Dashboard (only in development or for authorized users)
+if (app.Environment.IsDevelopment())
+{
+    app.UseHangfireDashboard("/hangfire", new DashboardOptions
+    {
+        Authorization = new[] { new HangfireAuthorizationFilter() },
+        DashboardTitle = "ClinicCare Background Jobs"
+    });
+}
+else
+{
+    // In production, add proper authorization
+    app.UseHangfireDashboard("/hangfire", new DashboardOptions
+    {
+        Authorization = new[] { new HangfireAuthorizationFilter() },
+        DashboardTitle = "ClinicCare Background Jobs"
+    });
+}
+
+// Seed database (disabled - databases are already seeded via SQL scripts)
+// If you need to re-seed, uncomment this section and ensure proper database access
+/*
 using (var scope = app.Services.CreateScope())
 {
     try
@@ -274,7 +315,37 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Log.Error(ex, "An error occurred while seeding the database");
+        Log.Warning(ex, "Database seeding skipped (databases already seeded via SQL scripts)");
+    }
+}
+*/
+Log.Information("Database seeding skipped - databases are pre-seeded via SQL scripts");
+
+// Schedule recurring background jobs
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+        var notificationJobs = scope.ServiceProvider.GetRequiredService<ClinicCare.Infrastructure.Jobs.NotificationJobs>();
+
+        // Schedule appointment reminders - run every hour
+        recurringJobManager.AddOrUpdate(
+            "appointment-reminders",
+            () => notificationJobs.SendAppointmentRemindersAsync(CancellationToken.None),
+            Cron.Hourly);
+
+        // Schedule token status updates - run every 5 minutes
+        recurringJobManager.AddOrUpdate(
+            "token-status-updates",
+            () => notificationJobs.SendTokenStatusUpdatesAsync(CancellationToken.None),
+            "*/5 * * * *"); // Every 5 minutes
+
+        Log.Information("Hangfire background jobs scheduled successfully");
+    }
+    catch (Exception ex)
+    {
+        Log.Warning(ex, "Failed to schedule Hangfire background jobs - continuing without scheduled jobs");
     }
 }
 

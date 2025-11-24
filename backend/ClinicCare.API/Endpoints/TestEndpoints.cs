@@ -40,6 +40,25 @@ public static class TestEndpoints
         .WithSummary("Test tenant resolution")
         .WithDescription("Tests if the tenant service can resolve the current tenant");
 
+        // Generate password hash endpoint (for development only)
+        group.MapPost("/generate-password-hash", async (
+            [FromBody] GenerateHashRequest request,
+            IPasswordHasher passwordHasher) =>
+        {
+            var hash = passwordHasher.HashPassword(request.Password);
+            return Results.Ok(new { password = request.Password, hash = hash });
+        })
+        .WithName("GeneratePasswordHash")
+        .WithSummary("Generate password hash (Development only)")
+        .WithDescription("Generates a password hash using the PasswordHasher service. Use this to create correct password hashes for database seeding.")
+        .Produces<object>(StatusCodes.Status200OK)
+        .AllowAnonymous();
+
         return app;
     }
+}
+
+public class GenerateHashRequest
+{
+    public string Password { get; set; } = string.Empty;
 }

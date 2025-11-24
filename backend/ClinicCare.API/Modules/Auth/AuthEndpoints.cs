@@ -58,11 +58,13 @@ public static class AuthEndpoints
 
         // Logout endpoint
         group.MapPost("/logout", async (
-            [FromBody] LogoutCommand command,
+            [FromBody] LogoutCommand? command,
             IMediator mediator,
             CancellationToken cancellationToken) =>
         {
-            var result = await mediator.Send(command, cancellationToken);
+            // Create command if not provided (allows logout without body)
+            var logoutCommand = command ?? new LogoutCommand();
+            var result = await mediator.Send(logoutCommand, cancellationToken);
             
             if (result.Succeeded)
             {
@@ -76,6 +78,53 @@ public static class AuthEndpoints
         .WithDescription("Logs out a user and invalidates their refresh token")
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
+        .RequireAuthorization();
+
+        // Reset password endpoint
+        group.MapPost("/reset-password", async (
+            [FromBody] ResetPasswordCommand command,
+            IMediator mediator,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await mediator.Send(command, cancellationToken);
+            
+            if (result.Succeeded)
+            {
+                return Results.Ok(result.Data);
+            }
+            
+            return Results.BadRequest(result.Errors);
+        })
+        .WithName("ResetPassword")
+        .WithSummary("Reset user password")
+        .WithDescription("Resets a user's password. SuperAdmin can reset any user's password. OrganizationAdmin can reset passwords for users in their organization.")
+        .Produces<ResetPasswordResponse>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status403Forbidden)
+        .RequireAuthorization();
+
+        // Update selected clinic endpoint
+        group.MapPost("/select-clinic", async (
+            [FromBody] UpdateSelectedClinicCommand command,
+            IMediator mediator,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await mediator.Send(command, cancellationToken);
+            
+            if (result.Succeeded)
+            {
+                return Results.Ok(result.Data);
+            }
+            
+            return Results.BadRequest(result.Errors);
+        })
+        .WithName("SelectClinic")
+        .WithSummary("Update user's selected clinic")
+        .WithDescription("Updates the currently selected clinic for the authenticated user. All transactions will be associated with this clinic.")
+        .Produces<UpdateSelectedClinicResponse>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
         .RequireAuthorization();
 
         return endpoints;

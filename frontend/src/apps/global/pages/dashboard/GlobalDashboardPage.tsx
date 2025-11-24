@@ -18,19 +18,44 @@ const { Title } = Typography
 export const GlobalDashboardPage = () => {
   const user = useUser()
 
-  // Get system statistics
+  // Get system statistics (placeholder - endpoint needs to be created)
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['system-stats'],
     queryFn: async () => {
-      const response = await globalApi.stats.getSystemStats()
-      return response.data
+      try {
+        const response = await globalApi.stats.getSystemStats()
+        return response.data
+      } catch (error) {
+        console.error('Failed to load stats:', error)
+        // Return default stats on error
+        return {
+          totalOrganizations: 0,
+          activeUsers: 0,
+          totalMedicines: 0,
+          monthlyRevenue: 0,
+          uptime: 0
+        }
+      }
     }
   })
 
   // Get recent organizations
   const { data: organizations, isLoading: orgsLoading, refetch } = useQuery({
     queryKey: ['recent-organizations'],
-    queryFn: () => globalApi.organizations.getAll()
+    queryFn: async () => {
+      try {
+        const response = await globalApi.organizations.getAll()
+        // globalApiClient.get() returns axios response, so response.data is the body
+        // Backend returns { success: true, data: [...] }
+        // Extract the nested data array
+        const responseData = response?.data || response
+        const orgs = responseData?.data || responseData || []
+        return Array.isArray(orgs) ? orgs : []
+      } catch (error) {
+        console.error('Failed to load organizations:', error)
+        return []
+      }
+    }
   })
 
   const organizationColumns = [
@@ -47,17 +72,21 @@ export const GlobalDashboardPage = () => {
     },
     {
       title: 'Subscription',
-      dataIndex: ['subscription', 'name'],
-      key: 'subscription',
-      render: (plan: string) => <Tag color="blue">{plan}</Tag>
+      dataIndex: 'subscriptionStatus',
+      key: 'subscriptionStatus',
+      render: (status: string) => (
+        <Tag color={status === 'Active' ? 'green' : status === 'Trial' ? 'blue' : 'red'}>
+          {status || 'Trial'}
+        </Tag>
+      )
     },
     {
       title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => (
-        <Tag color={status === 'active' ? 'green' : 'red'}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (isActive: boolean) => (
+        <Tag color={isActive ? 'green' : 'red'}>
+          {isActive ? 'Active' : 'Inactive'}
         </Tag>
       )
     },
@@ -65,7 +94,7 @@ export const GlobalDashboardPage = () => {
       title: 'Created',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (date: string) => dayjs(date).format('MMM DD, YYYY')
+      render: (date: string | Date) => dayjs(date).format('MMM DD, YYYY')
     }
   ]
 
@@ -138,7 +167,7 @@ export const GlobalDashboardPage = () => {
         }
       >
         <Table
-          dataSource={organizations?.data}
+          dataSource={organizations || []}
           columns={organizationColumns}
           rowKey="id"
           loading={orgsLoading}

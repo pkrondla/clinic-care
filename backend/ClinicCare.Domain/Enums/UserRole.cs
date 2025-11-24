@@ -60,3 +60,13 @@ public enum CommunicationStatus
     Delivered = 3,
     Failed = 4
 }
+
+public enum CourierStatus
+{
+    NotDispatched = 0,
+    Dispatched = 1,
+    InTransit = 2,
+    OutForDelivery = 3,
+    Delivered = 4,
+    Returned = 5
+}

@@ -13,9 +13,9 @@ import {
 } from 'antd'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useCreatePatient, useUpdatePatient, usePatient } from '../../hooks/queries/usePatients'
-import type { CreatePatientRequest, UpdatePatientRequest } from '../../types/patient'
-import { GENDER_OPTIONS, BLOOD_GROUP_OPTIONS } from '../../types/patient'
+import { useCreatePatient, useUpdatePatient, usePatient } from '@core/hooks/queries/usePatients'
+import type { CreatePatientRequest, UpdatePatientRequest } from '@core/types/patient'
+import { GENDER_OPTIONS, BLOOD_GROUP_OPTIONS } from '@core/types/patient'
 import dayjs from 'dayjs'
 
 const { Title } = Typography

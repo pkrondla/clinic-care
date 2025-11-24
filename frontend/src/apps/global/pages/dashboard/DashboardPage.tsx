@@ -19,24 +19,25 @@ export function DashboardPage() {
         <Col span={6}>
           <Card loading={isLoading}>
             <Statistic
-              title="Total Clinics"
-              value={stats?.totalClinics || 0}
+              title="Active Users"
+              value={stats?.activeUsers || 0}
             />
           </Card>
         </Col>
         <Col span={6}>
           <Card loading={isLoading}>
             <Statistic
-              title="Active Subscriptions"
-              value={stats?.activeSubscriptions || 0}
+              title="Total Medicines"
+              value={stats?.totalMedicines || 0}
             />
           </Card>
         </Col>
         <Col span={6}>
           <Card loading={isLoading}>
             <Statistic
-              title="Total Users"
-              value={stats?.totalUsers || 0}
+              title="Monthly Revenue"
+              value={stats?.monthlyRevenue || 0}
+              prefix="$"
             />
           </Card>
         </Col>

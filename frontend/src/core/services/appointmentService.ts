@@ -5,8 +5,7 @@ import type {
   QueueItem, 
   AppointmentFilters,
   CreateAppointmentRequest,
-  UpdateAppointmentStatusRequest,
-  AppointmentStats
+  UpdateAppointmentStatusRequest
 } from '../types/appointment'
 
 export const appointmentService = {
@@ -128,12 +127,12 @@ export const appointmentService = {
   },
 
   // Get appointment statistics
-  getAppointmentStats: async (clinicId?: number, doctorId?: number): Promise<AppointmentStats> => {
+  getAppointmentStats: async (clinicId?: number, doctorId?: number): Promise<any> => {
     const params = new URLSearchParams()
     if (clinicId) params.append('clinicId', clinicId.toString())
     if (doctorId) params.append('doctorId', doctorId.toString())
     
-    const response = await api.get<AppointmentStats>(`/appointments/stats?${params.toString()}`)
-    return response.data as AppointmentStats
+    const response = await api.get<any>(`/appointments/stats?${params.toString()}`)
+    return response.data as any
   }
 }

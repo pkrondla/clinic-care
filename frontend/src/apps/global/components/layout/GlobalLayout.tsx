@@ -1,8 +1,8 @@
-import { Layout, Menu, Avatar, Dropdown, Space, Typography } from 'antd'
+import { Layout, Menu, Avatar, Dropdown, Typography } from 'antd'
 import { 
   UserOutlined, 
   LogoutOutlined,
-
+  DashboardOutlined,
   TeamOutlined,
   MedicineBoxOutlined,
   BarChartOutlined
@@ -10,7 +10,6 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@core/stores/authStore'
 import { useLogout } from '@core/hooks/queries/useAuth'
-import { useTheme } from '@core/stores/uiStore'
 import { UserRole } from '@core/types/auth'
 
 const { Header, Sider, Content } = Layout
@@ -24,25 +23,25 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuth()
-  const { theme } = useTheme()
   const { mutateAsync: logout } = useLogout()
+  const theme: 'light' | 'dark' = 'light' // Default theme, can be made dynamic later
 
   // Menu items for global admin
   const menuItems = [
+    {
+      key: 'dashboard',
+      icon: <DashboardOutlined />,
+      label: 'Dashboard'
+    },
     {
       key: 'organizations',
       icon: <TeamOutlined />,
       label: 'Organizations'
     },
     {
-      key: 'global-medicines',
+      key: 'medicines',
       icon: <MedicineBoxOutlined />,
       label: 'Global Medicines'
-    },
-    {
-      key: 'system-reports',
-      icon: <BarChartOutlined />,
-      label: 'System Reports'
     }
   ]
 
@@ -63,14 +62,14 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
 
   const handleMenuClick = ({ key }: { key: string }) => {
     switch (key) {
+      case 'dashboard':
+        navigate('/dashboard')
+        break
       case 'organizations':
         navigate('/organizations')
         break
-      case 'global-medicines':
-        navigate('/global-medicines')
-        break
-      case 'system-reports':
-        navigate('/system-reports')
+      case 'medicines':
+        navigate('/medicines')
         break
     }
   }
@@ -85,7 +84,7 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
-        theme={theme === 'dark' ? 'dark' : 'light'}
+        theme={theme}
         width={200}
       >
         <div style={{ 
@@ -101,9 +100,9 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
         </div>
         
         <Menu
-          theme={theme === 'dark' ? 'dark' : 'light'}
+          theme={theme}
           mode="inline"
-          selectedKeys={[location.pathname.split('/')[1] || 'organizations']}
+          selectedKeys={[location.pathname === '/' || location.pathname === '/dashboard' ? 'dashboard' : location.pathname.split('/')[1] || 'dashboard']}
           items={menuItems}
           onClick={handleMenuClick}
           style={{ borderRight: 0 }}
@@ -116,7 +115,9 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
           background: '#fff',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          zIndex: 1
         }}>
           <Dropdown
             menu={{ 
@@ -124,17 +125,48 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
               onClick: handleUserMenuClick 
             }}
             trigger={['click']}
+            placement="bottomRight"
           >
-            <Space style={{ cursor: 'pointer' }}>
-              <Avatar icon={<UserOutlined />} />
-              <div>
-                <Text strong>{user?.fullName}</Text>
-                <br />
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  {user?.role === UserRole.SuperAdmin ? 'Super Admin' : 'System Admin'}
+            <div
+              style={{ 
+                cursor: 'pointer',
+                padding: '8px 12px',
+                borderRadius: '4px',
+                transition: 'background-color 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent'
+              }}
+            >
+              <Avatar 
+                size="default"
+                icon={<UserOutlined />}
+                style={{ backgroundColor: '#1890ff', flexShrink: 0 }}
+              />
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                lineHeight: 1.5,
+                minWidth: 120
+              }}>
+                <Text strong style={{ fontSize: 14, display: 'block', whiteSpace: 'nowrap' }}>
+                  {user?.fullName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.email || 'User'}
+                </Text>
+                <Text type="secondary" style={{ fontSize: 12, display: 'block', whiteSpace: 'nowrap' }}>
+                  {user?.role === UserRole.SuperAdmin
+                    ? 'Super Admin' 
+                    : user?.role === UserRole.Admin || user?.role === UserRole.SystemAdmin
+                    ? 'System Admin'
+                    : user?.email || 'User'}
                 </Text>
               </div>
-            </Space>
+            </div>
           </Dropdown>
         </Header>
 

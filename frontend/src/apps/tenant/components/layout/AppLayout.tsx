@@ -12,13 +12,19 @@ import {
   TeamOutlined,
   MedicineBoxOutlined,
   FileTextOutlined,
-  BarChartOutlined
+  BarChartOutlined,
+  BankOutlined,
+  DollarOutlined,
+  ShoppingOutlined,
+  ShoppingCartOutlined,
+  ClockCircleOutlined
 } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth, useSelectedClinic } from '../../../../stores/authStore'
-import { useSidebar, useTheme } from '../../../../stores/uiStore'
-import { useLogout, useSwitchClinic } from '../../../../hooks/queries/useAuth'
-import { UserRole } from '../../../../types/auth'
+import { useAuth, useSelectedClinic } from '@core/stores/authStore'
+import { useSidebar, useTheme } from '@core/stores/uiStore'
+import { useLogout } from '@core/hooks/queries/useAuth'
+import { UserRole } from '@core/types/auth'
+import { ClinicSelector } from '../clinic/ClinicSelector'
 
 const { Header, Sider, Content } = Layout
 const { Text } = Typography
@@ -35,7 +41,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   const { collapsed, toggle } = useSidebar()
   const { theme } = useTheme()
   const logoutMutation = useLogout()
-  const switchClinicMutation = useSwitchClinic()
 
   // Handle menu navigation
   const handleMenuClick = ({ key }: { key: string }) => {
@@ -50,7 +55,14 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         navigate('/appointments')
         break
       case 'queue':
-        navigate('/queue')
+        // Route based on role
+        if (user?.role === UserRole.Doctor) {
+          navigate('/queue/doctor')
+        } else if (user?.role === UserRole.Admin || user?.role === UserRole.Staff) {
+          navigate('/queue/staff')
+        } else {
+          navigate('/queue')
+        }
         break
       case 'consultations':
         navigate('/consultations')
@@ -82,6 +94,21 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       case 'users':
         navigate('/users')
         break
+      case 'invoices':
+        navigate('/invoices')
+        break
+      case 'suppliers':
+        navigate('/suppliers')
+        break
+      case 'purchase-orders':
+        navigate('/purchase-orders')
+        break
+      case 'book-appointment':
+        navigate('/book-appointment')
+        break
+      case 'doctor-schedule':
+        navigate('/doctors/schedule')
+        break
       default:
         break
     }
@@ -104,6 +131,14 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     if (path.startsWith('/reports')) return 'reports'
     if (path.startsWith('/clinics')) return 'clinics'
     if (path.startsWith('/users')) return 'users'
+    if (path.startsWith('/invoices')) return 'invoices'
+    if (path.startsWith('/suppliers')) return 'suppliers'
+    if (path.startsWith('/purchase-orders')) return 'purchase-orders'
+    if (path.startsWith('/book-appointment')) return 'book-appointment'
+    if (path.startsWith('/doctors/schedule')) return 'doctor-schedule'
+    if (path.startsWith('/queue/doctor')) return 'queue'
+    if (path.startsWith('/queue/staff')) return 'queue'
+    if (path.startsWith('/queue')) return 'queue'
     return 'dashboard'
   }
 
@@ -122,7 +157,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         ...commonItems,
         {
           key: 'clinics',
-          icon: <HomeOutlined />,
+          icon: <BankOutlined />,
           label: 'Clinics'
         },
         {
@@ -131,9 +166,34 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           label: 'Users'
         },
         {
+          key: 'invoices',
+          icon: <DollarOutlined />,
+          label: 'Invoices'
+        },
+        {
+          key: 'suppliers',
+          icon: <ShoppingOutlined />,
+          label: 'Suppliers'
+        },
+        {
+          key: 'purchase-orders',
+          icon: <ShoppingCartOutlined />,
+          label: 'Purchase Orders'
+        },
+        {
+          key: 'inventory',
+          icon: <MedicineBoxOutlined />,
+          label: 'Inventory'
+        },
+        {
           key: 'reports',
           icon: <BarChartOutlined />,
           label: 'Reports'
+        },
+        {
+          key: 'doctor-schedule',
+          icon: <ClockCircleOutlined />,
+          label: 'Doctor Schedule'
         }
       ],
       [UserRole.Doctor]: [
@@ -142,6 +202,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'appointments',
           icon: <CalendarOutlined />,
           label: 'Appointments'
+        },
+        {
+          key: 'doctor-schedule',
+          icon: <ClockCircleOutlined />,
+          label: 'My Schedule'
         },
         {
           key: 'queue',
@@ -175,10 +240,35 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'queue',
           icon: <TeamOutlined />,
           label: 'Queue'
+        },
+        {
+          key: 'invoices',
+          icon: <DollarOutlined />,
+          label: 'Invoices'
+        },
+        {
+          key: 'suppliers',
+          icon: <ShoppingOutlined />,
+          label: 'Suppliers'
+        },
+        {
+          key: 'purchase-orders',
+          icon: <ShoppingCartOutlined />,
+          label: 'Purchase Orders'
+        },
+        {
+          key: 'inventory',
+          icon: <MedicineBoxOutlined />,
+          label: 'Inventory'
         }
       ],
       [UserRole.Patient]: [
         ...commonItems,
+        {
+          key: 'book-appointment',
+          icon: <CalendarOutlined />,
+          label: 'Book Appointment'
+        },
         {
           key: 'my-appointments',
           icon: <CalendarOutlined />,
@@ -197,15 +287,12 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       ]
     }
 
-    return roleBasedItems[user?.role || UserRole.Patient] || commonItems
+    const userRole = user?.role || UserRole.Patient
+    return roleBasedItems[userRole as keyof typeof roleBasedItems] || commonItems
   }
 
   const handleLogout = () => {
     logoutMutation.mutate()
-  }
-
-  const handleClinicSwitch = (clinicId: number) => {
-    switchClinicMutation.mutate(clinicId)
   }
 
   // User dropdown menu
@@ -230,13 +317,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       onClick: handleLogout
     }
   ]
-
-  // Clinic switch dropdown (for users with multiple clinics)
-  const clinicMenuItems = user?.availableClinics?.map((clinic: any) => ({
-    key: clinic.id.toString(),
-    label: clinic.name,
-    onClick: () => handleClinicSwitch(clinic.id)
-  })) || []
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -297,20 +377,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               style={{ fontSize: 16 }}
             />
             
-            {selectedClinic && (
-              <Space>
-                <Text type="secondary">Clinic:</Text>
-                <Dropdown
-                  menu={{ items: clinicMenuItems }}
-                  placement="bottomLeft"
-                  disabled={clinicMenuItems.length <= 1}
-                >
-                  <Button type="text" icon={<SwapOutlined />}>
-                    {selectedClinic.name}
-                  </Button>
-                </Dropdown>
-              </Space>
-            )}
+            <ClinicSelector />
           </Space>
 
           <Space size="middle">
@@ -323,22 +390,52 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               placement="bottomRight"
               trigger={['click']}
             >
-              <Space style={{ cursor: 'pointer' }}>
-                <Avatar icon={<UserOutlined />} />
-                <div style={{ display: collapsed ? 'none' : 'block' }}>
-                  <Text strong>{user?.fullName}</Text>
-                  <br />
-                  <Text type="secondary" style={{ fontSize: 12 }}>
-                    {user?.role === UserRole.SuperAdmin && 'Super Admin'}
-                    {user?.role === UserRole.SystemAdmin && 'System Admin'}
-                    {user?.role === UserRole.OrganizationAdmin && 'Organization Admin'}
-                    {user?.role === UserRole.Doctor && 'Doctor'}
-                    {user?.role === UserRole.Reception && 'Reception'}
-                    {user?.role === UserRole.Pharmacy && 'Pharmacy'}
-                    {user?.role === UserRole.Patient && 'Patient'}
+              <div
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  transition: 'background-color 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f5f5f5'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                }}
+              >
+                <Avatar
+                  size="default"
+                  icon={<UserOutlined />}
+                  style={{ backgroundColor: '#1890ff', flexShrink: 0 }}
+                />
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  lineHeight: 1.5,
+                  minWidth: 120
+                }}>
+                  <Text strong style={{ fontSize: 14, display: 'block', whiteSpace: 'nowrap' }}>
+                    {user?.fullName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.email || 'User'}
+                  </Text>
+                  <Text type="secondary" style={{ fontSize: 12, display: 'block', whiteSpace: 'nowrap' }}>
+                    {user?.role === UserRole.OrganizationAdmin
+                      ? 'Organization Admin'
+                      : user?.role === UserRole.Doctor
+                      ? 'Doctor'
+                      : user?.role === UserRole.Reception
+                      ? 'Reception'
+                      : user?.role === UserRole.Pharmacy
+                      ? 'Pharmacy'
+                      : user?.role === UserRole.Patient
+                      ? 'Patient'
+                      : user?.email || 'User'}
                   </Text>
                 </div>
-              </Space>
+              </div>
             </Dropdown>
           </Space>
         </Header>

@@ -6,9 +6,9 @@ import {
   CheckCircleOutlined,
   ReloadOutlined
 } from '@ant-design/icons'
-import { useAppointments, useAppointmentStats } from '../../hooks/queries/useAppointments'
-import { useUser, useSelectedClinic } from '../../stores/authStore'
-import { UserRole, AppointmentStatus, AppointmentType } from '../../types/index'
+import { useAppointments, useAppointmentStats } from '@core/hooks/queries/useAppointments'
+import { useUser, useSelectedClinic } from '@core/stores/authStore'
+import { UserRole, AppointmentStatus, AppointmentType } from '@core/types'
 import dayjs from 'dayjs'
 
 const { Title } = Typography
@@ -17,17 +17,48 @@ export const DashboardPage = () => {
   const user = useUser()
   const selectedClinic = useSelectedClinic()
   
-  // Get today's appointments
+  const getDashboardTitle = () => {
+    switch (user?.role) {
+      case UserRole.SuperAdmin:
+        return 'System Overview'
+      case UserRole.Admin:
+        return 'Organization Dashboard'
+      case UserRole.Doctor:
+        return 'Doctor Dashboard'
+      case UserRole.Staff:
+        return 'Staff Dashboard'
+      case UserRole.Patient:
+        return 'Patient Portal'
+      default:
+        return 'Dashboard'
+    }
+  }
+
+  // Get today's appointments (only if clinic is selected)
   const { data: todayAppointments, isLoading: appointmentsLoading, refetch: refetchAppointments } = useAppointments({
     date: dayjs().format('YYYY-MM-DD'),
     clinicId: selectedClinic?.id
   })
 
-  // Get appointment statistics  
+  // Get appointment statistics (only if clinic is selected)
   useAppointmentStats(
     selectedClinic?.id,
     user?.role === UserRole.Doctor ? user.id : undefined
   )
+
+  // Show message if no clinic is selected
+  if (!selectedClinic) {
+    return (
+      <div>
+        <Title level={2}>{getDashboardTitle()}</Title>
+        <Card>
+          <Typography.Text type="secondary">
+            Please select a clinic to view the dashboard.
+          </Typography.Text>
+        </Card>
+      </div>
+    )
+  }
 
   const getStatusColor = (status: AppointmentStatus) => {
     switch (status) {
@@ -98,23 +129,6 @@ export const DashboardPage = () => {
       render: (date: string) => dayjs(date).format('MMM DD, YYYY')
     }
   ]
-
-  const getDashboardTitle = () => {
-    switch (user?.role) {
-      case UserRole.SuperAdmin:
-        return 'System Overview'
-      case UserRole.Admin:
-        return 'Organization Dashboard'
-      case UserRole.Doctor:
-        return 'Doctor Dashboard'
-      case UserRole.Staff:
-        return 'Staff Dashboard'
-      case UserRole.Patient:
-        return 'Patient Portal'
-      default:
-        return 'Dashboard'
-    }
-  }
 
   const getWelcomeMessage = () => {
     const greeting = dayjs().hour() < 12 ? 'Good morning' : dayjs().hour() < 18 ? 'Good afternoon' : 'Good evening'

@@ -8,8 +8,8 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
         int DoctorId,
         int PatientId,
         DateOnly AppointmentDate,
-        int TokenNumber,
-        int Type,
+        int? TokenNumber = null, // Optional - will be auto-generated if not provided
+        int Type = 1, // Default to InPerson
         string Notes = ""
     ) : IRequest<Result<AppointmentDto>>;
 }

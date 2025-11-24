@@ -6,6 +6,11 @@ using ClinicCare.Application.Features.Appointments.Commands.CancelAppointment;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointments;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointment;
 using ClinicCare.Application.Features.Appointments.Queries.GetAppointmentStats;
+using ClinicCare.Application.Features.Appointments.Queries.GetAllQueues;
+using ClinicCare.Application.Features.Appointments.Queries.GetQueue;
+using ClinicCare.Application.Features.Appointments.Commands.BookAppointment;
+using ClinicCare.Application.Features.Appointments.Commands.StartAppointment;
+using ClinicCare.Application.Features.Appointments.Commands.CompleteAppointment;
 using ClinicCare.Application.Common.Models;
 
 namespace ClinicCare.API.Modules.Appointments;
@@ -60,6 +65,63 @@ public static class AppointmentsEndpoints
             .WithSummary("Get appointment statistics")
             .Produces<object>(StatusCodes.Status200OK)
             .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Queue endpoints (authenticated)
+        group.MapGet("/queues", GetAllQueues)
+            .WithName("GetAllQueues")
+            .WithSummary("Get all doctor queues (authenticated)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        group.MapGet("/queues/{doctorId:int}", GetQueue)
+            .WithName("GetQueue")
+            .WithSummary("Get queue for a specific doctor")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest)
+            .Produces<object>(StatusCodes.Status404NotFound);
+
+        // Patient self-booking
+        group.MapPost("/book", BookAppointment)
+            .WithName("BookAppointment")
+            .WithSummary("Patient self-booking (authenticated)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Doctor queue processing
+        group.MapPost("/{id:int}/start", StartAppointment)
+            .WithName("StartAppointment")
+            .WithSummary("Start an appointment (change status to In Progress)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        group.MapPost("/{id:int}/complete", CompleteAppointment)
+            .WithName("CompleteAppointment")
+            .WithSummary("Complete an appointment (change status to Completed)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        return app;
+    }
+
+    // Public queue endpoints (no auth required)
+    public static IEndpointRouteBuilder MapPublicQueueEndpoints(this IEndpointRouteBuilder app)
+    {
+        var publicGroup = app.MapGroup("/api/public/queues")
+            .WithTags("Public Queues")
+            .WithOpenApi();
+
+        publicGroup.MapGet("/", GetPublicQueues)
+            .WithName("GetPublicQueues")
+            .WithSummary("Get all doctor queues (public - token numbers only)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        publicGroup.MapGet("/{doctorId:int}", GetPublicQueue)
+            .WithName("GetPublicQueue")
+            .WithSummary("Get queue for a specific doctor (public - token numbers only)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest)
+            .Produces<object>(StatusCodes.Status404NotFound);
 
         return app;
     }
@@ -166,6 +228,129 @@ public static class AppointmentsEndpoints
         }
 
         return Results.Ok(new { data = result.Data });
+    }
+
+    private static async Task<IResult> GetAllQueues(
+        [AsParameters] GetAllQueuesQuery query,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to retrieve queues", errors = result.Errors });
+        }
+
+        return Results.Ok(new { data = result.Data });
+    }
+
+    private static async Task<IResult> GetQueue(
+        int doctorId,
+        [AsParameters] GetQueueQuery query,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        query.DoctorId = doctorId;
+        var result = await mediator.Send(query, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            if (result.Errors.Any(e => e.Contains("not found", StringComparison.OrdinalIgnoreCase)))
+            {
+                return Results.NotFound(new { message = "Queue not found", errors = result.Errors });
+            }
+            return Results.BadRequest(new { message = "Failed to retrieve queue", errors = result.Errors });
+        }
+
+        return Results.Ok(new { data = result.Data });
+    }
+
+    private static async Task<IResult> BookAppointment(
+        BookAppointmentCommand command,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to book appointment", errors = result.Errors });
+        }
+
+        return Results.Ok(new { message = "Appointment booked successfully", data = result.Data });
+    }
+
+    private static async Task<IResult> GetPublicQueues(
+        [AsParameters] GetAllQueuesQuery query,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        // Force IncludePatientDetails to false for public view
+        query.IncludePatientDetails = false;
+        var result = await mediator.Send(query, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to retrieve queues", errors = result.Errors });
+        }
+
+        return Results.Ok(new { data = result.Data });
+    }
+
+    private static async Task<IResult> GetPublicQueue(
+        int doctorId,
+        [AsParameters] GetQueueQuery query,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        query.DoctorId = doctorId;
+        // Force IncludePatientDetails to false for public view
+        query.IncludePatientDetails = false;
+        var result = await mediator.Send(query, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            if (result.Errors.Any(e => e.Contains("not found", StringComparison.OrdinalIgnoreCase)))
+            {
+                return Results.NotFound(new { message = "Queue not found", errors = result.Errors });
+            }
+            return Results.BadRequest(new { message = "Failed to retrieve queue", errors = result.Errors });
+        }
+
+        return Results.Ok(new { data = result.Data });
+    }
+
+    private static async Task<IResult> StartAppointment(
+        int id,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var command = new StartAppointmentCommand { Id = id };
+        var result = await mediator.Send(command, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to start appointment", errors = result.Errors });
+        }
+
+        return Results.Ok(new { message = "Appointment started", data = result.Data });
+    }
+
+    private static async Task<IResult> CompleteAppointment(
+        int id,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var command = new CompleteAppointmentCommand { Id = id };
+        var result = await mediator.Send(command, cancellationToken);
+        
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to complete appointment", errors = result.Errors });
+        }
+
+        return Results.Ok(new { message = "Appointment completed", data = result.Data });
     }
 }
 

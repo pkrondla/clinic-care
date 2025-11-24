@@ -7,7 +7,6 @@ export * from './stores/authStore'
 export * from './stores/uiStore'
 
 // Re-export query hooks
-export * from './hooks/queries/useAuth'
 export * from './hooks/queries/useOrganizations'
 export * from './hooks/queries/useSubscriptions'
 export * from './hooks/queries/useMedicines'

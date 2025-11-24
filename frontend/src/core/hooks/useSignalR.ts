@@ -49,12 +49,21 @@ export const useSignalR = () => {
 
         // Event handlers
         connection.on('QueueUpdated', (data) => {
-          // Update queue data in cache
-          const { doctorId, clinicId, date, queueData } = data
-          queryClient.setQueryData(
-            appointmentKeys.queue(doctorId, clinicId, date),
-            queueData
-          )
+          // Invalidate queue queries to refresh data
+          const { organizationId, clinicId, doctorId } = data
+          
+          // Invalidate all queue-related queries
+          queryClient.invalidateQueries({ queryKey: ['queues'] })
+          queryClient.invalidateQueries({ queryKey: ['public-queues'] })
+          queryClient.invalidateQueries({ queryKey: ['queue'] })
+          queryClient.invalidateQueries({ queryKey: ['public-queue'] })
+          
+          // Also invalidate appointments
+          queryClient.invalidateQueries({ queryKey: appointmentKeys.lists() })
+          
+          if (doctorId) {
+            queryClient.invalidateQueries({ queryKey: appointmentKeys.queue(doctorId, clinicId, new Date().toISOString().split('T')[0]) })
+          }
         })
 
         connection.on('AppointmentStatusChanged', (data) => {
