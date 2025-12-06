@@ -50,13 +50,14 @@ public static class InventoryEndpointsNew
         IMediator mediator,
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
+        CancellationToken cancellationToken,
         int? clinicId = null)
     {
         // If clinicId not provided, get from current user's selected clinic
         if (!clinicId.HasValue && currentUserService.UserId.HasValue)
         {
             var user = await context.Users
-                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value);
+                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value, cancellationToken);
             if (user?.SelectedClinicId.HasValue == true)
             {
                 clinicId = user.SelectedClinicId;
@@ -64,7 +65,7 @@ public static class InventoryEndpointsNew
         }
 
         var query = new GetInventoryQuery { ClinicId = clinicId };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
@@ -75,13 +76,14 @@ public static class InventoryEndpointsNew
         IMediator mediator,
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
+        CancellationToken cancellationToken,
         int? clinicId = null)
     {
         // If clinicId not provided, get from current user's selected clinic
         if (!clinicId.HasValue && currentUserService.UserId.HasValue)
         {
             var user = await context.Users
-                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value);
+                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value, cancellationToken);
             if (user?.SelectedClinicId.HasValue == true)
             {
                 clinicId = user.SelectedClinicId;
@@ -89,25 +91,25 @@ public static class InventoryEndpointsNew
         }
 
         var query = new GetLowStockQuery { ClinicId = clinicId };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> CreateInventoryItem(IMediator mediator, CreateInventoryItemCommand command)
+    private static async Task<IResult> CreateInventoryItem(IMediator mediator, CreateInventoryItemCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Inventory item created successfully" })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> AdjustStock(IMediator mediator, AdjustStockCommand command)
+    private static async Task<IResult> AdjustStock(IMediator mediator, AdjustStockCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Stock adjusted successfully" })

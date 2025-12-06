@@ -57,6 +57,7 @@ public static class PrescriptionsEndpoints
 
     private static async Task<IResult> GetPrescriptions(
         IMediator mediator,
+        CancellationToken cancellationToken,
         [FromQuery] int? clinicId,
         [FromQuery] int? doctorId,
         [FromQuery] int? patientId,
@@ -71,36 +72,36 @@ public static class PrescriptionsEndpoints
             StartDate = startDate,
             EndDate = endDate
         };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> GetPrescription(IMediator mediator, int id)
+    private static async Task<IResult> GetPrescription(IMediator mediator, int id, CancellationToken cancellationToken)
     {
         var query = new GetPrescriptionQuery { Id = id };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.NotFound(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> GetPatientPrescriptions(IMediator mediator, int patientId)
+    private static async Task<IResult> GetPatientPrescriptions(IMediator mediator, int patientId, CancellationToken cancellationToken)
     {
         var query = new GetPatientPrescriptionsQuery { PatientId = patientId };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> CreatePrescription(IMediator mediator, CreatePrescriptionCommand command)
+    private static async Task<IResult> CreatePrescription(IMediator mediator, CreatePrescriptionCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Prescription created successfully" })

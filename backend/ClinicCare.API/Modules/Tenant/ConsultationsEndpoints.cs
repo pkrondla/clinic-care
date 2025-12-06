@@ -56,6 +56,7 @@ public static class ConsultationsEndpoints
 
     private static async Task<IResult> GetConsultations(
         IMediator mediator,
+        CancellationToken cancellationToken,
         [FromQuery] int? clinicId,
         [FromQuery] int? doctorId,
         [FromQuery] int? patientId,
@@ -70,46 +71,46 @@ public static class ConsultationsEndpoints
             StartDate = startDate,
             EndDate = endDate
         };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> GetConsultation(IMediator mediator, int id)
+    private static async Task<IResult> GetConsultation(IMediator mediator, int id, CancellationToken cancellationToken)
     {
         var query = new GetConsultationQuery { Id = id };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.NotFound(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> GetPatientConsultations(IMediator mediator, int patientId)
+    private static async Task<IResult> GetPatientConsultations(IMediator mediator, int patientId, CancellationToken cancellationToken)
     {
         var query = new GetPatientConsultationsQuery { PatientId = patientId };
-        var result = await mediator.Send(query);
+        var result = await mediator.Send(query, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> CreateConsultation(IMediator mediator, CreateConsultationCommand command)
+    private static async Task<IResult> CreateConsultation(IMediator mediator, CreateConsultationCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Consultation created successfully" })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> UpdateConsultation(IMediator mediator, int id, UpdateConsultationCommand command)
+    private static async Task<IResult> UpdateConsultation(IMediator mediator, int id, UpdateConsultationCommand command, CancellationToken cancellationToken)
     {
         command.Id = id;
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command, cancellationToken);
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Consultation updated successfully" })
