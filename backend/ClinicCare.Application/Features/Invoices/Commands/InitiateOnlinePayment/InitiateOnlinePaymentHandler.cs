@@ -39,6 +39,7 @@ public class InitiateOnlinePaymentHandler : IRequestHandler<InitiateOnlinePaymen
             // Get invoice with patient details
             var invoice = await _context.Invoices
                 .Include(i => i.Patient)
+                    .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync(i => i.Id == request.InvoiceId 
                     && i.OrganizationId == organizationId.Value 
                     && i.IsActive, cancellationToken);
@@ -68,9 +69,9 @@ public class InitiateOnlinePaymentHandler : IRequestHandler<InitiateOnlinePaymen
                 InvoiceNumber = invoice.InvoiceNumber,
                 Amount = invoice.BalanceAmount,
                 Currency = "INR",
-                CustomerName = $"{invoice.Patient.FirstName} {invoice.Patient.LastName}".Trim(),
-                CustomerEmail = invoice.Patient.Email ?? string.Empty,
-                CustomerPhone = invoice.Patient.Phone ?? string.Empty,
+                CustomerName = invoice.Patient.User?.FullName ?? string.Empty,
+                CustomerEmail = invoice.Patient.User?.Email ?? string.Empty,
+                CustomerPhone = invoice.Patient.User?.Phone ?? string.Empty,
                 ReturnUrl = request.ReturnUrl,
                 CancelUrl = request.CancelUrl ?? request.ReturnUrl,
                 Metadata = new Dictionary<string, string>

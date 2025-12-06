@@ -64,25 +64,62 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
         builder.Property(x => x.InvoiceDate)
             .IsRequired();
 
-        // Relationships
+        // PrescriptionId property
+        builder.Property(x => x.PrescriptionId)
+            .IsRequired(false);
+
+        // Courier fields
+        builder.Property(x => x.CourierDocketNumber)
+            .HasMaxLength(100)
+            .IsRequired(false);
+
+        builder.Property(x => x.CourierCompany)
+            .HasMaxLength(200)
+            .IsRequired(false);
+
+        builder.Property(x => x.CourierDispatchedDate)
+            .IsRequired(false);
+
+        builder.Property(x => x.CourierTrackingUrl)
+            .HasMaxLength(500)
+            .IsRequired(false);
+
+        builder.Property(x => x.CourierStatus)
+            .HasConversion<int?>()
+            .IsRequired(false);
+
+        // Relationships - Configure explicitly to prevent shadow properties
+        // Organization relationship (from TenantEntity)
         builder.HasOne(x => x.Organization)
             .WithMany()
             .HasForeignKey(x => x.OrganizationId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
+        // Clinic relationship - explicitly use ClinicId and specify the navigation property on Clinic
+        // This prevents EF Core from creating shadow properties
         builder.HasOne(x => x.Clinic)
-            .WithMany()
+            .WithMany(c => c.Invoices)
             .HasForeignKey(x => x.ClinicId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
+        // Patient relationship - explicitly use PatientId and specify the navigation property on Patient
+        // This prevents EF Core from creating shadow properties
         builder.HasOne(x => x.Patient)
-            .WithMany()
+            .WithMany(p => p.Invoices)
             .HasForeignKey(x => x.PatientId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         builder.HasOne(x => x.Consultation)
             .WithOne(x => x.Invoice)
             .HasForeignKey<Invoice>(x => x.ConsultationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Prescription)
+            .WithMany()
+            .HasForeignKey(x => x.PrescriptionId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(x => x.InvoiceItems)

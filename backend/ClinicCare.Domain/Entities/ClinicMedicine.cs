@@ -21,5 +21,6 @@ public class ClinicMedicine : TenantEntity
     public GlobalMedicine? GlobalMedicine { get; set; }
     public ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
     public ICollection<StockTransaction> StockTransactions { get; set; } = new List<StockTransaction>();
-    public ICollection<PrescriptionItem> PrescriptionItems { get; set; } = new List<PrescriptionItem>();
+    // PrescriptionItems collection removed - we don't need to navigate from medicine to prescription items
+    // This prevents EF Core from creating the ClinicMedicineId1 shadow property
 }

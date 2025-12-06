@@ -2,6 +2,7 @@ using ClinicCare.Application.Common.Services;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 
 namespace ClinicCare.Infrastructure.Services;

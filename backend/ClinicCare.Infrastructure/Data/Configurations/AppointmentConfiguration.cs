@@ -50,26 +50,33 @@ namespace ClinicCare.Infrastructure.Data.Configurations
             builder.HasOne(x => x.Organization)
                 .WithMany()
                 .HasForeignKey(x => x.OrganizationId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             builder.HasOne(x => x.Clinic)
-                .WithMany()
+                .WithMany(c => c.Appointments)
                 .HasForeignKey(x => x.ClinicId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             builder.HasOne(x => x.Doctor)
-                .WithMany()
+                .WithMany(d => d.Appointments)
                 .HasForeignKey(x => x.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             builder.HasOne(x => x.Patient)
-                .WithMany()
+                .WithMany(p => p.Appointments)
                 .HasForeignKey(x => x.PatientId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             // Configure one-to-one relationship with Consultation
-            // Note: This relationship will be configured in ConsultationConfiguration
-            // to avoid circular dependency issues
+            // CRITICAL: The relationship is configured ONLY in ConsultationConfiguration
+            // The foreign key (AppointmentId) is on the Consultation side
+            // Appointment does NOT have a foreign key - only a navigation property
+            // We do NOT configure it here to avoid duplicate configuration
+            // This prevents EF Core from creating shadow properties
 
             // Configure indexes - Note: EF Core doesn't support indexes on value object properties directly
             // We'll create indexes on the underlying properties instead

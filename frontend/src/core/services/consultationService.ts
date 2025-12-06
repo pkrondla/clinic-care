@@ -41,7 +41,20 @@ export interface UpdateConsultationRequest {
   consultationFee?: number
 }
 
+export interface GetConsultationsParams {
+  clinicId?: number
+  doctorId?: number
+  patientId?: number
+  startDate?: string
+  endDate?: string
+}
+
 export const consultationService = {
+  getAll: async (params?: GetConsultationsParams): Promise<Consultation[]> => {
+    const response = await apiClient.get('/consultations', { params })
+    return response.data.data || []
+  },
+
   getById: async (id: number): Promise<Consultation> => {
     const response = await apiClient.get(`/consultations/${id}`)
     return response.data.data

@@ -55,37 +55,74 @@ const supplierService = {
    * Get list of suppliers
    */
   async getSuppliers(params: GetSuppliersParams = {}): Promise<Supplier[]> {
-    const response = await api.get<{ data: Supplier[] }>('/suppliers', {
+    const response = await api.get<Supplier[] | { data: Supplier[] }>('/suppliers', {
       params,
     });
-    return response.data.data;
+    
+    // Backend may return array directly or wrapped in ApiResponse
+    if (Array.isArray(response)) {
+      return response;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response && Array.isArray(response.data)) {
+      return response.data;
+    }
+    // Default fallback
+    return [];
   },
 
   /**
    * Get a specific supplier by ID
    */
   async getSupplier(id: number): Promise<Supplier> {
-    const response = await api.get<{ data: Supplier }>(`/suppliers/${id}`);
-    return response.data.data;
+    const response = await api.get<Supplier | { data: Supplier }>(`/suppliers/${id}`);
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as Supplier;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: Supplier }).data;
+    }
+    throw new Error('Invalid supplier response format');
   },
 
   /**
    * Create a new supplier
    */
   async createSupplier(request: CreateSupplierRequest): Promise<Supplier> {
-    const response = await api.post<{ data: Supplier }>('/suppliers', request);
-    return response.data.data;
+    const response = await api.post<Supplier | { data: Supplier }>('/suppliers', request);
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as Supplier;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: Supplier }).data;
+    }
+    throw new Error('Invalid supplier response format');
   },
 
   /**
    * Update an existing supplier
    */
   async updateSupplier(request: UpdateSupplierRequest): Promise<Supplier> {
-    const response = await api.put<{ data: Supplier }>(
+    const response = await api.put<Supplier | { data: Supplier }>(
       `/suppliers/${request.id}`,
       request
     );
-    return response.data.data;
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as Supplier;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: Supplier }).data;
+    }
+    throw new Error('Invalid supplier response format');
   },
 
   /**

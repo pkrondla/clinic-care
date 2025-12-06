@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:prod": "node scripts/generate-config.js production && tsc -b && vite build",
+    "generate-config": "node scripts/generate-config.js",
+    "generate-config:prod": "node scripts/generate-config.js production",
     "lint": "eslint .",
     "preview": "vite preview"
   },

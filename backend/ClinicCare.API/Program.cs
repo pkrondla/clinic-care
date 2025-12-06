@@ -109,6 +109,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+// Register QueueNotificationService (moved to API project to avoid circular dependency)
+builder.Services.AddScoped<ClinicCare.Application.Common.Services.IQueueNotificationService, ClinicCare.API.Services.QueueNotificationService>();
+
 // Add Memory Cache
 builder.Services.AddMemoryCache();
 

@@ -59,17 +59,29 @@ public class CompleteAppointmentHandler : IRequestHandler<CompleteAppointmentCom
             var dto = new AppointmentDto
             {
                 Id = appointment.Id,
-                ClinicId = appointment.ClinicId,
-                DoctorId = appointment.DoctorId,
-                PatientId = appointment.PatientId,
                 AppointmentDate = appointment.AppointmentDate.Value,
                 TokenNumber = appointment.TokenNumber,
                 Type = (int)appointment.Type,
                 Status = (int)appointment.Status,
                 Notes = appointment.Notes,
-                DoctorName = appointment.Doctor.User?.FullName ?? "Unknown",
-                PatientName = appointment.Patient.User?.FullName ?? "Unknown",
-                ClinicName = appointment.Clinic.Name
+                Doctor = new DoctorDto
+                {
+                    Id = appointment.Doctor.Id,
+                    Name = appointment.Doctor.User?.FullName ?? "Unknown",
+                    Qualification = appointment.Doctor.Qualification
+                },
+                Patient = new PatientDto
+                {
+                    Id = appointment.Patient.Id,
+                    Name = appointment.Patient.User?.FullName ?? "Unknown",
+                    PatientCode = appointment.Patient.PatientCode
+                },
+                Clinic = new ClinicDto
+                {
+                    Id = appointment.Clinic.Id,
+                    Name = appointment.Clinic.Name,
+                    Code = appointment.Clinic.Code
+                }
             };
 
             return Result<AppointmentDto>.Success(dto);

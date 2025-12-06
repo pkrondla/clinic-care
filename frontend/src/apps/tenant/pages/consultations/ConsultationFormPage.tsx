@@ -49,8 +49,26 @@ export const ConsultationFormPage = () => {
   if (!appointmentId || !patientId) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
-        <p>Invalid consultation request. Missing appointment or patient information.</p>
-        <Button onClick={() => navigate(-1)}>Go Back</Button>
+        <Card>
+          <h3>Create New Consultation</h3>
+          <p>To create a consultation, please start from:</p>
+          <ul style={{ textAlign: 'left', maxWidth: '400px', margin: '20px auto' }}>
+            <li><strong>Appointments Page:</strong> Select an appointment and click "Start Consultation"</li>
+            <li><strong>Queue Page:</strong> Select a patient from the queue and start consultation</li>
+            <li><strong>Patient Detail Page:</strong> Click "New Consultation" for a specific patient</li>
+          </ul>
+          <Space>
+            <Button type="primary" onClick={() => navigate('/appointments')}>
+              Go to Appointments
+            </Button>
+            <Button onClick={() => navigate('/queue')}>
+              Go to Queue
+            </Button>
+            <Button onClick={() => navigate(-1)}>
+              Go Back
+            </Button>
+          </Space>
+        </Card>
       </div>
     )
   }

@@ -134,19 +134,26 @@ export const useCreateAppointment = () => {
   
   return useMutation({
     mutationFn: appointmentService.createAppointment,
-    onSuccess: (newAppointment) => {
+    onSuccess: (newAppointment: any) => {
       // Invalidate related queries
       queryClient.invalidateQueries({ queryKey: appointmentKeys.lists() })
-      queryClient.invalidateQueries({ 
-        queryKey: appointmentKeys.queue(
-          newAppointment.doctor.id, 
-          newAppointment.clinic.id,
-          newAppointment.appointmentDate
-        ) 
-      })
-      queryClient.invalidateQueries({ queryKey: appointmentKeys.today(newAppointment.clinic.id) })
       
-      toast.success('Appointment created successfully')
+      // Backend returns flat DTO with doctorId/clinicId, not nested objects
+      const doctorId = newAppointment.doctorId ?? newAppointment.doctor?.id
+      const clinicId = newAppointment.clinicId ?? newAppointment.clinic?.id
+      
+      if (doctorId && clinicId) {
+        queryClient.invalidateQueries({ 
+          queryKey: appointmentKeys.queue(
+            doctorId, 
+            clinicId,
+            newAppointment.appointmentDate
+          ) 
+        })
+        queryClient.invalidateQueries({ queryKey: appointmentKeys.today(clinicId) })
+      }
+      
+      toast.success(`Appointment created! Token number: ${newAppointment.tokenNumber}`)
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || 'Failed to create appointment')

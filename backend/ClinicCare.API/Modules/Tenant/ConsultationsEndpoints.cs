@@ -2,7 +2,9 @@ using ClinicCare.Application.Features.Consultations.Commands.CreateConsultation;
 using ClinicCare.Application.Features.Consultations.Commands.UpdateConsultation;
 using ClinicCare.Application.Features.Consultations.Queries.GetConsultation;
 using ClinicCare.Application.Features.Consultations.Queries.GetPatientConsultations;
+using ClinicCare.Application.Features.Consultations.Queries.GetConsultations;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicCare.API.Modules.Tenant;
 
@@ -14,6 +16,13 @@ public static class ConsultationsEndpoints
             .WithTags("Consultations")
             .WithOpenApi()
             .RequireAuthorization();
+
+        // Get all consultations with optional filters
+        group.MapGet("/", GetConsultations)
+            .WithName("GetConsultations")
+            .WithSummary("Get all consultations with optional filtering")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
 
         // Get consultation by ID
         group.MapGet("/{id:int}", GetConsultation)
@@ -43,6 +52,29 @@ public static class ConsultationsEndpoints
             .Produces<object>(StatusCodes.Status404NotFound);
 
         return app;
+    }
+
+    private static async Task<IResult> GetConsultations(
+        IMediator mediator,
+        [FromQuery] int? clinicId,
+        [FromQuery] int? doctorId,
+        [FromQuery] int? patientId,
+        [FromQuery] DateOnly? startDate,
+        [FromQuery] DateOnly? endDate)
+    {
+        var query = new GetConsultationsQuery
+        {
+            ClinicId = clinicId,
+            DoctorId = doctorId,
+            PatientId = patientId,
+            StartDate = startDate,
+            EndDate = endDate
+        };
+        var result = await mediator.Send(query);
+
+        return result.Succeeded
+            ? Results.Ok(new { success = true, data = result.Data })
+            : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
     private static async Task<IResult> GetConsultation(IMediator mediator, int id)

@@ -30,12 +30,24 @@ public class GetQueueHandler : IRequestHandler<GetQueueQuery, Result<DoctorQueue
 
             var date = request.Date ?? DateOnly.FromDateTime(DateTime.Today);
 
-            // Get doctor
+            // Get doctor - try to find by DoctorProfile.Id first, then by UserId
+            // This allows both doctor viewing their own queue (using UserId) 
+            // and staff viewing doctor queues (using DoctorProfile.Id)
             var doctor = await _context.DoctorProfiles
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(d => d.Id == request.DoctorId 
                                        && d.OrganizationId == organizationId.Value 
                                        && d.IsActive, cancellationToken);
+
+            // If not found by DoctorProfile.Id, try finding by UserId (for doctor viewing their own queue)
+            if (doctor == null)
+            {
+                doctor = await _context.DoctorProfiles
+                    .Include(d => d.User)
+                    .FirstOrDefaultAsync(d => d.UserId == request.DoctorId 
+                                           && d.OrganizationId == organizationId.Value 
+                                           && d.IsActive, cancellationToken);
+            }
 
             if (doctor == null)
             {
@@ -43,10 +55,11 @@ public class GetQueueHandler : IRequestHandler<GetQueueQuery, Result<DoctorQueue
             }
 
             // Get all appointments for this doctor on this date
+            // Use doctor.Id (DoctorProfile.Id) for appointments
             var appointmentsQuery = _context.Appointments
                 .Include(a => a.Patient)
                     .ThenInclude(p => p.User)
-                .Where(a => a.DoctorId == request.DoctorId
+                .Where(a => a.DoctorId == doctor.Id
                          && a.AppointmentDate.Value == date
                          && a.OrganizationId == organizationId.Value
                          && a.IsActive);

@@ -1,14 +1,18 @@
 import { useState } from 'react'
-import { Button, Table, Tag, Space, Input, Modal, Form, message } from 'antd'
+import { Button, Table, Tag, Space, Input, Modal, Form, message, Divider, Typography } from 'antd'
 import { PlusOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { clinicService, type Clinic } from '@core/services/clinicService'
+import { clinicService, type Clinic, OperatingHoursType } from '@core/services/clinicService'
+import { OperatingHoursForm } from '../../components/OperatingHoursForm'
 import dayjs from 'dayjs'
+
+const { Text } = Typography;
 
 export const ClinicsPage = () => {
   const [searchText, setSearchText] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingClinic, setEditingClinic] = useState<Clinic | null>(null)
+  const [operatingHoursType, setOperatingHoursType] = useState<OperatingHoursType>(OperatingHoursType.SingleShift)
   const [form] = Form.useForm()
   const queryClient = useQueryClient()
 
@@ -47,13 +51,51 @@ export const ClinicsPage = () => {
 
   const handleCreate = () => {
     setEditingClinic(null)
+    setOperatingHoursType(OperatingHoursType.SingleShift)
     form.resetFields()
+    form.setFieldsValue({
+      operatingHoursType: OperatingHoursType.SingleShift,
+      fullDayStartTime: dayjs('10:00', 'HH:mm'),
+      fullDayEndTime: dayjs('17:00', 'HH:mm'),
+    })
     setIsModalOpen(true)
   }
 
   const handleEdit = (clinic: Clinic) => {
     setEditingClinic(clinic)
-    form.setFieldsValue(clinic)
+    setOperatingHoursType(clinic.operatingHoursType || OperatingHoursType.SingleShift)
+    
+    const formValues: any = {
+      name: clinic.name,
+      code: clinic.code,
+      address: clinic.address,
+      phone: clinic.phone,
+      email: clinic.email,
+      operatingHoursType: clinic.operatingHoursType || OperatingHoursType.SingleShift,
+      isActive: clinic.isActive,
+    }
+
+    // Set time values if they exist
+    if (clinic.fullDayStartTime) {
+      formValues.fullDayStartTime = dayjs(clinic.fullDayStartTime, 'HH:mm:ss')
+    }
+    if (clinic.fullDayEndTime) {
+      formValues.fullDayEndTime = dayjs(clinic.fullDayEndTime, 'HH:mm:ss')
+    }
+    if (clinic.morningStartTime) {
+      formValues.morningStartTime = dayjs(clinic.morningStartTime, 'HH:mm:ss')
+    }
+    if (clinic.morningEndTime) {
+      formValues.morningEndTime = dayjs(clinic.morningEndTime, 'HH:mm:ss')
+    }
+    if (clinic.eveningStartTime) {
+      formValues.eveningStartTime = dayjs(clinic.eveningStartTime, 'HH:mm:ss')
+    }
+    if (clinic.eveningEndTime) {
+      formValues.eveningEndTime = dayjs(clinic.eveningEndTime, 'HH:mm:ss')
+    }
+
+    form.setFieldsValue(formValues)
     setIsModalOpen(true)
   }
 
@@ -61,10 +103,32 @@ export const ClinicsPage = () => {
     try {
       const values = await form.validateFields()
       
-      if (editingClinic) {
-        updateMutation.mutate({ id: editingClinic.id, data: values })
+      // Format time values to HH:mm:ss
+      const formattedValues: any = {
+        name: values.name,
+        code: values.code,
+        address: values.address,
+        phone: values.phone,
+        email: values.email,
+        operatingHoursType: values.operatingHoursType,
+      }
+
+      // Add time fields based on operating hours type
+      if (values.operatingHoursType === OperatingHoursType.SingleShift) {
+        formattedValues.fullDayStartTime = values.fullDayStartTime?.format('HH:mm:ss')
+        formattedValues.fullDayEndTime = values.fullDayEndTime?.format('HH:mm:ss')
       } else {
-        createMutation.mutate(values)
+        formattedValues.morningStartTime = values.morningStartTime?.format('HH:mm:ss')
+        formattedValues.morningEndTime = values.morningEndTime?.format('HH:mm:ss')
+        formattedValues.eveningStartTime = values.eveningStartTime?.format('HH:mm:ss')
+        formattedValues.eveningEndTime = values.eveningEndTime?.format('HH:mm:ss')
+      }
+
+      if (editingClinic) {
+        formattedValues.isActive = values.isActive
+        updateMutation.mutate({ id: editingClinic.id, data: formattedValues })
+      } else {
+        createMutation.mutate(formattedValues)
       }
     } catch (error) {
       console.error('Validation failed:', error)
@@ -104,6 +168,40 @@ export const ClinicsPage = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email'
+    },
+    {
+      title: 'Operating Hours',
+      key: 'operatingHours',
+      render: (_: any, record: Clinic) => {
+        if (record.operatingHoursType === OperatingHoursType.SingleShift) {
+          return (
+            <Space direction="vertical" size={0}>
+              <Tag color="blue">Single Shift</Tag>
+              {record.fullDayStartTime && record.fullDayEndTime && (
+                <Text style={{ fontSize: '12px' }}>
+                  {dayjs(record.fullDayStartTime, 'HH:mm:ss').format('hh:mm A')} - {dayjs(record.fullDayEndTime, 'HH:mm:ss').format('hh:mm A')}
+                </Text>
+              )}
+            </Space>
+          )
+        } else {
+          return (
+            <Space direction="vertical" size={0}>
+              <Tag color="purple">Split Shift</Tag>
+              {record.morningStartTime && record.morningEndTime && (
+                <Text style={{ fontSize: '11px' }}>
+                  ☀️ {dayjs(record.morningStartTime, 'HH:mm:ss').format('hh:mm A')} - {dayjs(record.morningEndTime, 'HH:mm:ss').format('hh:mm A')}
+                </Text>
+              )}
+              {record.eveningStartTime && record.eveningEndTime && (
+                <Text style={{ fontSize: '11px' }}>
+                  🌙 {dayjs(record.eveningStartTime, 'HH:mm:ss').format('hh:mm A')} - {dayjs(record.eveningEndTime, 'HH:mm:ss').format('hh:mm A')}
+                </Text>
+              )}
+            </Space>
+          )
+        }
+      }
     },
     {
       title: 'Status',
@@ -190,13 +288,16 @@ export const ClinicsPage = () => {
           form.resetFields()
         }}
         confirmLoading={createMutation.isPending || updateMutation.isPending}
-        width={600}
+        width={800}
       >
         <Form
           form={form}
           layout="vertical"
           style={{ marginTop: '24px' }}
         >
+          <Text strong style={{ fontSize: '16px' }}>Basic Information</Text>
+          <Divider style={{ marginTop: 8, marginBottom: 16 }} />
+
           <Form.Item
             label="Clinic Name"
             name="name"
@@ -242,14 +343,30 @@ export const ClinicsPage = () => {
             </Form.Item>
           </div>
 
+          <Text strong style={{ fontSize: '16px', marginTop: 16, display: 'block' }}>
+            ⏰ Operating Hours
+          </Text>
+          <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginBottom: 16 }}>
+            Set the default working hours for this clinic. Doctors assigned to this clinic will automatically follow these hours.
+          </Text>
+          <Divider style={{ marginTop: 8, marginBottom: 16 }} />
+
+          <OperatingHoursForm 
+            operatingHoursType={operatingHoursType}
+            onTypeChange={setOperatingHoursType}
+          />
+
           {editingClinic && (
-            <Form.Item
-              label="Active"
-              name="isActive"
-              valuePropName="checked"
-            >
-              <input type="checkbox" />
-            </Form.Item>
+            <>
+              <Divider />
+              <Form.Item
+                label="Status"
+                name="isActive"
+                valuePropName="checked"
+              >
+                <input type="checkbox" />
+              </Form.Item>
+            </>
           )}
         </Form>
       </Modal>

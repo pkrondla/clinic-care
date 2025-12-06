@@ -3,6 +3,7 @@ using ClinicCare.Application.Common.Models;
 using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Features.Invoices.Commands.PayInvoice;
 using ClinicCare.Domain.Enums;
+using PaymentStatus = ClinicCare.Application.Common.Services.PaymentStatus;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

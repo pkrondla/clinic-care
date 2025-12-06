@@ -1,4 +1,5 @@
 using ClinicCare.Domain.Common;
+using ClinicCare.Domain.Modules.Appointments.Entities;
 
 namespace ClinicCare.Domain.Entities;
 
@@ -6,6 +7,9 @@ public class Patient : TenantEntity
 {
     public int UserId { get; set; }
     public string PatientCode { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
     public DateOnly DateOfBirth { get; set; }
     public string Gender { get; set; } = string.Empty;
     public string BloodGroup { get; set; } = string.Empty;

@@ -101,7 +101,7 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ClinicCare.Application.Common.Services.ITokenNumberService, TokenNumberService>();
-        services.AddScoped<ClinicCare.Application.Common.Services.IQueueNotificationService, QueueNotificationService>();
+        // QueueNotificationService is registered in API Program.cs because it requires IHubContext<QueueHub>
         services.AddScoped<ClinicCare.Application.Common.Services.IPdfService, PdfService>();
         services.AddScoped<ClinicCare.Application.Common.Services.IWhatsAppService, WhatsAppService>();
         services.AddScoped<ClinicCare.Application.Common.Services.IEmailService, EmailService>();

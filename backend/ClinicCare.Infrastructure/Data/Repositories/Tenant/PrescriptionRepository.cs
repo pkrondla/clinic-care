@@ -29,7 +29,7 @@ public class PrescriptionRepository : IPrescriptionRepository
                 .ThenInclude(c => c.Appointment)
                     .ThenInclude(a => a.Doctor)
             .Include(p => p.PrescriptionItems)
-                .ThenInclude(pi => pi.Medicine)
+                // Don't include Medicine navigation property - it's ignored in configuration
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
@@ -37,7 +37,7 @@ public class PrescriptionRepository : IPrescriptionRepository
     {
         return await _context.Prescriptions
             .Include(p => p.PrescriptionItems)
-                .ThenInclude(pi => pi.Medicine)
+                // Don't include Medicine navigation property - it's ignored in configuration
             .FirstOrDefaultAsync(p => p.ConsultationId == consultationId, cancellationToken);
     }
 

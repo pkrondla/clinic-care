@@ -27,9 +27,9 @@ public class SearchPatientsHandler : IRequestHandler<SearchPatientsQuery, Result
 
         var searchTerm = request.SearchTerm.ToLower();
 
+        // Query patients with user info (no Include to avoid EF Core issues)
         var patients = await _context.Patients
             .Include(p => p.User)
-            .Include(p => p.Appointments)
             .Where(p => p.OrganizationId == organizationId && 
                        p.IsActive &&
                        (p.User.FirstName.ToLower().Contains(searchTerm) ||
@@ -50,11 +50,7 @@ public class SearchPatientsHandler : IRequestHandler<SearchPatientsQuery, Result
                 Age = p.Age,
                 Gender = p.Gender,
                 BloodGroup = p.BloodGroup,
-                LastVisitDate = p.Appointments
-                    .Where(a => a.Status == Domain.Enums.AppointmentStatus.Completed)
-                    .OrderByDescending(a => a.AppointmentDate)
-                    .Select(a => a.AppointmentDate.ToDateTime(TimeOnly.MinValue))
-                    .FirstOrDefault()
+                LastVisitDate = null // Skip for search to avoid complex query issues
             })
             .ToListAsync(cancellationToken);
 

@@ -33,16 +33,14 @@ BEGIN
         CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
         UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
         
-        CONSTRAINT FK_PurchaseOrders_Organizations FOREIGN KEY (OrganizationId) 
-            REFERENCES dbo.Organizations(Id) ON DELETE RESTRICT,
         CONSTRAINT FK_PurchaseOrders_Clinics FOREIGN KEY (ClinicId) 
-            REFERENCES Clinics(Id) ON DELETE RESTRICT,
+            REFERENCES Clinics(Id) ON DELETE NO ACTION,
         CONSTRAINT FK_PurchaseOrders_Suppliers FOREIGN KEY (SupplierId) 
-            REFERENCES Suppliers(Id) ON DELETE RESTRICT,
+            REFERENCES Suppliers(Id) ON DELETE NO ACTION,
         CONSTRAINT FK_PurchaseOrders_ApprovedByUser FOREIGN KEY (ApprovedByUserId) 
-            REFERENCES Users(Id) ON DELETE SET NULL,
+            REFERENCES Users(Id) ON DELETE NO ACTION,
         CONSTRAINT FK_PurchaseOrders_ReceivedByUser FOREIGN KEY (ReceivedByUserId) 
-            REFERENCES Users(Id) ON DELETE SET NULL
+            REFERENCES Users(Id) ON DELETE NO ACTION
     );
     
     CREATE UNIQUE INDEX IX_PurchaseOrders_OrganizationOrderNumber 
@@ -78,12 +76,10 @@ BEGIN
         CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
         UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
         
-        CONSTRAINT FK_PurchaseOrderItems_Organizations FOREIGN KEY (OrganizationId) 
-            REFERENCES dbo.Organizations(Id) ON DELETE RESTRICT,
         CONSTRAINT FK_PurchaseOrderItems_PurchaseOrders FOREIGN KEY (PurchaseOrderId) 
             REFERENCES PurchaseOrders(Id) ON DELETE CASCADE,
         CONSTRAINT FK_PurchaseOrderItems_ClinicMedicines FOREIGN KEY (MedicineId) 
-            REFERENCES ClinicMedicines(Id) ON DELETE RESTRICT
+            REFERENCES ClinicMedicines(Id) ON DELETE NO ACTION
     );
     
     CREATE INDEX IX_PurchaseOrderItems_PurchaseOrder 

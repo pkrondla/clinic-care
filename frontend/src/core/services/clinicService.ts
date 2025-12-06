@@ -1,5 +1,10 @@
 import apiClient from './apiClient'
 
+export enum OperatingHoursType {
+  SingleShift = 0,
+  SplitShift = 1,
+}
+
 export interface Clinic {
   id: number
   organizationId: number
@@ -8,6 +13,13 @@ export interface Clinic {
   address?: string
   phone?: string
   email?: string
+  operatingHoursType: OperatingHoursType
+  morningStartTime?: string
+  morningEndTime?: string
+  eveningStartTime?: string
+  eveningEndTime?: string
+  fullDayStartTime?: string
+  fullDayEndTime?: string
   isActive: boolean
   createdAt: string
 }
@@ -18,6 +30,13 @@ export interface CreateClinicRequest {
   address?: string
   phone?: string
   email?: string
+  operatingHoursType: OperatingHoursType
+  morningStartTime?: string
+  morningEndTime?: string
+  eveningStartTime?: string
+  eveningEndTime?: string
+  fullDayStartTime?: string
+  fullDayEndTime?: string
 }
 
 export interface UpdateClinicRequest {
@@ -25,6 +44,13 @@ export interface UpdateClinicRequest {
   address?: string
   phone?: string
   email?: string
+  operatingHoursType?: OperatingHoursType
+  morningStartTime?: string
+  morningEndTime?: string
+  eveningStartTime?: string
+  eveningEndTime?: string
+  fullDayStartTime?: string
+  fullDayEndTime?: string
   isActive?: boolean
 }
 

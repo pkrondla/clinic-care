@@ -2,7 +2,9 @@ using ClinicCare.Application.Features.Prescriptions.Commands.CreatePrescription;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPatientPrescriptions;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPrescription;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPrescriptionPdf;
+using ClinicCare.Application.Features.Prescriptions.Queries.GetPrescriptions;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicCare.API.Modules.Tenant;
 
@@ -14,6 +16,13 @@ public static class PrescriptionsEndpoints
             .WithTags("Prescriptions")
             .WithOpenApi()
             .RequireAuthorization();
+
+        // Get all prescriptions with optional filters
+        group.MapGet("/", GetPrescriptions)
+            .WithName("GetPrescriptions")
+            .WithSummary("Get all prescriptions with optional filtering")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
 
         // Get prescription by ID
         group.MapGet("/{id:int}", GetPrescription)
@@ -44,6 +53,29 @@ public static class PrescriptionsEndpoints
             .Produces<object>(StatusCodes.Status404NotFound);
 
         return app;
+    }
+
+    private static async Task<IResult> GetPrescriptions(
+        IMediator mediator,
+        [FromQuery] int? clinicId,
+        [FromQuery] int? doctorId,
+        [FromQuery] int? patientId,
+        [FromQuery] DateOnly? startDate,
+        [FromQuery] DateOnly? endDate)
+    {
+        var query = new GetPrescriptionsQuery
+        {
+            ClinicId = clinicId,
+            DoctorId = doctorId,
+            PatientId = patientId,
+            StartDate = startDate,
+            EndDate = endDate
+        };
+        var result = await mediator.Send(query);
+
+        return result.Succeeded
+            ? Results.Ok(new { success = true, data = result.Data })
+            : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
     private static async Task<IResult> GetPrescription(IMediator mediator, int id)

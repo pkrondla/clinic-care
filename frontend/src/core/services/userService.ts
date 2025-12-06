@@ -91,8 +91,21 @@ class UserService {
     if (filters?.clinicId) params.append('clinicId', filters.clinicId.toString())
     if (filters?.isActive !== undefined) params.append('isActive', filters.isActive.toString())
 
-    const response = await api.get<User[]>(`/users?${params.toString()}`)
-    return response.data
+    const queryString = params.toString()
+    const url = queryString ? `/users?${queryString}` : '/users'
+    const response = await api.get<User[]>(url)
+    
+    // Backend returns array directly, not wrapped in ApiResponse
+    // api.get returns response.data which is the array itself
+    if (Array.isArray(response)) {
+      return response
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response && Array.isArray(response.data)) {
+      return response.data
+    }
+    // Safety fallback
+    return []
   }
 
   async getUser(id: number): Promise<User> {

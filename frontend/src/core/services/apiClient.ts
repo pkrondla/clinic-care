@@ -37,9 +37,11 @@ const getAuthState = () => {
   return isGlobalDomain ? globalAuth : tenantAuth
 }
 
+import { API_URL } from '@core/config';
+
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: API_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'

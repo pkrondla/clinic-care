@@ -1,5 +1,6 @@
 using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Common.Interfaces;
+using ClinicCare.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

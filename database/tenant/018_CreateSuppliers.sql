@@ -29,10 +29,7 @@ BEGIN
         Notes NVARCHAR(1000) NULL,
         IsActive BIT NOT NULL DEFAULT 1,
         CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-        UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-        
-        CONSTRAINT FK_Suppliers_Organizations FOREIGN KEY (OrganizationId) 
-            REFERENCES dbo.Organizations(Id) ON DELETE RESTRICT
+        UpdatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE()
     );
     
     CREATE INDEX IX_Suppliers_OrganizationName ON Suppliers(OrganizationId, Name);

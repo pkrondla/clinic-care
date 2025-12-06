@@ -33,12 +33,15 @@ public class GetCollectionReportHandler : IRequestHandler<GetCollectionReportQue
             var endDate = request.EndDate.Date.AddDays(1).AddTicks(-1); // End of day
 
             // Base query for invoices
+            // CRITICAL: We avoid including Consultation.Appointment to prevent shadow property issues
+            // The Appointment navigation is not needed for the collection report
             var invoicesQuery = _context.Invoices
                 .Include(i => i.Clinic)
                 .Include(i => i.Prescription)
                     .ThenInclude(p => p!.Consultation)
                         .ThenInclude(c => c!.Doctor)
                             .ThenInclude(d => d.User)
+                // Explicitly exclude Appointment navigation to prevent EF Core from creating shadow properties
                 .Where(i => i.OrganizationId == organizationId.Value
                     && i.InvoiceDate >= startDate
                     && i.InvoiceDate <= endDate

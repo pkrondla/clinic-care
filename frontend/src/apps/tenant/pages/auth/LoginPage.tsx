@@ -48,23 +48,25 @@ export const LoginPage = () => {
         let mappedRole: UserRole
         
         // Backend UserRole enum: SuperAdmin=1, Admin=2, Doctor=3, Staff=4, Patient=5
-        // Frontend expects string enum values
+        // Frontend UserRole enum: SuperAdmin, OrganizationAdmin (Admin), Doctor, Reception (Staff), Patient
         if (typeof rawRole === 'number') {
           // Map numeric role to string enum
-          mappedRole = rawRole === 1 ? UserRole.Admin : // Backend Admin (Organization Admin) maps to frontend Admin
-                      rawRole === 2 ? UserRole.Doctor :
-                      rawRole === 3 ? UserRole.Reception : // Backend Staff maps to frontend Reception
-                      rawRole === 4 ? UserRole.Patient :
-                      UserRole.Admin // default
+          mappedRole = rawRole === 1 ? UserRole.SuperAdmin :
+                      rawRole === 2 ? UserRole.OrganizationAdmin : // Backend Admin (2) = Frontend OrganizationAdmin
+                      rawRole === 3 ? UserRole.Doctor :
+                      rawRole === 4 ? UserRole.Reception : // Backend Staff (4) = Frontend Reception
+                      rawRole === 5 ? UserRole.Patient :
+                      UserRole.OrganizationAdmin // default to Admin
         } else if (typeof rawRole === 'string') {
           // Already a string, try to match it
-          mappedRole = rawRole === 'Admin' || rawRole === 'OrganizationAdmin' || rawRole === '1' ? UserRole.Admin :
+          mappedRole = rawRole === 'SuperAdmin' || rawRole === '1' ? UserRole.SuperAdmin :
+                      rawRole === 'Admin' || rawRole === 'OrganizationAdmin' || rawRole === '2' ? UserRole.OrganizationAdmin :
                       rawRole === 'Doctor' || rawRole === '3' ? UserRole.Doctor :
                       rawRole === 'Staff' || rawRole === 'Reception' || rawRole === '4' ? UserRole.Reception :
                       rawRole === 'Patient' || rawRole === '5' ? UserRole.Patient :
-                      UserRole.Admin // default
+                      UserRole.OrganizationAdmin // default to Admin
         } else {
-          mappedRole = UserRole.Admin // default
+          mappedRole = UserRole.OrganizationAdmin // default to Admin
         }
         
         console.log('TenantLoginPage: Role mapping', { rawRole, mappedRole })

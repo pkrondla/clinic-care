@@ -6,6 +6,7 @@ using ClinicCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace ClinicCare.Infrastructure.Services;
 

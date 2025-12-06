@@ -30,9 +30,9 @@ export const appointmentService = {
   },
 
   // Create new appointment
-  createAppointment: async (appointment: CreateAppointmentRequest): Promise<Appointment> => {
-    const response = await api.post<Appointment>('/appointments', appointment)
-    return response.data as Appointment
+  createAppointment: async (appointment: CreateAppointmentRequest): Promise<any> => {
+    const response = await api.post<any>('/appointments', appointment)
+    return response.data
   },
 
   // Update appointment status

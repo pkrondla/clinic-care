@@ -4,7 +4,7 @@ import type { Organization, CreateOrganizationDto, SubscriptionPlan } from '../t
 import type { Medicine } from '../types/medicine';
 import type { SystemStats } from '../types/statistics';
 
-// Vite proxy is configured to proxy /api to http://localhost:51537
+// Vite proxy is configured to proxy /api to http://localhost:7000
 // So we should use relative URLs and let Vite handle the proxying
 // This avoids CORS issues and double /api/api/ URLs
 const globalApiClient = axios.create({

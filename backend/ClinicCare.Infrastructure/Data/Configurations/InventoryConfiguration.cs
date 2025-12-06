@@ -55,10 +55,13 @@ public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
             .HasForeignKey(x => x.OrganizationId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Clinic relationship - explicitly use ClinicId and specify the navigation property on Clinic
+        // This prevents EF Core from creating shadow properties
         builder.HasOne(x => x.Clinic)
-            .WithMany()
+            .WithMany(c => c.Inventories)
             .HasForeignKey(x => x.ClinicId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         builder.HasOne(x => x.Medicine)
             .WithMany(x => x.Inventories)

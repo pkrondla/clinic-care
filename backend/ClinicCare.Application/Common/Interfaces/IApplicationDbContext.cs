@@ -1,10 +1,13 @@
 using ClinicCare.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ClinicCare.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
+    // Database facade for transactions
+    DatabaseFacade Database { get; }
     // Global Tables
     DbSet<GlobalMedicine> GlobalMedicines { get; }
     
@@ -27,6 +30,9 @@ public interface IApplicationDbContext
     DbSet<Invoice> Invoices { get; }
     DbSet<InvoiceItem> InvoiceItems { get; }
     DbSet<Communication> Communications { get; }
+    DbSet<Supplier> Suppliers { get; }
+    DbSet<PurchaseOrder> PurchaseOrders { get; }
+    DbSet<PurchaseOrderItem> PurchaseOrderItems { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -86,65 +86,114 @@ const purchaseOrderService = {
    * Get list of purchase orders
    */
   async getPurchaseOrders(params: GetPurchaseOrdersParams = {}): Promise<PurchaseOrder[]> {
-    const response = await api.get<{ data: PurchaseOrder[] }>('/purchase-orders', {
+    const response = await api.get<PurchaseOrder[] | { data: PurchaseOrder[] }>('/purchase-orders', {
       params,
     });
-    return response.data.data;
+    
+    // Backend may return array directly or wrapped in ApiResponse
+    if (Array.isArray(response)) {
+      return response;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response && Array.isArray(response.data)) {
+      return response.data;
+    }
+    // Default fallback
+    return [];
   },
 
   /**
    * Get a specific purchase order by ID
    */
   async getPurchaseOrder(id: number): Promise<PurchaseOrder> {
-    const response = await api.get<{ data: PurchaseOrder }>(`/purchase-orders/${id}`);
-    return response.data.data;
+    const response = await api.get<PurchaseOrder | { data: PurchaseOrder }>(`/purchase-orders/${id}`);
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as PurchaseOrder;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: PurchaseOrder }).data;
+    }
+    throw new Error('Invalid purchase order response format');
   },
 
   /**
    * Create a new purchase order
    */
   async createPurchaseOrder(request: CreatePurchaseOrderRequest): Promise<PurchaseOrder> {
-    const response = await api.post<{ data: PurchaseOrder }>('/purchase-orders', request);
-    return response.data.data;
+    const response = await api.post<PurchaseOrder | { data: PurchaseOrder }>('/purchase-orders', request);
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as PurchaseOrder;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: PurchaseOrder }).data;
+    }
+    throw new Error('Invalid purchase order response format');
   },
 
   /**
    * Approve a purchase order
    */
   async approvePurchaseOrder(id: number): Promise<PurchaseOrder> {
-    const response = await api.post<{ data: PurchaseOrder }>(
+    const response = await api.post<PurchaseOrder | { data: PurchaseOrder }>(
       `/purchase-orders/${id}/approve`,
       {}
     );
-    return response.data.data;
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as PurchaseOrder;
+    }
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: PurchaseOrder }).data;
+    }
+    throw new Error('Invalid purchase order response format');
   },
 
   /**
    * Receive items from a purchase order
    */
   async receivePurchaseOrder(request: ReceivePurchaseOrderRequest): Promise<PurchaseOrder> {
-    const response = await api.post<{ data: PurchaseOrder }>(
+    const response = await api.post<PurchaseOrder | { data: PurchaseOrder }>(
       `/purchase-orders/${request.id}/receive`,
       request
     );
-    if (!response.data?.data) {
-      throw new Error('Failed to receive purchase order');
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as PurchaseOrder;
     }
-    return response.data.data;
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: PurchaseOrder }).data;
+    }
+    throw new Error('Failed to receive purchase order');
   },
 
   /**
    * Cancel a purchase order
    */
   async cancelPurchaseOrder(id: number, reason?: string): Promise<PurchaseOrder> {
-    const response = await api.post<{ data: PurchaseOrder }>(
+    const response = await api.post<PurchaseOrder | { data: PurchaseOrder }>(
       `/purchase-orders/${id}/cancel`,
       { reason }
     );
-    if (!response.data?.data) {
-      throw new Error('Failed to cancel purchase order');
+    
+    // Backend may return object directly or wrapped in ApiResponse
+    if (response && typeof response === 'object' && 'id' in response) {
+      return response as PurchaseOrder;
     }
-    return response.data.data;
+    // Fallback: if wrapped in ApiResponse, extract data
+    if (response && typeof response === 'object' && 'data' in response) {
+      return (response as { data: PurchaseOrder }).data;
+    }
+    throw new Error('Failed to cancel purchase order');
   },
 };
 

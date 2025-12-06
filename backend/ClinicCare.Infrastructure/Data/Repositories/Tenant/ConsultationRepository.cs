@@ -58,7 +58,7 @@ public class ConsultationRepository : IConsultationRepository
 
         if (date.HasValue)
         {
-            query = query.Where(c => c.Appointment.AppointmentDate == date.Value);
+            query = query.Where(c => c.Appointment.AppointmentDate.Value == date.Value);
         }
 
         return await query

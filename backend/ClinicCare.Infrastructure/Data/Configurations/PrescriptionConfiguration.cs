@@ -65,6 +65,11 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
 
         builder.HasKey(x => x.Id);
 
+        // Explicitly map MedicineId to avoid shadow property
+        builder.Property(x => x.MedicineId)
+            .IsRequired()
+            .HasColumnName("MedicineId");
+
         builder.Property(x => x.MedicineName)
             .IsRequired()
             .HasMaxLength(200);
@@ -103,10 +108,12 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
             .HasForeignKey(x => x.PrescriptionId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(x => x.Medicine)
-            .WithMany()
-            .HasForeignKey(x => x.MedicineId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // CRITICAL: MedicineId has a foreign key in the database (FK_PrescriptionItems_Medicine)
+        // but we don't have a navigation property in the entity
+        // Tell EF Core that MedicineId is a foreign key column but don't configure a relationship
+        // This prevents shadow property creation
+        builder.HasIndex(x => x.MedicineId)
+            .HasDatabaseName("IX_PrescriptionItems_MedicineId");
     }
 }
 

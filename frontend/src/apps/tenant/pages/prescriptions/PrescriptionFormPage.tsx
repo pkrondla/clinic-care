@@ -124,8 +124,25 @@ export const PrescriptionFormPage = () => {
   if (!consultationId || !patientId) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
-        <p>Invalid prescription request. Missing consultation or patient information.</p>
-        <Button onClick={() => navigate(-1)}>Go Back</Button>
+        <Card>
+          <h3>Create New Prescription</h3>
+          <p>To create a prescription, please start from:</p>
+          <ul style={{ textAlign: 'left', maxWidth: '400px', margin: '20px auto' }}>
+            <li><strong>Consultations Page:</strong> Complete a consultation first, which will automatically redirect to prescription creation</li>
+            <li><strong>After Consultation:</strong> The system will automatically navigate here with the correct consultation context</li>
+          </ul>
+          <Space>
+            <Button type="primary" onClick={() => navigate('/consultations')}>
+              Go to Consultations
+            </Button>
+            <Button onClick={() => navigate('/appointments')}>
+              Go to Appointments
+            </Button>
+            <Button onClick={() => navigate(-1)}>
+              Go Back
+            </Button>
+          </Space>
+        </Card>
       </div>
     )
   }

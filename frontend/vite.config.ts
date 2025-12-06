@@ -53,12 +53,12 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:51537',
+        target: 'http://localhost:7000',
         changeOrigin: true,
         secure: false
       },
       '/queueHub': {
-        target: 'ws://localhost:51537',
+        target: 'ws://localhost:7000',
         changeOrigin: true,
         secure: false,
         ws: true

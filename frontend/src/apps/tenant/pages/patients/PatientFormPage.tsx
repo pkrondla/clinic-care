@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { 
   Card, 
   Form, 
@@ -9,7 +9,8 @@ import {
   Row, 
   Col, 
   Typography, 
-  Space
+  Space,
+  Alert
 } from 'antd'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -21,11 +22,29 @@ import dayjs from 'dayjs'
 const { Title } = Typography
 const { TextArea } = Input
 
+// Helper function to extract error message from API error
+const getErrorMessage = (error: any): string[] => {
+  if (!error) return []
+  
+  const responseData = error.response?.data
+  if (responseData?.errors && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+    return responseData.errors
+  }
+  if (responseData?.message) {
+    return [responseData.message]
+  }
+  if (error.message) {
+    return [error.message]
+  }
+  return ['An unexpected error occurred']
+}
+
 export const PatientFormPage = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [form] = Form.useForm()
   const isEdit = !!id
+  const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   const { data: patient, isLoading: patientLoading } = usePatient(Number(id))
   const createPatientMutation = useCreatePatient()
@@ -40,7 +59,16 @@ export const PatientFormPage = () => {
     }
   }, [isEdit, patient, form])
 
+  // Clear errors when user starts typing
+  const handleFieldChange = () => {
+    if (errorMessages.length > 0) {
+      setErrorMessages([])
+    }
+  }
+
   const onFinish = async (values: any) => {
+    setErrorMessages([]) // Clear previous errors
+    
     try {
       const formData = {
         ...values,
@@ -57,8 +85,10 @@ export const PatientFormPage = () => {
       }
       
       navigate('/patients')
-    } catch (error) {
-      // Error is handled by the mutation
+    } catch (error: any) {
+      // Extract and display error messages
+      const messages = getErrorMessage(error)
+      setErrorMessages(messages)
     }
   }
 
@@ -79,11 +109,32 @@ export const PatientFormPage = () => {
       </div>
 
       <Card>
+        {/* Display error messages as a persistent Alert */}
+        {errorMessages.length > 0 && (
+          <Alert
+            message="Error"
+            description={
+              <ul style={{ margin: 0, paddingLeft: 20 }}>
+                {errorMessages.map((msg, index) => (
+                  <li key={index}>{msg}</li>
+                ))}
+              </ul>
+            }
+            type="error"
+            showIcon
+            closable
+            onClose={() => setErrorMessages([])}
+            style={{ marginBottom: 24 }}
+          />
+        )}
+
         <Form
           form={form}
           layout="vertical"
           onFinish={onFinish}
+          onValuesChange={handleFieldChange}
           disabled={isLoading}
+          autoComplete="off"
           initialValues={{
             gender: 'Male',
             bloodGroup: 'O+'
@@ -126,7 +177,7 @@ export const PatientFormPage = () => {
                   { type: 'email', message: 'Please enter a valid email' }
                 ]}
               >
-                <Input placeholder="Enter email address" />
+                <Input placeholder="Enter email address" autoComplete="new-email" />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12}>
@@ -215,7 +266,7 @@ export const PatientFormPage = () => {
                 { min: 6, message: 'Password must be at least 6 characters' }
               ]}
             >
-              <Input.Password placeholder="Enter password for patient login" />
+              <Input.Password placeholder="Enter password for patient login" autoComplete="new-password" />
             </Form.Item>
           )}
 

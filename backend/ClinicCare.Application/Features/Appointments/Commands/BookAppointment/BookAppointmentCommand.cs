@@ -1,4 +1,5 @@
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Features.Appointments.Queries.GetAppointments;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 

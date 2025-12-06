@@ -1,4 +1,5 @@
 using ClinicCare.Application.Common.Services;
+using Microsoft.Extensions.Logging;
 
 namespace ClinicCare.Infrastructure.Services;
 

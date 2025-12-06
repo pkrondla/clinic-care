@@ -52,10 +52,13 @@ public class ClinicMedicineConfiguration : IEntityTypeConfiguration<ClinicMedici
             .HasForeignKey(x => x.OrganizationId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Clinic relationship - explicitly use ClinicId and specify the navigation property on Clinic
+        // This prevents EF Core from creating shadow properties
         builder.HasOne(x => x.Clinic)
-            .WithMany()
+            .WithMany(c => c.ClinicMedicines)
             .HasForeignKey(x => x.ClinicId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         builder.HasOne(x => x.GlobalMedicine)
             .WithMany(x => x.ClinicMedicines)

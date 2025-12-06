@@ -34,5 +34,6 @@ public class PrescriptionItem : TenantEntity
     // Navigation Properties
     public Organization Organization { get; set; } = null!;
     public Prescription Prescription { get; set; } = null!;
-    public ClinicMedicine Medicine { get; set; } = null!;
+    // Medicine navigation property removed - we store MedicineId and MedicineName directly
+    // This prevents EF Core from creating shadow properties like ClinicMedicineId1
 }

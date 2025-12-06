@@ -12,6 +12,8 @@ export interface Doctor {
   consultationFeeTele: number;
   followupFeeInPerson: number;
   followupFeeTele: number;
+  baseClinicId?: number;
+  baseClinicName?: string;
   isActive: boolean;
 }
 

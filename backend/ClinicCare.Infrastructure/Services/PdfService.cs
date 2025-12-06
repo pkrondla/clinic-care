@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using QuestPDFUnit = QuestPDF.Infrastructure.Unit;
 
 namespace ClinicCare.Infrastructure.Services;
 
@@ -54,7 +55,7 @@ public class PdfService : IPdfService
             container.Page(page =>
             {
                 page.Size(PageSizes.A4);
-                page.Margin(2, Unit.Centimetre);
+                page.Margin(2, QuestPDFUnit.Centimetre);
                 page.PageColor(Colors.White);
                 page.DefaultTextStyle(x => x.FontSize(10));
 
@@ -102,18 +103,18 @@ public class PdfService : IPdfService
                     });
 
                 page.Content()
-                    .PaddingVertical(1, Unit.Centimetre)
+                    .PaddingVertical(1f, QuestPDFUnit.Centimetre)
                     .Column(column =>
                     {
                         // Bill To Section
-                        column.Item().PaddingBottom(0.5, Unit.Centimetre).Column(col =>
+                        column.Item().PaddingBottom(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                         {
                             col.Item().Text("Bill To:").FontSize(12).Bold();
                             col.Item().Text(invoice.PatientName).FontSize(11);
                             col.Item().Text($"Patient Code: {invoice.PatientCode}").FontSize(10);
                         });
 
-                        column.Item().PaddingVertical(0.5, Unit.Centimetre);
+                        column.Item().PaddingVertical(0.5f, QuestPDFUnit.Centimetre);
 
                         // Invoice Items Table
                         column.Item().Table(table =>
@@ -163,7 +164,7 @@ public class PdfService : IPdfService
                             }
                         });
 
-                        column.Item().PaddingTop(0.5, Unit.Centimetre);
+                        column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre);
 
                         // Totals
                         column.Item().AlignRight().Column(col =>
@@ -191,12 +192,12 @@ public class PdfService : IPdfService
                             });
                         });
 
-                        column.Item().PaddingTop(1, Unit.Centimetre);
+                        column.Item().PaddingTop(1f, QuestPDFUnit.Centimetre);
 
                         // Payment Information
                         if (invoice.PaidAmount > 0)
                         {
-                            column.Item().PaddingTop(0.5, Unit.Centimetre).Column(col =>
+                            column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                             {
                                 col.Item().Text("Payment Information:").FontSize(12).Bold();
                                 col.Item().Text($"Payment Method: {invoice.PaymentMethod}").FontSize(10);
@@ -212,16 +213,16 @@ public class PdfService : IPdfService
                         }
 
                         // Status
-                        column.Item().PaddingTop(0.5, Unit.Centimetre).Text($"Status: {invoice.StatusText}").FontSize(10);
+                        column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre).Text($"Status: {invoice.StatusText}").FontSize(10);
                     });
 
                 page.Footer()
                     .AlignCenter()
                     .Text(x =>
                     {
-                        x.Span("Thank you for your business!");
-                        x.FontSize(10);
-                        x.FontColor(Colors.Grey.Medium);
+                        x.Span("Thank you for your business!")
+                            .FontSize(10)
+                            .FontColor(Colors.Grey.Medium);
                     });
             });
         })
@@ -266,7 +267,7 @@ public class PdfService : IPdfService
             container.Page(page =>
             {
                 page.Size(PageSizes.A4);
-                page.Margin(2, Unit.Centimetre);
+                page.Margin(2, QuestPDFUnit.Centimetre);
                 page.PageColor(Colors.White);
                 page.DefaultTextStyle(x => x.FontSize(10));
 
@@ -306,23 +307,20 @@ public class PdfService : IPdfService
                     });
 
                 page.Content()
-                    .PaddingVertical(1, Unit.Centimetre)
+                    .PaddingVertical(1f, QuestPDFUnit.Centimetre)
                     .Column(column =>
                     {
                         // Patient Information
-                        column.Item().PaddingBottom(0.5, Unit.Centimetre).Column(col =>
+                        column.Item().PaddingBottom(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                         {
                             col.Item().Text("Patient Information:").FontSize(12).Bold();
                             col.Item().Text(patient?.User?.FullName ?? "Unknown").FontSize(11);
                             if (patient != null)
                             {
                                 col.Item().Text($"Patient Code: {patient.PatientCode}").FontSize(10);
-                                if (patient.DateOfBirth.HasValue)
-                                {
-                                    var age = DateTime.Today.Year - patient.DateOfBirth.Value.Year;
-                                    if (patient.DateOfBirth.Value.Date > DateTime.Today.AddYears(-age)) age--;
-                                    col.Item().Text($"Age: {age} years").FontSize(10);
-                                }
+                                var age = DateTime.Today.Year - patient.DateOfBirth.Year;
+                                if (patient.DateOfBirth > DateOnly.FromDateTime(DateTime.Today.AddYears(-age))) age--;
+                                col.Item().Text($"Age: {age} years").FontSize(10);
                                 if (!string.IsNullOrEmpty(patient.Gender))
                                 {
                                     col.Item().Text($"Gender: {patient.Gender}").FontSize(10);
@@ -330,10 +328,10 @@ public class PdfService : IPdfService
                             }
                         });
 
-                        column.Item().PaddingVertical(0.5, Unit.Centimetre);
+                        column.Item().PaddingVertical(0.5f, QuestPDFUnit.Centimetre);
 
                         // Doctor Information
-                        column.Item().PaddingBottom(0.5, Unit.Centimetre).Column(col =>
+                        column.Item().PaddingBottom(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                         {
                             col.Item().Text("Prescribed By:").FontSize(12).Bold();
                             col.Item().Text(doctor?.User?.FullName ?? "Unknown").FontSize(11);
@@ -350,21 +348,21 @@ public class PdfService : IPdfService
                             }
                         });
 
-                        column.Item().PaddingVertical(0.5, Unit.Centimetre);
+                        column.Item().PaddingVertical(0.5f, QuestPDFUnit.Centimetre);
 
                         // Diagnosis
                         if (consultation != null && !string.IsNullOrEmpty(consultation.Diagnosis))
                         {
-                            column.Item().PaddingBottom(0.5, Unit.Centimetre).Column(col =>
+                            column.Item().PaddingBottom(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                             {
                                 col.Item().Text("Diagnosis:").FontSize(12).Bold();
                                 col.Item().Text(consultation.Diagnosis).FontSize(11);
                             });
-                            column.Item().PaddingVertical(0.5, Unit.Centimetre);
+                            column.Item().PaddingVertical(0.5f, QuestPDFUnit.Centimetre);
                         }
 
                         // Prescription Items
-                        column.Item().Text("Medicines:").FontSize(12).Bold().PaddingBottom(0.3, Unit.Centimetre);
+                        column.Item().PaddingBottom(0.3f, QuestPDFUnit.Centimetre).Text("Medicines:").FontSize(12).Bold();
                         
                         column.Item().Table(table =>
                         {
@@ -437,12 +435,12 @@ public class PdfService : IPdfService
                             }
                         });
 
-                        column.Item().PaddingTop(0.5, Unit.Centimetre);
+                        column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre);
 
                         // Instructions
                         if (!string.IsNullOrEmpty(prescription.PatientInstructions))
                         {
-                            column.Item().PaddingTop(0.5, Unit.Centimetre).Column(col =>
+                            column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                             {
                                 col.Item().Text("Instructions:").FontSize(12).Bold();
                                 col.Item().Text(prescription.PatientInstructions).FontSize(11);
@@ -456,7 +454,7 @@ public class PdfService : IPdfService
 
                         if (itemsWithInstructions.Any())
                         {
-                            column.Item().PaddingTop(0.5, Unit.Centimetre).Column(col =>
+                            column.Item().PaddingTop(0.5f, QuestPDFUnit.Centimetre).Column(col =>
                             {
                                 col.Item().Text("Special Instructions:").FontSize(12).Bold();
                                 foreach (var item in itemsWithInstructions)
@@ -478,9 +476,9 @@ public class PdfService : IPdfService
                     .AlignCenter()
                     .Text(x =>
                     {
-                        x.Span("This is a computer-generated prescription. Please follow the doctor's instructions carefully.");
-                        x.FontSize(9);
-                        x.FontColor(Colors.Grey.Medium);
+                        x.Span("This is a computer-generated prescription. Please follow the doctor's instructions carefully.")
+                            .FontSize(9)
+                            .FontColor(Colors.Grey.Medium);
                     });
             });
         })

@@ -12,7 +12,9 @@ import { PublicQueuePage } from '../pages/queue/PublicQueuePage'
 import { BookAppointmentPage } from '../pages/queue/BookAppointmentPage'
 import { ClinicsPage } from '../pages/clinics/ClinicsPage'
 import { ConsultationFormPage } from '../pages/consultations/ConsultationFormPage'
+import { ConsultationsPage } from '../pages/consultations/ConsultationsPage'
 import { PrescriptionFormPage } from '../pages/prescriptions/PrescriptionFormPage'
+import { PrescriptionsPage } from '../pages/prescriptions/PrescriptionsPage'
 import { InventoryPage } from '../pages/inventory/InventoryPage'
 import { UsersPage } from '../pages/users/UsersPage'
 import { ReportsPage } from '../pages/reports/ReportsPage'
@@ -23,6 +25,7 @@ import { PurchaseOrdersPage } from '../pages/purchase-orders/PurchaseOrdersPage'
 import { PurchaseOrderDetailPage } from '../pages/purchase-orders/PurchaseOrderDetailPage'
 import { PurchaseOrderFormPage } from '../pages/purchase-orders/PurchaseOrderFormPage'
 import { StockAuditPage } from '../pages/inventory/StockAuditPage'
+import { DoctorSchedulePage } from '../pages/doctors/DoctorSchedulePage'
 import { LoginPage } from '../pages/auth/LoginPage'
 import { useAuth } from '@core/stores/authStore'
 import { UserRole } from '@core/types/auth'
@@ -154,6 +157,18 @@ export const TenantRoutes = () => {
         }
       />
 
+      {/* New Appointment / Book Appointment for Staff */}
+      <Route
+        path="/appointments/new"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <BookAppointmentPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
       {/* Queue Management - Role-based routing */}
       <Route
         path="/queue"
@@ -210,6 +225,17 @@ export const TenantRoutes = () => {
 
       {/* Consultations */}
       <Route
+        path="/consultations"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <ConsultationsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
         path="/consultations/new"
         element={
           <ProtectedTenantRoute>
@@ -221,6 +247,17 @@ export const TenantRoutes = () => {
       />
 
       {/* Prescriptions */}
+      <Route
+        path="/prescriptions"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <PrescriptionsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
       <Route
         path="/prescriptions/new"
         element={

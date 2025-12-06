@@ -78,6 +78,7 @@ public static class InventoryEndpoints
         CancellationToken cancellationToken)
     {
         // TODO: Implement when inventory commands are created
+        await Task.CompletedTask;
         return Results.Ok(new { message = $"Update inventory item {id} endpoint - coming soon" });
     }
 
@@ -87,6 +88,7 @@ public static class InventoryEndpoints
         CancellationToken cancellationToken)
     {
         // TODO: Implement when inventory commands are created
+        await Task.CompletedTask;
         return Results.Ok(new { message = $"Delete inventory item {id} endpoint - coming soon" });
     }
 }

@@ -1,4 +1,5 @@
 using ClinicCare.Domain.Common;
+using ClinicCare.Domain.Modules.Appointments.Entities;
 
 namespace ClinicCare.Domain.Entities;
 

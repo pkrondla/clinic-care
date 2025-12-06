@@ -109,6 +109,15 @@ export const useSignalR = () => {
           toast(`Appointment cancelled: ${data.patientName}`, { icon: 'ℹ️' })
         })
 
+        // User join/leave events (informational, no action needed)
+        connection.on('UserJoined', (userName) => {
+          // User joined the queue group - no action needed, just acknowledge
+        })
+
+        connection.on('UserLeft', (userName) => {
+          // User left the queue group - no action needed, just acknowledge
+        })
+
         // Connection state handlers
         connection.onreconnecting(() => {
           setState(prev => ({ ...prev, isConnected: false, isConnecting: true }))
@@ -182,9 +191,19 @@ export const useSignalR = () => {
   const leaveDoctorQueue = async (doctorId: number, clinicId: number) => {
     if (state.connection && state.isConnected) {
       try {
-        await state.connection.invoke('LeaveDoctorQueue', doctorId, clinicId)
-        console.log(`Left queue for doctor ${doctorId} at clinic ${clinicId}`)
-      } catch (error) {
+        // Check if connection is still active before invoking
+        if (state.connection.state === 'Connected') {
+          await state.connection.invoke('LeaveDoctorQueue', doctorId, clinicId)
+          console.log(`Left queue for doctor ${doctorId} at clinic ${clinicId}`)
+        }
+      } catch (error: any) {
+        // Don't log errors if connection is already closed - this is expected during cleanup
+        if (error?.message?.includes('connection being closed') || 
+            error?.message?.includes('canceled') ||
+            state.connection?.state !== 'Connected') {
+          // Connection already closed, which is fine during cleanup
+          return
+        }
         console.error('Failed to leave doctor queue:', error)
       }
     }
@@ -194,9 +213,17 @@ export const useSignalR = () => {
   const joinClinicUpdates = async (clinicId: number) => {
     if (state.connection && state.isConnected) {
       try {
-        await state.connection.invoke('JoinClinicUpdates', clinicId)
-        console.log(`Joined clinic updates for clinic ${clinicId}`)
-      } catch (error) {
+        if (state.connection.state === 'Connected') {
+          await state.connection.invoke('JoinClinicUpdates', clinicId)
+          console.log(`Joined clinic updates for clinic ${clinicId}`)
+        }
+      } catch (error: any) {
+        // Don't log errors if connection is already closed
+        if (error?.message?.includes('connection being closed') || 
+            error?.message?.includes('canceled') ||
+            state.connection?.state !== 'Connected') {
+          return
+        }
         console.error('Failed to join clinic updates:', error)
       }
     }
@@ -212,17 +239,22 @@ export const useSignalR = () => {
 
 // Hook for doctor queue real-time updates
 export const useDoctorQueueUpdates = (doctorId: number, clinicId: number) => {
-  const { joinDoctorQueue, leaveDoctorQueue, isConnected } = useSignalR()
+  const { joinDoctorQueue, leaveDoctorQueue, isConnected, connection } = useSignalR()
 
   useEffect(() => {
     if (isConnected && doctorId && clinicId) {
       joinDoctorQueue(doctorId, clinicId)
       
       return () => {
-        leaveDoctorQueue(doctorId, clinicId)
+        // Only try to leave if connection is still active
+        if (connection && connection.state === 'Connected') {
+          leaveDoctorQueue(doctorId, clinicId).catch(() => {
+            // Silently handle errors during cleanup - connection may already be closed
+          })
+        }
       }
     }
-  }, [isConnected, doctorId, clinicId, joinDoctorQueue, leaveDoctorQueue])
+  }, [isConnected, doctorId, clinicId, joinDoctorQueue, leaveDoctorQueue, connection])
 }
 
 // Hook for clinic-wide updates

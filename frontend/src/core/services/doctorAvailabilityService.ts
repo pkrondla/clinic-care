@@ -1,6 +1,13 @@
 import api from './apiClient';
 import type { Result } from './apiClient';
 
+export enum AvailabilityType {
+  Regular = 0,
+  DifferentClinic = 1,
+  Leave = 2,
+  ModifiedHours = 3,
+}
+
 export interface DoctorAvailability {
   id: number;
   doctorId: number;
@@ -8,8 +15,11 @@ export interface DoctorAvailability {
   clinicId: number;
   clinicName: string;
   availableDate: string;
+  endDate?: string;
   startTime: string;
   endTime: string;
+  availabilityType: AvailabilityType;
+  notes?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -26,15 +36,21 @@ export interface CreateDoctorAvailabilityRequest {
   doctorId: number;
   clinicId: number;
   availableDate: string;
+  endDate?: string; // For leave ranges
   startTime: string;
   endTime: string;
+  availabilityType?: AvailabilityType;
+  notes?: string;
 }
 
 export interface UpdateDoctorAvailabilityRequest {
   id: number;
   availableDate: string;
+  endDate?: string;
   startTime: string;
   endTime: string;
+  availabilityType: AvailabilityType;
+  notes?: string;
   isActive?: boolean;
 }
 

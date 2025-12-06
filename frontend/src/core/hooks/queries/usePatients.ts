@@ -62,7 +62,22 @@ export const useCreatePatient = () => {
       message.success('Patient created successfully')
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || 'Failed to create patient'
+      // Debug: log the full error response
+      console.error('Create patient error:', error.response?.data)
+      
+      // Backend returns errors in { message: string, errors: string[] } format
+      const responseData = error.response?.data
+      const errors = responseData?.errors
+      let errorMessage = 'Failed to create patient'
+      
+      if (errors && Array.isArray(errors) && errors.length > 0) {
+        errorMessage = errors.join(', ')
+      } else if (responseData?.message) {
+        errorMessage = responseData.message
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
       message.error(errorMessage)
     },
   })
@@ -86,7 +101,10 @@ export const useUpdatePatient = () => {
       message.success('Patient updated successfully')
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || 'Failed to update patient'
+      const errors = error.response?.data?.errors
+      const errorMessage = errors?.length > 0 
+        ? errors.join(', ') 
+        : (error.response?.data?.message || 'Failed to update patient')
       message.error(errorMessage)
     },
   })
@@ -109,7 +127,10 @@ export const useDeletePatient = () => {
       message.success('Patient deleted successfully')
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || 'Failed to delete patient'
+      const errors = error.response?.data?.errors
+      const errorMessage = errors?.length > 0 
+        ? errors.join(', ') 
+        : (error.response?.data?.message || 'Failed to delete patient')
       message.error(errorMessage)
     },
   })

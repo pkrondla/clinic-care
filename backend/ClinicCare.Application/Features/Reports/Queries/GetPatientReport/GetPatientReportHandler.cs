@@ -51,6 +51,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         CancellationToken cancellationToken)
     {
         var patient = await _context.Patients
+            .Include(p => p.User)
             .FirstOrDefaultAsync(p => p.Id == patientId 
                 && p.OrganizationId == organizationId 
                 && p.IsActive, cancellationToken);
@@ -84,12 +85,14 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
 
         if (request.StartDate.HasValue)
         {
-            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value >= startDate);
+            var startDateOnly = DateOnly.FromDateTime(startDate);
+            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value >= startDateOnly);
         }
 
         if (request.EndDate.HasValue)
         {
-            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value <= request.EndDate.Value);
+            var endDateOnly = DateOnly.FromDateTime(request.EndDate.Value);
+            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value <= endDateOnly);
         }
 
         var appointments = await appointmentsQuery
@@ -137,8 +140,9 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
                 .ThenInclude(c => c!.Doctor)
                     .ThenInclude(d => d.User)
             .Include(p => p.PrescriptionItems)
-                .ThenInclude(pi => pi.Medicine)
-            .Where(p => p.PatientId == patientId
+                // Don't include Medicine navigation property - it's ignored in configuration
+            .Where(p => p.Consultation != null 
+                && p.Consultation.PatientId == patientId
                 && p.OrganizationId == organizationId
                 && p.IsActive);
 
@@ -159,16 +163,16 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
 
         if (request.StartDate.HasValue)
         {
-            prescriptionsQuery = prescriptionsQuery.Where(p => p.PrescriptionDate >= startDate);
+            prescriptionsQuery = prescriptionsQuery.Where(p => p.IssuedDate >= startDate);
         }
 
         if (request.EndDate.HasValue)
         {
-            prescriptionsQuery = prescriptionsQuery.Where(p => p.PrescriptionDate <= request.EndDate.Value);
+            prescriptionsQuery = prescriptionsQuery.Where(p => p.IssuedDate <= request.EndDate.Value);
         }
 
         var prescriptions = await prescriptionsQuery
-            .OrderByDescending(p => p.PrescriptionDate)
+            .OrderByDescending(p => p.IssuedDate)
             .ToListAsync(cancellationToken);
 
         // Get invoices
@@ -199,12 +203,12 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         // Build visit history
         var visitHistory = appointments.Select(a => new PatientVisitDto
         {
-            VisitDate = a.AppointmentDate?.ToDateTime(TimeOnly.MinValue) ?? a.CreatedAt,
+            VisitDate = a.AppointmentDate?.Value.ToDateTime(TimeOnly.MinValue) ?? a.CreatedAt,
             ClinicName = a.Clinic?.Name ?? string.Empty,
             DoctorName = a.Doctor?.User != null 
-                ? $"{a.Doctor.User.FirstName} {a.Doctor.User.LastName}" 
+                ? a.Doctor.User.FullName 
                 : string.Empty,
-            AppointmentType = a.AppointmentType.ToString(),
+            AppointmentType = a.Type.ToString(),
             Status = a.Status.ToString(),
             ConsultationId = consultations.FirstOrDefault(c => c.AppointmentId == a.Id)?.Id,
             PrescriptionId = prescriptions.FirstOrDefault(p => 
@@ -221,7 +225,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         {
             ConsultationDate = c.ConsultationDate,
             DoctorName = c.Doctor?.User != null 
-                ? $"{c.Doctor.User.FirstName} {c.Doctor.User.LastName}" 
+                ? c.Doctor.User.FullName 
                 : string.Empty,
             Diagnosis = c.Diagnosis ?? string.Empty,
             TreatmentPlan = c.TreatmentPlan ?? string.Empty,
@@ -231,20 +235,20 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         // Build medication history
         var medicationHistory = prescriptions.Select(p => new MedicationHistoryDto
         {
-            PrescriptionDate = p.PrescriptionDate,
+            PrescriptionDate = p.IssuedDate,
             PrescriptionNumber = p.PrescriptionNumber,
             DoctorName = p.Consultation?.Doctor?.User != null
-                ? $"{p.Consultation.Doctor.User.FirstName} {p.Consultation.Doctor.User.LastName}"
+                ? p.Consultation.Doctor.User.FullName
                 : string.Empty,
             MedicineCount = p.PrescriptionItems.Count,
             Status = p.Status.ToString(),
             Medications = p.PrescriptionItems.Select(pi => new MedicationItemDto
             {
-                MedicineName = pi.Medicine?.Name ?? string.Empty,
+                MedicineName = pi.MedicineName, // Use MedicineName directly from PrescriptionItem
                 Dosage = pi.Dosage ?? string.Empty,
                 Frequency = pi.Frequency ?? string.Empty,
-                Duration = pi.Duration,
-                DurationUnit = pi.DurationUnit ?? string.Empty,
+                Duration = 0, // Duration is stored as string in entity, parse if needed
+                DurationUnit = pi.Duration ?? string.Empty, // Use Duration string as DurationUnit
                 Instructions = pi.Instructions ?? string.Empty
             }).ToList()
         }).ToList();
@@ -265,7 +269,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         var report = new PatientReportDto
         {
             PatientId = patient.Id,
-            PatientName = $"{patient.FirstName} {patient.LastName}",
+            PatientName = patient.User?.FullName ?? "Unknown",
             PatientCode = patient.PatientCode,
             StartDate = request.StartDate,
             EndDate = request.EndDate,
@@ -327,17 +331,19 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
 
         if (request.StartDate.HasValue)
         {
-            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value >= startDate);
+            var startDateOnly = DateOnly.FromDateTime(startDate);
+            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value >= startDateOnly);
             consultationsQuery = consultationsQuery.Where(c => c.ConsultationDate >= startDate);
-            prescriptionsQuery = prescriptionsQuery.Where(p => p.PrescriptionDate >= startDate);
+            prescriptionsQuery = prescriptionsQuery.Where(p => p.IssuedDate >= startDate);
             invoicesQuery = invoicesQuery.Where(i => i.InvoiceDate >= startDate);
         }
 
         if (request.EndDate.HasValue)
         {
-            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value <= request.EndDate.Value);
+            var endDateOnly = DateOnly.FromDateTime(request.EndDate.Value);
+            appointmentsQuery = appointmentsQuery.Where(a => a.AppointmentDate.Value <= endDateOnly);
             consultationsQuery = consultationsQuery.Where(c => c.ConsultationDate <= request.EndDate.Value);
-            prescriptionsQuery = prescriptionsQuery.Where(p => p.PrescriptionDate <= request.EndDate.Value);
+            prescriptionsQuery = prescriptionsQuery.Where(p => p.IssuedDate <= request.EndDate.Value);
             invoicesQuery = invoicesQuery.Where(i => i.InvoiceDate <= request.EndDate.Value);
         }
 

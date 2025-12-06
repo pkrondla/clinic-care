@@ -76,15 +76,10 @@ public static class BillingEndpoints
     }
 
     private static async Task<IResult> GetInvoices(
-        int? clinicId,
-        int? patientId,
-        int? status,
-        DateTime? startDate,
-        DateTime? endDate,
+        [AsParameters] GetInvoicesQuery query,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var query = new GetInvoicesQuery(clinicId, patientId, status, startDate, endDate);
         var result = await mediator.Send(query, cancellationToken);
 
         if (!result.Succeeded)

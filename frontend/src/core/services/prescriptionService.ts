@@ -32,7 +32,20 @@ export interface CreatePrescriptionRequest {
   notes?: string
 }
 
+export interface GetPrescriptionsParams {
+  clinicId?: number
+  doctorId?: number
+  patientId?: number
+  startDate?: string
+  endDate?: string
+}
+
 export const prescriptionService = {
+  getAll: async (params?: GetPrescriptionsParams): Promise<Prescription[]> => {
+    const response = await apiClient.get('/prescriptions', { params })
+    return response.data.data || []
+  },
+
   getById: async (id: number): Promise<Prescription> => {
     const response = await apiClient.get(`/prescriptions/${id}`)
     return response.data.data

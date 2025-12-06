@@ -1,8 +1,10 @@
+using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Features.Inventory.Commands.AdjustStock;
 using ClinicCare.Application.Features.Inventory.Commands.CreateInventoryItem;
 using ClinicCare.Application.Features.Inventory.Queries.GetInventory;
 using ClinicCare.Application.Features.Inventory.Queries.GetLowStock;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicCare.API.Modules.Tenant;
 
@@ -44,8 +46,23 @@ public static class InventoryEndpointsNew
         return app;
     }
 
-    private static async Task<IResult> GetInventory(IMediator mediator, int? clinicId = null)
+    private static async Task<IResult> GetInventory(
+        IMediator mediator,
+        IApplicationDbContext context,
+        ICurrentUserService currentUserService,
+        int? clinicId = null)
     {
+        // If clinicId not provided, get from current user's selected clinic
+        if (!clinicId.HasValue && currentUserService.UserId.HasValue)
+        {
+            var user = await context.Users
+                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value);
+            if (user?.SelectedClinicId.HasValue == true)
+            {
+                clinicId = user.SelectedClinicId;
+            }
+        }
+
         var query = new GetInventoryQuery { ClinicId = clinicId };
         var result = await mediator.Send(query);
 
@@ -54,8 +71,23 @@ public static class InventoryEndpointsNew
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 
-    private static async Task<IResult> GetLowStock(IMediator mediator, int? clinicId = null)
+    private static async Task<IResult> GetLowStock(
+        IMediator mediator,
+        IApplicationDbContext context,
+        ICurrentUserService currentUserService,
+        int? clinicId = null)
     {
+        // If clinicId not provided, get from current user's selected clinic
+        if (!clinicId.HasValue && currentUserService.UserId.HasValue)
+        {
+            var user = await context.Users
+                .FirstOrDefaultAsync(u => u.Id == currentUserService.UserId.Value);
+            if (user?.SelectedClinicId.HasValue == true)
+            {
+                clinicId = user.SelectedClinicId;
+            }
+        }
+
         var query = new GetLowStockQuery { ClinicId = clinicId };
         var result = await mediator.Send(query);
 

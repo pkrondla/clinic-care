@@ -52,13 +52,15 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
         };
 
         _context.Users.Add(user);
-        await _context.SaveChangesAsync(cancellationToken);
 
         // Create patient profile
         var patient = new Patient
         {
-            UserId = user.Id,
+            UserId = 0, // Will be set after user is saved
             PatientCode = patientCode,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Phone = request.Phone,
             DateOfBirth = request.DateOfBirth,
             Gender = request.Gender,
             BloodGroup = request.BloodGroup,
@@ -69,18 +71,25 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
             IsActive = true
         };
 
-        _context.Patients.Add(patient);
-        await _context.SaveChangesAsync(cancellationToken);
-
         // Create user-organization relationship
         var userOrganization = new UserOrganization
         {
-            UserId = user.Id,
+            UserId = 0, // Will be set after user is saved
             OrganizationId = organizationId,
             IsActive = true
         };
 
+        // Save user first to get the ID
+        await _context.SaveChangesAsync(cancellationToken);
+
+        // Now set the user ID on dependent entities
+        patient.UserId = user.Id;
+        userOrganization.UserId = user.Id;
+
+        _context.Patients.Add(patient);
         _context.UserOrganizations.Add(userOrganization);
+
+        // Save all remaining entities in one call
         await _context.SaveChangesAsync(cancellationToken);
 
         var patientDto = new PatientDto
@@ -130,4 +139,3 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
         return $"P{year}{month}{day}{sequenceNumber}";
     }
 }
-

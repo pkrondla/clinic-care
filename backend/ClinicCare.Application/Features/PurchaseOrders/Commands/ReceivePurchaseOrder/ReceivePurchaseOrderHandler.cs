@@ -116,7 +116,7 @@ public class ReceivePurchaseOrderHandler : IRequestHandler<ReceivePurchaseOrderC
                         return Result<PurchaseOrderDto>.Failure($"Medicine {orderItem.MedicineId} not found");
                     }
 
-                    var newInventory = new Inventory
+                    var newInventory = new Domain.Entities.Inventory
                     {
                         OrganizationId = organizationId.Value,
                         ClinicId = purchaseOrder.ClinicId,
@@ -125,7 +125,7 @@ public class ReceivePurchaseOrderHandler : IRequestHandler<ReceivePurchaseOrderC
                         MinimumStock = 0,
                         MaximumStock = 0,
                         PurchasePrice = orderItem.UnitPrice,
-                        SellingPrice = medicine.Price,
+                        SellingPrice = medicine.SellingPrice,
                         ExpiryDate = receivedItem.ExpiryDate ?? DateOnly.FromDateTime(DateTime.UtcNow.AddYears(1)),
                         BatchNumber = receivedItem.BatchNumber ?? string.Empty,
                         LastUpdated = DateTime.UtcNow,

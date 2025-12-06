@@ -46,11 +46,11 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
         var lastVisitDate = patient.Appointments
             .Where(a => a.Status == Domain.Enums.AppointmentStatus.Completed)
             .OrderByDescending(a => a.AppointmentDate)
-            .Select(a => a.AppointmentDate.ToDateTime(TimeOnly.MinValue))
+            .Select(a => a.AppointmentDate.Value.ToDateTime(TimeOnly.MinValue))
             .FirstOrDefault();
         var firstVisitDate = patient.Appointments
             .OrderBy(a => a.AppointmentDate)
-            .Select(a => a.AppointmentDate.ToDateTime(TimeOnly.MinValue))
+            .Select(a => a.AppointmentDate.Value.ToDateTime(TimeOnly.MinValue))
             .FirstOrDefault();
 
         // Get recent appointments (last 10)
@@ -61,7 +61,7 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
             {
                 Id = a.Id,
                 TokenNumber = a.TokenNumber,
-                AppointmentDate = a.AppointmentDate.ToDateTime(TimeOnly.MinValue),
+                AppointmentDate = a.AppointmentDate.Value.ToDateTime(TimeOnly.MinValue),
                 Type = a.Type.ToString(),
                 Status = a.Status.ToString(),
                 DoctorName = $"{a.Doctor.User.FirstName} {a.Doctor.User.LastName}",

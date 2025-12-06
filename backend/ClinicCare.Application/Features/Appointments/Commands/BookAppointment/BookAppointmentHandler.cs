@@ -122,17 +122,29 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Re
             var dto = new AppointmentDto
             {
                 Id = appointmentWithDetails.Id,
-                ClinicId = appointmentWithDetails.ClinicId,
-                DoctorId = appointmentWithDetails.DoctorId,
-                PatientId = appointmentWithDetails.PatientId,
                 AppointmentDate = appointmentWithDetails.AppointmentDate.Value,
                 TokenNumber = appointmentWithDetails.TokenNumber,
                 Type = (int)appointmentWithDetails.Type,
                 Status = (int)appointmentWithDetails.Status,
                 Notes = appointmentWithDetails.Notes,
-                DoctorName = appointmentWithDetails.Doctor.User?.FullName ?? "Unknown",
-                PatientName = appointmentWithDetails.Patient.User?.FullName ?? "Unknown",
-                ClinicName = appointmentWithDetails.Clinic.Name
+                Doctor = new DoctorDto
+                {
+                    Id = appointmentWithDetails.Doctor.Id,
+                    Name = appointmentWithDetails.Doctor.User?.FullName ?? "Unknown",
+                    Qualification = appointmentWithDetails.Doctor.Qualification
+                },
+                Patient = new PatientDto
+                {
+                    Id = appointmentWithDetails.Patient.Id,
+                    Name = appointmentWithDetails.Patient.User?.FullName ?? "Unknown",
+                    PatientCode = appointmentWithDetails.Patient.PatientCode
+                },
+                Clinic = new ClinicDto
+                {
+                    Id = appointmentWithDetails.Clinic.Id,
+                    Name = appointmentWithDetails.Clinic.Name,
+                    Code = appointmentWithDetails.Clinic.Code
+                }
             };
 
             return Result<AppointmentDto>.Success(dto);
