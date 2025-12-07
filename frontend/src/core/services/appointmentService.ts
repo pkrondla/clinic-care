@@ -25,8 +25,33 @@ export const appointmentService = {
 
   // Get appointment by ID
   getAppointment: async (id: number): Promise<Appointment> => {
-    const response = await api.get<Appointment>(`/appointments/${id}`)
-    return response.data as Appointment
+    // Backend returns { data: AppointmentDto }
+    // api.get returns response.data from axios, which is { data: AppointmentDto }
+    // But api.get is typed as ApiResponse<T>, creating a type mismatch
+    // At runtime, response is { data: AppointmentDto }, so we access response.data
+    const response = await api.get<{ data: Appointment }>(`/appointments/${id}`)
+    // Type assertion needed because api.get typing doesn't match runtime structure
+    const responseData = (response as any)?.data
+    if (!responseData) {
+      throw new Error('Appointment not found')
+    }
+    return responseData
+  },
+
+  // Update appointment
+  updateAppointment: async (id: number, notes: string): Promise<Appointment> => {
+    const response = await api.put<Appointment>(`/appointments/${id}`, {
+      id,
+      notes
+    })
+    // Backend returns { message: 'Appointment updated successfully', data: Appointment }
+    // api.put returns ApiResponse<T> which has { data?: T, message?: string, ... }
+    // So response.data is the Appointment object
+    const appointment = response.data || (response as any)?.data?.data
+    if (!appointment) {
+      throw new Error('Failed to update appointment: No data returned')
+    }
+    return appointment
   },
 
   // Create new appointment

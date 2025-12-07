@@ -5,6 +5,8 @@ import { PatientsListPage } from '../pages/patients/PatientsListPage'
 import { PatientDetailPage } from '../pages/patients/PatientDetailPage'
 import { PatientFormPage } from '../pages/patients/PatientFormPage'
 import { AppointmentsPage } from '../pages/appointments/AppointmentsPage'
+import { AppointmentDetailPage } from '../pages/appointments/AppointmentDetailPage'
+import { AppointmentFormPage } from '../pages/appointments/AppointmentFormPage'
 import { QueuePage } from '../pages/appointments/QueuePage'
 import { StaffQueuePage } from '../pages/queue/StaffQueuePage'
 import { DoctorQueuePage } from '../pages/queue/DoctorQueuePage'
@@ -164,6 +166,30 @@ export const TenantRoutes = () => {
           <ProtectedTenantRoute>
             <AppLayout>
               <BookAppointmentPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Appointment Detail */}
+      <Route
+        path="/appointments/:id"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <AppointmentDetailPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Edit Appointment */}
+      <Route
+        path="/appointments/:id/edit"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <AppointmentFormPage />
             </AppLayout>
           </ProtectedTenantRoute>
         }

@@ -100,15 +100,28 @@ public static class PatientsEndpoints
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var query = new GetPatientQuery { Id = id };
-        var result = await mediator.Send(query, cancellationToken);
-        
-        if (!result.Succeeded)
+        try
         {
-            return Results.NotFound(new { message = "Patient not found", errors = result.Errors });
-        }
+            var query = new GetPatientQuery { Id = id };
+            var result = await mediator.Send(query, cancellationToken);
+            
+            if (!result.Succeeded)
+            {
+                // Check if it's a "not found" error
+                if (result.Errors.Any(e => e.Contains("not found", StringComparison.OrdinalIgnoreCase)))
+                {
+                    return Results.NotFound(new { message = "Patient not found", errors = result.Errors });
+                }
+                // Otherwise return 400 for other errors
+                return Results.BadRequest(new { message = "Failed to retrieve patient", errors = result.Errors });
+            }
 
-        return Results.Ok(new { message = "Patient retrieved successfully", data = result.Data });
+            return Results.Ok(new { message = "Patient retrieved successfully", data = result.Data });
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(new { message = "An error occurred while retrieving the patient", errors = new[] { ex.Message } });
+        }
     }
 
     private static async Task<IResult> CreatePatient(

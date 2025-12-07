@@ -6,13 +6,15 @@ import {
   CheckCircleOutlined,
   ReloadOutlined,
   PhoneOutlined,
-  HomeOutlined
+  HomeOutlined,
+  MedicineBoxOutlined
 } from '@ant-design/icons'
 import { useAppointmentQueue } from '@core/hooks/queries/useAppointments'
 import { useSelectedClinic, useUser } from '@core/stores/authStore'
 import { Appointment, AppointmentStatus, AppointmentType, UserRole } from '@core/types'
 import { useSignalR } from '@core/hooks/useSignalR'
 import { useDoctors } from '@core/hooks/queries/useDoctors'
+import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -21,6 +23,7 @@ dayjs.extend(relativeTime)
 const { Option } = Select
 
 export const QueuePage = () => {
+  const navigate = useNavigate()
   const user = useUser()
   const selectedClinic = useSelectedClinic()
   const [selectedDoctorId, setSelectedDoctorId] = useState<number | undefined>(
@@ -255,6 +258,16 @@ export const QueuePage = () => {
                         </Space>
                       }
                     />
+                    {!appointment.consultation && (
+                      <Button
+                        type="primary"
+                        icon={<MedicineBoxOutlined />}
+                        size="small"
+                        onClick={() => navigate(`/consultations/new?appointmentId=${appointment.id}&patientId=${appointment.patient?.id}`)}
+                      >
+                        Start Consultation
+                      </Button>
+                    )}
                   </List.Item>
                 )}
               />

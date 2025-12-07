@@ -269,3 +269,26 @@ export const useCompleteAppointment = () => {
     }
   })
 }
+
+// Update appointment mutation
+export const useUpdateAppointment = () => {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ id, notes }: { id: number; notes: string }) =>
+      appointmentService.updateAppointment(id, notes),
+    onSuccess: (updatedAppointment) => {
+      queryClient.setQueryData(
+        appointmentKeys.detail(updatedAppointment.id),
+        updatedAppointment
+      )
+      
+      queryClient.invalidateQueries({ queryKey: appointmentKeys.lists() })
+      
+      toast.success('Appointment updated successfully')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || error.response?.data?.errors?.[0] || 'Failed to update appointment')
+    }
+  })
+}

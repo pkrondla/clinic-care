@@ -1,5 +1,5 @@
 import { Card, Row, Col, Typography, Tag, Table, Button, Space, Statistic, Divider } from 'antd'
-import { ArrowLeftOutlined, EditOutlined, CalendarOutlined, MedicineBoxOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, EditOutlined, CalendarOutlined, MedicineBoxOutlined, PlusOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import { usePatient } from '@core/hooks/queries/usePatients'
 import dayjs from 'dayjs'
@@ -125,6 +125,13 @@ export const PatientDetailPage = () => {
           onClick={() => navigate(`/patients/${patient.id}/edit`)}
         >
           Edit Patient
+        </Button>
+        <Button
+          type="default"
+          icon={<PlusOutlined />}
+          onClick={() => navigate(`/consultations/new?patientId=${patient.id}`)}
+        >
+          New Consultation
         </Button>
       </div>
 

@@ -5,7 +5,8 @@ import {
   SearchOutlined, 
   ReloadOutlined,
   EyeOutlined,
-  EditOutlined
+  EditOutlined,
+  MedicineBoxOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useAppointments } from '@core/hooks/queries/useAppointments'
@@ -122,7 +123,7 @@ export const AppointmentsPage = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 120,
+      width: 180,
       fixed: 'right' as const,
       render: (_: any, record: Appointment) => (
         <Space size="small">
@@ -139,6 +140,15 @@ export const AppointmentsPage = () => {
                 type="text"
                 icon={<EditOutlined />}
                 onClick={() => navigate(`/appointments/${record.id}/edit`)}
+              />
+            </Tooltip>
+          )}
+          {(record.status === AppointmentStatus.Scheduled || record.status === AppointmentStatus.InProgress) && !record.consultation && (
+            <Tooltip title="Start Consultation">
+              <Button
+                type="text"
+                icon={<MedicineBoxOutlined />}
+                onClick={() => navigate(`/consultations/new?appointmentId=${record.id}&patientId=${record.patient?.id}`)}
               />
             </Tooltip>
           )}
