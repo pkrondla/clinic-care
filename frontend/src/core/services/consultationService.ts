@@ -1,4 +1,4 @@
-import apiClient from './apiClient'
+import { api } from './apiClient'
 
 export interface Consultation {
   id: number
@@ -16,6 +16,8 @@ export interface Consultation {
   notes?: string
   consultationFee: number
   createdAt: string
+  hasPrescription?: boolean
+  prescriptionId?: number
 }
 
 export interface CreateConsultationRequest {
@@ -51,28 +53,69 @@ export interface GetConsultationsParams {
 
 export const consultationService = {
   getAll: async (params?: GetConsultationsParams): Promise<Consultation[]> => {
-    const response = await apiClient.get('/consultations', { params })
-    return response.data.data || []
+    const response = await api.get<Consultation[]>('/consultations', { params })
+    // Backend returns { success: true, data: Consultation[] }
+    // api.get returns ApiResponse<T> which extracts response.data from axios
+    // So response is { success: true, data: Consultation[] } (as ApiResponse<Consultation[]>)
+    // response.data should be Consultation[] (the array)
+    console.log('Consultations API Response:', response)
+    console.log('Response.data:', response.data)
+    console.log('Response.data type:', typeof response.data, Array.isArray(response.data))
+    
+    if (Array.isArray(response.data)) {
+      console.log('Returning consultations from response.data:', response.data.length)
+      return response.data
+    }
+    // Fallback: check if data is nested
+    const nestedData = (response as any).data?.data
+    if (Array.isArray(nestedData)) {
+      console.log('Returning consultations from nested data:', nestedData.length)
+      return nestedData
+    }
+    console.log('No consultations found, returning empty array')
+    return []
   },
 
   getById: async (id: number): Promise<Consultation> => {
-    const response = await apiClient.get(`/consultations/${id}`)
-    return response.data.data
+    const response = await api.get<Consultation>(`/consultations/${id}`)
+    // Backend returns { success: true, data: Consultation }
+    // api.get returns ApiResponse<T> which extracts response.data from axios
+    // So response is { success: true, data: Consultation } (as ApiResponse<Consultation>)
+    // response.data should be Consultation (the object)
+    if (response.data) {
+      return response.data
+    }
+    // Fallback: check if data is nested
+    const nestedData = (response as any).data?.data
+    if (nestedData) {
+      return nestedData
+    }
+    throw new Error('Consultation not found')
   },
 
   getByPatient: async (patientId: number): Promise<Consultation[]> => {
-    const response = await apiClient.get(`/consultations/patient/${patientId}`)
-    return response.data.data
+    const response = await api.get<Consultation[]>(`/consultations/patient/${patientId}`)
+    // Backend returns { success: true, data: Consultation[] }
+    if (Array.isArray(response.data)) {
+      return response.data
+    }
+    const nestedData = (response as any).data?.data
+    if (Array.isArray(nestedData)) {
+      return nestedData
+    }
+    return []
   },
 
   create: async (data: CreateConsultationRequest): Promise<Consultation> => {
-    const response = await apiClient.post('/consultations', data)
-    return response.data.data
+    const response = await api.post<Consultation>('/consultations', data)
+    // Backend returns { success: true, data: Consultation }
+    return response.data || (response as any).data?.data
   },
 
   update: async (id: number, data: UpdateConsultationRequest): Promise<Consultation> => {
-    const response = await apiClient.put(`/consultations/${id}`, data)
-    return response.data.data
+    const response = await api.put<Consultation>(`/consultations/${id}`, data)
+    // Backend returns { success: true, data: Consultation }
+    return response.data || (response as any).data?.data
   }
 }
 

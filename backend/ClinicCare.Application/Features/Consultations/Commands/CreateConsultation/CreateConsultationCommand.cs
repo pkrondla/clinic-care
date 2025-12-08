@@ -38,5 +38,7 @@ public class ConsultationDto
     public string? Notes { get; set; }
     public decimal ConsultationFee { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool HasPrescription { get; set; }
+    public int? PrescriptionId { get; set; }
 }
 

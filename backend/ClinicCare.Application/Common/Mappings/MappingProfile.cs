@@ -11,6 +11,7 @@ using ClinicCare.Application.Features.Appointments.Queries.GetAppointmentStats;
 using ClinicCare.Application.Features.Organizations.Commands.CreateOrganization;
 using ClinicCare.Application.Features.GlobalMedicines.Commands.CreateGlobalMedicine;
 using ClinicCare.Application.Features.Clinics.Commands.CreateClinic;
+using ClinicCare.Application.Features.Consultations.Commands.CreateConsultation;
 
 namespace ClinicCare.Application.Common.Mappings;
 
@@ -102,5 +103,14 @@ public class MappingProfile : Profile
         CreateMap<Clinic, ClinicCare.Application.Features.Clinics.Commands.CreateClinic.ClinicDto>()
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.ContactPhone))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ContactEmail));
+
+        // Consultation mappings - use fully qualified name to avoid ambiguity
+        CreateMap<Consultation, ClinicCare.Application.Features.Consultations.Commands.CreateConsultation.ConsultationDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient != null && src.Patient.User != null 
+                ? $"{src.Patient.User.FirstName} {src.Patient.User.LastName}".Trim() 
+                : string.Empty))
+            .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor != null && src.Doctor.User != null 
+                ? $"{src.Doctor.User.FirstName} {src.Doctor.User.LastName}".Trim() 
+                : string.Empty));
     }
 }

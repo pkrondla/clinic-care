@@ -15,6 +15,7 @@ import { BookAppointmentPage } from '../pages/queue/BookAppointmentPage'
 import { ClinicsPage } from '../pages/clinics/ClinicsPage'
 import { ConsultationFormPage } from '../pages/consultations/ConsultationFormPage'
 import { ConsultationsPage } from '../pages/consultations/ConsultationsPage'
+import { ConsultationDetailPage } from '../pages/consultations/ConsultationDetailPage'
 import { PrescriptionFormPage } from '../pages/prescriptions/PrescriptionFormPage'
 import { PrescriptionsPage } from '../pages/prescriptions/PrescriptionsPage'
 import { InventoryPage } from '../pages/inventory/InventoryPage'
@@ -263,6 +264,30 @@ export const TenantRoutes = () => {
 
       <Route
         path="/consultations/new"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <ConsultationFormPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Consultation Detail */}
+      <Route
+        path="/consultations/:id"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <ConsultationDetailPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Edit Consultation */}
+      <Route
+        path="/consultations/:id/edit"
         element={
           <ProtectedTenantRoute>
             <AppLayout>

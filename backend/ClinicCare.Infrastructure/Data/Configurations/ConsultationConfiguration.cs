@@ -52,6 +52,9 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
         builder.Property(x => x.ConsultationDate)
             .IsRequired();
 
+        builder.Property(x => x.ConsultationType)
+            .IsRequired();
+
         // Configure one-to-one relationship with Appointment
         // Database schema: FK_Consultations_Appointment (Consultations.AppointmentId -> Appointments.Id)
         // CRITICAL: The foreign key is ONLY on the Consultation side (AppointmentId)

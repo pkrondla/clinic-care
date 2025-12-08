@@ -28,6 +28,13 @@ public class GetConsultationHandler : IRequestHandler<GetConsultationQuery, Resu
             }
 
             var dto = _mapper.Map<ConsultationDto>(consultation);
+            
+            // Set prescription information
+            dto.HasPrescription = consultation.Prescriptions != null && consultation.Prescriptions.Any(p => p.IsActive);
+            dto.PrescriptionId = consultation.Prescriptions != null && consultation.Prescriptions.Any(p => p.IsActive)
+                ? consultation.Prescriptions.FirstOrDefault(p => p.IsActive)?.Id
+                : null;
+            
             return Result<ConsultationDto>.Success(dto);
         }
         catch (Exception ex)

@@ -16,6 +16,7 @@ public class Consultation : TenantEntity
     public string Notes { get; set; } = string.Empty;
     public decimal ConsultationFee { get; set; }
     public DateTime ConsultationDate { get; set; }
+    public int ConsultationType { get; set; } // 1 = InPerson, 2 = Teleconsultation (matches AppointmentType enum)
 
     // Navigation Properties
     public Organization Organization { get; set; } = null!;

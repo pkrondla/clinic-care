@@ -4,7 +4,9 @@ import {
   PlusOutlined, 
   SearchOutlined, 
   ReloadOutlined,
-  EyeOutlined
+  EyeOutlined,
+  MedicineBoxOutlined,
+  EditOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -91,7 +93,7 @@ export const ConsultationsPage = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 100,
+      width: 200,
       fixed: 'right' as const,
       render: (_: any, record: Consultation) => (
         <Space size="small">
@@ -102,6 +104,22 @@ export const ConsultationsPage = () => {
               onClick={() => navigate(`/consultations/${record.id}`)}
             />
           </Tooltip>
+          <Tooltip title="Edit Consultation">
+            <Button
+              type="text"
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/consultations/${record.id}/edit`)}
+            />
+          </Tooltip>
+          {!record.hasPrescription && (
+            <Tooltip title="Create Prescription">
+              <Button
+                type="text"
+                icon={<MedicineBoxOutlined />}
+                onClick={() => navigate(`/prescriptions/new?consultationId=${record.id}&patientId=${record.patientId}`)}
+              />
+            </Tooltip>
+          )}
         </Space>
       )
     }
