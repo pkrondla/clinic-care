@@ -24,8 +24,8 @@ public class ClinicMedicineRepository : IClinicMedicineRepository
 
     public async Task<List<ClinicMedicine>> GetAllAsync(CancellationToken cancellationToken = default)
     {
+        // Return all medicines (both active and inactive) - filtering by IsActive can be done in the handler if needed
         return await _context.ClinicMedicines
-            .Where(m => m.IsActive)
             .OrderBy(m => m.Name)
             .ToListAsync(cancellationToken);
     }
@@ -33,12 +33,12 @@ public class ClinicMedicineRepository : IClinicMedicineRepository
     public async Task<List<ClinicMedicine>> SearchAsync(string searchTerm, CancellationToken cancellationToken = default)
     {
         var search = searchTerm.ToLower();
+        // Return all medicines matching search (both active and inactive)
         return await _context.ClinicMedicines
-            .Where(m => m.IsActive &&
-                (m.Name.ToLower().Contains(search) ||
+            .Where(m => m.Name.ToLower().Contains(search) ||
                  m.GenericName.ToLower().Contains(search) ||
                  m.Manufacturer.ToLower().Contains(search) ||
-                 m.Type.ToLower().Contains(search)))
+                 m.Type.ToLower().Contains(search))
             .OrderBy(m => m.Name)
             .ToListAsync(cancellationToken);
     }

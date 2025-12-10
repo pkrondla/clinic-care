@@ -116,9 +116,12 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                 {
                     MedicineId = item.MedicineId,
                     MedicineName = item.MedicineName,
+                    DispensingForm = (int)item.DispensingForm,
                     Dosage = item.Dosage,
                     Frequency = item.Frequency,
-                    Duration = int.TryParse(item.Duration, out var duration) ? duration : 0,
+                    Duration = item.Duration,
+                    Timing = item.Timing,
+                    ContainerSize = item.ContainerSize,
                     Quantity = item.Quantity,
                     Instructions = item.Instructions
                 }).ToList(),

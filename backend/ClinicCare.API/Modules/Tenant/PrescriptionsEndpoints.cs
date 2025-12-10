@@ -101,11 +101,30 @@ public static class PrescriptionsEndpoints
 
     private static async Task<IResult> CreatePrescription(IMediator mediator, CreatePrescriptionCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command, cancellationToken);
+        try
+        {
+            var result = await mediator.Send(command, cancellationToken);
 
-        return result.Succeeded
-            ? Results.Ok(new { success = true, data = result.Data, message = "Prescription created successfully" })
-            : Results.BadRequest(new { success = false, errors = result.Errors });
+            if (!result.Succeeded)
+            {
+                // Log errors for debugging
+                Console.WriteLine($"Prescription creation failed. Errors: {string.Join(", ", result.Errors)}");
+            }
+
+            return result.Succeeded
+                ? Results.Ok(new { success = true, data = result.Data, message = "Prescription created successfully" })
+                : Results.BadRequest(new { success = false, errors = result.Errors });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception in CreatePrescription endpoint: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+            }
+            return Results.BadRequest(new { success = false, errors = new[] { $"An error occurred: {ex.Message}" } });
+        }
     }
 
     private static async Task<IResult> GetPrescriptionPdf(

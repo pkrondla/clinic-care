@@ -73,6 +73,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       case 'inventory':
         navigate('/inventory')
         break
+      case 'medicines':
+        navigate('/medicines')
+        break
       case 'my-appointments':
         navigate('/my-appointments')
         break
@@ -124,6 +127,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     if (path.startsWith('/consultations')) return 'consultations'
     if (path.startsWith('/prescriptions')) return 'prescriptions'
     if (path.startsWith('/inventory')) return 'inventory'
+    if (path.startsWith('/medicines')) return 'medicines'
     if (path.startsWith('/my-appointments')) return 'my-appointments'
     if (path.startsWith('/medical-history')) return 'medical-history'
     if (path.startsWith('/organizations')) return 'organizations'
@@ -184,6 +188,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'inventory',
           icon: <MedicineBoxOutlined />,
           label: 'Inventory'
+        },
+        {
+          key: 'medicines',
+          icon: <MedicineBoxOutlined />,
+          label: 'Medicines'
         },
         {
           key: 'reports',
@@ -260,6 +269,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'inventory',
           icon: <MedicineBoxOutlined />,
           label: 'Inventory'
+        },
+        {
+          key: 'medicines',
+          icon: <MedicineBoxOutlined />,
+          label: 'Medicines'
         }
       ],
       [UserRole.Patient]: [

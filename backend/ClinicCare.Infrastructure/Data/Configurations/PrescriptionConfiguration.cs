@@ -66,13 +66,18 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
         builder.HasKey(x => x.Id);
 
         // Explicitly map MedicineId to avoid shadow property
+        // MedicineId is nullable to allow custom medicine names without requiring a ClinicMedicine record
         builder.Property(x => x.MedicineId)
-            .IsRequired()
+            .IsRequired(false)
             .HasColumnName("MedicineId");
 
         builder.Property(x => x.MedicineName)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(x => x.DispensingForm)
+            .HasConversion<int>()
+            .IsRequired();
 
         builder.Property(x => x.Dosage)
             .HasMaxLength(100);
@@ -83,8 +88,19 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
         builder.Property(x => x.Duration)
             .HasMaxLength(100);
 
+        builder.Property(x => x.Timing)
+            .HasMaxLength(100);
+
+        builder.Property(x => x.ContainerSize)
+            .IsRequired(false);
+
         builder.Property(x => x.Quantity)
-            .IsRequired();
+            .IsRequired(false); // Required for all forms (prescribed quantity for patient)
+
+        builder.Property(x => x.DispensedQuantity)
+            .HasColumnType("decimal(18,2)")
+            .IsRequired()
+            .HasDefaultValue(0); // Internal: quantity dispensed from inventory (default 0 if column doesn't exist yet)
 
         builder.Property(x => x.UnitPrice)
             .HasColumnType("decimal(18,2)")

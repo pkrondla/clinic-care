@@ -116,7 +116,9 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
                 }
 
                 var unitPrice = clinicMedicine.SellingPrice;
-                var totalPrice = unitPrice * prescriptionItem.Quantity;
+                // Quantity is always set: 1 for Globules (one container), calculated value for Tablets/Packets
+                var quantity = prescriptionItem.Quantity ?? 1; // Default to 1 if null (shouldn't happen)
+                var totalPrice = unitPrice * quantity;
 
                 prescriptionItem.UnitPrice = unitPrice;
                 prescriptionItem.TotalPrice = totalPrice;
@@ -126,7 +128,7 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
                 {
                     ItemType = "Medicine",
                     Description = $"{prescriptionItem.MedicineName} - {prescriptionItem.Dosage} ({prescriptionItem.Frequency})",
-                    Quantity = prescriptionItem.Quantity,
+                    Quantity = quantity,
                     UnitPrice = unitPrice,
                     TotalPrice = totalPrice,
                     OrganizationId = organizationId.Value

@@ -71,7 +71,11 @@ export const appointmentService = {
 
   // Cancel appointment
   cancelAppointment: async (id: number, reason?: string): Promise<Appointment> => {
-    const response = await api.patch<Appointment>(`/appointments/${id}/cancel`, { reason })
+    // Backend uses DELETE /appointments/{id}
+    // Note: reason parameter is not currently used by backend, but kept for future use
+    await api.delete(`/appointments/${id}`)
+    // After cancellation, fetch the updated appointment to return it
+    const response = await api.get<Appointment>(`/appointments/${id}`)
     return response.data as Appointment
   },
 

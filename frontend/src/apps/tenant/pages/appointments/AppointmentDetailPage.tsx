@@ -1,16 +1,22 @@
-import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Divider } from 'antd'
-import { ArrowLeftOutlined, EditOutlined, CalendarOutlined, UserOutlined, MedicineBoxOutlined, PlusOutlined } from '@ant-design/icons'
+import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Divider, Modal, Input } from 'antd'
+import { ArrowLeftOutlined, EditOutlined, CalendarOutlined, UserOutlined, MedicineBoxOutlined, PlusOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAppointment } from '@core/hooks/queries/useAppointments'
+import { useAppointment, useCancelAppointment } from '@core/hooks/queries/useAppointments'
 import { AppointmentStatus, AppointmentType } from '@core/types'
 import dayjs from 'dayjs'
+import { useState } from 'react'
 
 const { Title, Text } = Typography
+
+const { TextArea } = Input
 
 export const AppointmentDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: appointment, isLoading } = useAppointment(Number(id))
+  const cancelMutation = useCancelAppointment()
+  const [isCancelModalVisible, setIsCancelModalVisible] = useState(false)
+  const [cancelReason, setCancelReason] = useState('')
 
   if (isLoading) {
     return (
@@ -59,6 +65,27 @@ export const AppointmentDetailPage = () => {
 
   const canEdit = appointment.status === AppointmentStatus.Scheduled
   const canStartConsultation = (appointment.status === AppointmentStatus.Scheduled || appointment.status === AppointmentStatus.InProgress) && !appointment.consultation
+  const canCancel = appointment.status === AppointmentStatus.Scheduled || appointment.status === AppointmentStatus.InProgress
+
+  const handleCancel = () => {
+    setIsCancelModalVisible(true)
+  }
+
+  const handleConfirmCancel = async () => {
+    if (!id) return
+    
+    try {
+      await cancelMutation.mutateAsync({ 
+        id: Number(id), 
+        reason: cancelReason || undefined 
+      })
+      setIsCancelModalVisible(false)
+      setCancelReason('')
+      navigate('/appointments')
+    } catch (error) {
+      // Error is handled by the mutation's onError
+    }
+  }
 
   return (
     <div>
@@ -85,6 +112,15 @@ export const AppointmentDetailPage = () => {
               onClick={() => navigate(`/consultations/new?appointmentId=${appointment.id}&patientId=${appointment.patient?.id}`)}
             >
               Start Consultation
+            </Button>
+          )}
+          {canCancel && (
+            <Button
+              danger
+              icon={<CloseCircleOutlined />}
+              onClick={handleCancel}
+            >
+              Cancel Appointment
             </Button>
           )}
         </Space>
@@ -121,73 +157,9 @@ export const AppointmentDetailPage = () => {
               </Descriptions.Item>
             </Descriptions>
           </Card>
-        </Col>
 
-        {/* Patient & Doctor Info */}
-        <Col xs={24} lg={8}>
-          <Card title="Patient Information">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-              <div>
-                <Text strong>Name:</Text>
-                <br />
-                <Text>{appointment.patient?.name || 'N/A'}</Text>
-              </div>
-              {appointment.patient?.patientCode && (
-                <div>
-                  <Text strong>Patient Code:</Text>
-                  <br />
-                  <Text>{appointment.patient.patientCode}</Text>
-                </div>
-              )}
-              <Button
-                type="link"
-                icon={<UserOutlined />}
-                onClick={() => navigate(`/patients/${appointment.patient?.id}`)}
-                style={{ padding: 0 }}
-              >
-                View Patient Details
-              </Button>
-            </Space>
-          </Card>
-
-          <Card title="Doctor Information" style={{ marginTop: 16 }}>
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-              <div>
-                <Text strong>Name:</Text>
-                <br />
-                <Text>{appointment.doctor?.name || 'N/A'}</Text>
-              </div>
-              {appointment.doctor?.specialization && (
-                <div>
-                  <Text strong>Specialization:</Text>
-                  <br />
-                  <Text>{appointment.doctor.specialization}</Text>
-                </div>
-              )}
-            </Space>
-          </Card>
-
-          <Card title="Clinic Information" style={{ marginTop: 16 }}>
-            <Space direction="vertical" style={{ width: '100%' }}>
-              <div>
-                <Text strong>Name:</Text>
-                <br />
-                <Text>{appointment.clinic?.name || 'N/A'}</Text>
-              </div>
-              {appointment.clinic?.code && (
-                <div>
-                  <Text strong>Code:</Text>
-                  <br />
-                  <Text>{appointment.clinic.code}</Text>
-                </div>
-              )}
-            </Space>
-          </Card>
-        </Col>
-
-        {/* Consultation Info */}
-        {appointment.consultation && (
-          <Col xs={24}>
+          {/* Consultation Details - Under Appointment Details */}
+          {appointment.consultation && (
             <Card 
               title={
                 <Space>
@@ -195,6 +167,7 @@ export const AppointmentDetailPage = () => {
                   Consultation Details
                 </Space>
               }
+              style={{ marginTop: 24 }}
             >
               <Descriptions column={1} bordered>
                 <Descriptions.Item label="Consultation Date">
@@ -210,15 +183,119 @@ export const AppointmentDetailPage = () => {
               <div style={{ marginTop: 16 }}>
                 <Button
                   type="link"
-                  onClick={() => navigate(`/consultations?appointmentId=${appointment.id}`)}
+                  onClick={() => navigate(`/consultations/${appointment.consultation?.id}`)}
                 >
                   View Consultation Details
                 </Button>
               </div>
             </Card>
-          </Col>
-        )}
+          )}
+        </Col>
+
+        {/* Patient & Doctor Info */}
+        <Col xs={24} lg={8}>
+          <Card title="Patient Information">
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              <div>
+                <Text strong>Name: </Text>
+                <Text>{appointment.patient?.name || 'N/A'}</Text>
+                {appointment.patient?.patientCode && (
+                  <>
+                    <Text type="secondary" style={{ marginLeft: 8 }}>Code: </Text>
+                    <Text type="secondary">{appointment.patient.patientCode}</Text>
+                  </>
+                )}
+              </div>
+              <Button
+                type="link"
+                icon={<UserOutlined />}
+                onClick={() => navigate(`/patients/${appointment.patient?.id}`)}
+                style={{ padding: 0 }}
+              >
+                View Patient Details
+              </Button>
+            </Space>
+          </Card>
+
+          <Card title="Doctor Information" style={{ marginTop: 16 }}>
+            <Space direction="vertical" style={{ width: '100%' }} size="large">
+              <div>
+                <Text strong>Name: </Text>
+                <Text>{appointment.doctor?.name || 'N/A'}</Text>
+                {appointment.doctor?.specialization && (
+                  <>
+                    <Text type="secondary" style={{ marginLeft: 8 }}>Specialization: </Text>
+                    <Text type="secondary">{appointment.doctor.specialization}</Text>
+                  </>
+                )}
+                {!appointment.doctor?.specialization && appointment.doctor?.qualification && (
+                  <>
+                    <Text type="secondary" style={{ marginLeft: 8 }}>Qualification: </Text>
+                    <Text type="secondary">{appointment.doctor.qualification}</Text>
+                  </>
+                )}
+              </div>
+            </Space>
+          </Card>
+
+          <Card title="Clinic Information" style={{ marginTop: 16 }}>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <div>
+                <Text strong>Name: </Text>
+                <Text>{appointment.clinic?.name || 'N/A'}</Text>
+                {appointment.clinic?.code && (
+                  <>
+                    <Text type="secondary" style={{ marginLeft: 8 }}>Code: </Text>
+                    <Text type="secondary">{appointment.clinic.code}</Text>
+                  </>
+                )}
+              </div>
+            </Space>
+          </Card>
+        </Col>
       </Row>
+
+      {/* Cancel Appointment Modal */}
+      <Modal
+        title="Cancel Appointment"
+        open={isCancelModalVisible}
+        onOk={handleConfirmCancel}
+        onCancel={() => {
+          setIsCancelModalVisible(false)
+          setCancelReason('')
+        }}
+        okText="Cancel Appointment"
+        cancelText="Keep Appointment"
+        okButtonProps={{ danger: true }}
+        confirmLoading={cancelMutation.isPending}
+      >
+        <Space direction="vertical" style={{ width: '100%' }} size="middle">
+          <Text>
+            Are you sure you want to cancel this appointment? This action cannot be undone.
+          </Text>
+          <div>
+            <Text strong>Appointment Details:</Text>
+            <br />
+            <Text>Token: #{appointment.tokenNumber}</Text>
+            <br />
+            <Text>Patient: {appointment.patient?.name}</Text>
+            <br />
+            <Text>Doctor: {appointment.doctor?.name}</Text>
+            <br />
+            <Text>Date: {dayjs(appointment.appointmentDate).format('MMMM DD, YYYY')}</Text>
+          </div>
+          <div>
+            <Text strong>Reason for cancellation (optional):</Text>
+            <TextArea
+              rows={3}
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+              placeholder="Enter reason for cancellation..."
+              style={{ marginTop: 8 }}
+            />
+          </div>
+        </Space>
+      </Modal>
     </div>
   )
 }

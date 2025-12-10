@@ -18,7 +18,9 @@ import { ConsultationsPage } from '../pages/consultations/ConsultationsPage'
 import { ConsultationDetailPage } from '../pages/consultations/ConsultationDetailPage'
 import { PrescriptionFormPage } from '../pages/prescriptions/PrescriptionFormPage'
 import { PrescriptionsPage } from '../pages/prescriptions/PrescriptionsPage'
+import { PrescriptionDetailPage } from '../pages/prescriptions/PrescriptionDetailPage'
 import { InventoryPage } from '../pages/inventory/InventoryPage'
+import { ClinicMedicinesPage } from '../pages/medicines/ClinicMedicinesPage'
 import { UsersPage } from '../pages/users/UsersPage'
 import { ReportsPage } from '../pages/reports/ReportsPage'
 import { InvoicesPage } from '../pages/invoices/InvoicesPage'
@@ -320,6 +322,18 @@ export const TenantRoutes = () => {
         }
       />
 
+      {/* Prescription Detail */}
+      <Route
+        path="/prescriptions/:id"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <PrescriptionDetailPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
       {/* Inventory */}
       <Route
         path="/inventory"
@@ -327,6 +341,18 @@ export const TenantRoutes = () => {
           <ProtectedTenantRoute>
             <AppLayout>
               <InventoryPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Clinic Medicines */}
+      <Route
+        path="/medicines"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Admin, UserRole.Staff]}>
+            <AppLayout>
+              <ClinicMedicinesPage />
             </AppLayout>
           </ProtectedTenantRoute>
         }

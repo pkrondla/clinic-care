@@ -27,6 +27,7 @@ public static class EndpointsRegistry
         app.MapClinicsEndpoints();
         app.MapConsultationsEndpoints();
         app.MapPrescriptionsEndpoints();
+        app.MapClinicMedicinesEndpoints();
         app.MapInventoryManagementEndpoints(); // New CQRS-based inventory
         app.MapAppointmentsEndpoints();
         app.MapAppointmentsAdvancedEndpoints();

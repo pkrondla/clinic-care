@@ -111,6 +111,15 @@ export const ConsultationsPage = () => {
               onClick={() => navigate(`/consultations/${record.id}/edit`)}
             />
           </Tooltip>
+          {record.hasPrescription && record.prescriptionId && (
+            <Tooltip title="View Prescription">
+              <Button
+                type="text"
+                icon={<MedicineBoxOutlined />}
+                onClick={() => navigate(`/prescriptions/${record.prescriptionId}`)}
+              />
+            </Tooltip>
+          )}
           {!record.hasPrescription && (
             <Tooltip title="Create Prescription">
               <Button

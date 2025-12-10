@@ -1,15 +1,16 @@
 import { useState } from 'react'
-import { Card, Table, Button, Space, Tag, Input, Select, DatePicker, Row, Col, Tooltip } from 'antd'
+import { Card, Table, Button, Space, Tag, Input, Select, DatePicker, Row, Col, Tooltip, Modal, message } from 'antd'
 import { 
   PlusOutlined, 
   SearchOutlined, 
   ReloadOutlined,
   EyeOutlined,
   EditOutlined,
-  MedicineBoxOutlined
+  MedicineBoxOutlined,
+  CloseCircleOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useAppointments } from '@core/hooks/queries/useAppointments'
+import { useAppointments, useCancelAppointment } from '@core/hooks/queries/useAppointments'
 import { useSelectedClinic } from '@core/stores/authStore'
 import { Appointment, AppointmentStatus, AppointmentType } from '@core/types'
 import dayjs, { Dayjs } from 'dayjs'
@@ -19,10 +20,12 @@ const { Option } = Select
 export const AppointmentsPage = () => {
   const navigate = useNavigate()
   const selectedClinic = useSelectedClinic()
+  const cancelMutation = useCancelAppointment()
   
   const [searchText, setSearchText] = useState('')
   const [statusFilter, setStatusFilter] = useState<AppointmentStatus | undefined>()
   const [dateFilter, setDateFilter] = useState<Dayjs>(dayjs())
+  const [cancelTargetId, setCancelTargetId] = useState<number | null>(null)
 
   const { data: appointments, isLoading, refetch } = useAppointments({
     clinicId: selectedClinic?.id,
@@ -52,6 +55,28 @@ export const AppointmentsPage = () => {
 
   const getTypeText = (type: AppointmentType) => {
     return type === AppointmentType.InPerson ? 'In-Person' : 'Teleconsultation'
+  }
+
+  const handleCancel = (appointmentId: number) => {
+    setCancelTargetId(appointmentId)
+    Modal.confirm({
+      title: 'Cancel Appointment',
+      content: 'Are you sure you want to cancel this appointment? This action cannot be undone.',
+      okText: 'Cancel Appointment',
+      cancelText: 'Keep Appointment',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await cancelMutation.mutateAsync({ id: appointmentId })
+          setCancelTargetId(null)
+        } catch (error) {
+          // Error is handled by the mutation's onError
+        }
+      },
+      onCancel: () => {
+        setCancelTargetId(null)
+      }
+    })
   }
 
   // Filter appointments based on search text
@@ -149,6 +174,17 @@ export const AppointmentsPage = () => {
                 type="text"
                 icon={<MedicineBoxOutlined />}
                 onClick={() => navigate(`/consultations/new?appointmentId=${record.id}&patientId=${record.patient?.id}`)}
+              />
+            </Tooltip>
+          )}
+          {(record.status === AppointmentStatus.Scheduled || record.status === AppointmentStatus.InProgress) && (
+            <Tooltip title="Cancel Appointment">
+              <Button
+                type="text"
+                danger
+                icon={<CloseCircleOutlined />}
+                onClick={() => handleCancel(record.id)}
+                loading={cancelMutation.isPending && cancelTargetId === record.id}
               />
             </Tooltip>
           )}

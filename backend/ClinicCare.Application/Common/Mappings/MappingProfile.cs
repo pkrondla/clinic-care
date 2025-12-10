@@ -12,6 +12,7 @@ using ClinicCare.Application.Features.Organizations.Commands.CreateOrganization;
 using ClinicCare.Application.Features.GlobalMedicines.Commands.CreateGlobalMedicine;
 using ClinicCare.Application.Features.Clinics.Commands.CreateClinic;
 using ClinicCare.Application.Features.Consultations.Commands.CreateConsultation;
+using ClinicCare.Application.Features.Prescriptions.Commands.CreatePrescription;
 
 namespace ClinicCare.Application.Common.Mappings;
 
@@ -112,5 +113,23 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor != null && src.Doctor.User != null 
                 ? $"{src.Doctor.User.FirstName} {src.Doctor.User.LastName}".Trim() 
                 : string.Empty));
+
+        // Prescription mappings
+        CreateMap<Prescription, PrescriptionDto>()
+            .ForMember(dest => dest.PatientId, opt => opt.MapFrom(src => src.Consultation != null ? src.Consultation.PatientId : 0))
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Consultation != null && src.Consultation.Patient != null && src.Consultation.Patient.User != null
+                ? $"{src.Consultation.Patient.User.FirstName} {src.Consultation.Patient.User.LastName}".Trim()
+                : "Unknown"))
+            .ForMember(dest => dest.DoctorId, opt => opt.MapFrom(src => src.Consultation != null ? src.Consultation.DoctorId : 0))
+            .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Consultation != null && src.Consultation.Doctor != null && src.Consultation.Doctor.User != null
+                ? $"{src.Consultation.Doctor.User.FirstName} {src.Consultation.Doctor.User.LastName}".Trim()
+                : "Unknown"))
+            .ForMember(dest => dest.PrescriptionDate, opt => opt.MapFrom(src => src.IssuedDate))
+            .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.PatientInstructions))
+            .ForMember(dest => dest.Medicines, opt => opt.MapFrom(src => src.PrescriptionItems));
+
+        // PrescriptionItem to PrescriptionMedicineDto mapping
+        CreateMap<PrescriptionItem, PrescriptionMedicineDto>()
+            .ForMember(dest => dest.DispensingForm, opt => opt.MapFrom(src => (int)src.DispensingForm));
     }
 }

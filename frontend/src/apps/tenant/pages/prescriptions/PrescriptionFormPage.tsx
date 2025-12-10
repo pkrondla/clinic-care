@@ -1,27 +1,56 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select } from 'antd'
+import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select, AutoComplete } from 'antd'
 import { SaveOutlined, ArrowLeftOutlined, PlusOutlined, DeleteOutlined, DollarOutlined, DownloadOutlined } from '@ant-design/icons'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { prescriptionService, type CreatePrescriptionRequest, type PrescriptionMedicine } from '@core/services/prescriptionService'
 import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
 import { useAuth } from '@core/stores/authStore'
+import { clinicMedicineService, type ClinicMedicine } from '@core/services/clinicMedicineService'
+import { useDebouncedValue } from '@core/hooks/useDebouncedValue'
 
 const { TextArea } = Input
 const { Option } = Select
 
+const DISPENSING_FORMS = [
+  { value: 1, label: 'Globules' },
+  { value: 2, label: 'Tablets' },
+  { value: 3, label: 'Packet' },
+  { value: 4, label: 'Liquid' },
+  { value: 5, label: 'Tonic' }
+]
+
+const LIQUID_QUANTITIES = [
+  { value: 10, label: '10 ml' },
+  { value: 15, label: '15 ml' }
+]
+
+const TONIC_QUANTITIES = [
+  { value: 50, label: '50 ml' },
+  { value: 100, label: '100 ml' }
+]
+
 const FREQUENCIES = [
-  'Once daily',
-  'Twice daily',
-  'Three times daily',
-  'Four times daily',
+  'Daily once',
+  'Daily 2 times',
+  'Daily 3 times',
+  'Daily 4 times',
+  'Weekly once',
+  'Weekly twice',
   'Every 6 hours',
   'Every 8 hours',
   'Every 12 hours',
-  'As needed',
-  'Before meals',
-  'After meals',
-  'At bedtime'
+  'As needed'
+]
+
+const TIMINGS = [
+  'Before food',
+  'After food',
+  'Before brushing',
+  'After brushing',
+  'On empty stomach',
+  'At bedtime',
+  'As directed'
 ]
 
 export const PrescriptionFormPage = () => {
@@ -36,6 +65,15 @@ export const PrescriptionFormPage = () => {
 
   const [medicines, setMedicines] = useState<PrescriptionMedicine[]>([])
   const [isMedicineModalOpen, setIsMedicineModalOpen] = useState(false)
+  const [medicineSearchTerm, setMedicineSearchTerm] = useState('')
+  const debouncedSearchTerm = useDebouncedValue(medicineSearchTerm, 300)
+
+  // Search clinic medicines
+  const { data: clinicMedicines = [], isLoading: isSearchingMedicines } = useQuery({
+    queryKey: ['clinic-medicines', debouncedSearchTerm],
+    queryFn: () => clinicMedicineService.search(debouncedSearchTerm || undefined),
+    enabled: isMedicineModalOpen && debouncedSearchTerm.length >= 2 // Only search when modal is open and user has typed at least 2 characters
+  })
 
   const createMutation = useMutation({
     mutationFn: prescriptionService.create,
@@ -68,23 +106,164 @@ export const PrescriptionFormPage = () => {
     }
   }
 
+  // Calculate times per day from frequency string
+  const getTimesPerDay = (frequency: string): number => {
+    const freqLower = frequency.toLowerCase()
+    if (freqLower.includes('daily once')) return 1
+    if (freqLower.includes('daily 2 times')) return 2
+    if (freqLower.includes('daily 3 times')) return 3
+    if (freqLower.includes('daily 4 times')) return 4
+    if (freqLower.includes('weekly once')) return 1 / 7
+    if (freqLower.includes('weekly twice')) return 2 / 7
+    if (freqLower.includes('every 6 hours')) return 4
+    if (freqLower.includes('every 8 hours')) return 3
+    if (freqLower.includes('every 12 hours')) return 2
+    if (freqLower.includes('as needed')) return 1 // Default for "as needed"
+    return 1 // Default fallback
+  }
+
+  // Parse duration string to days (e.g., "4 weeks" = 28 days, "2 days" = 2 days)
+  const parseDurationToDays = (duration: string): number => {
+    if (!duration) return 0
+    const durationLower = duration.toLowerCase().trim()
+    const weekMatch = durationLower.match(/(\d+)\s*weeks?/)
+    if (weekMatch) {
+      return parseInt(weekMatch[1]) * 7
+    }
+    const dayMatch = durationLower.match(/(\d+)\s*days?/)
+    if (dayMatch) {
+      return parseInt(dayMatch[1])
+    }
+    return 0
+  }
+
+  // Format duration from number and unit to string (e.g., 4, "weeks" -> "4 weeks")
+  const formatDuration = (value: number, unit: string): string => {
+    if (!value || value <= 0) return ''
+    return `${value} ${unit}`
+  }
+
+  // Auto-calculate quantity based on duration and frequency
+  const calculateQuantity = (duration: string, frequency: string): number => {
+    const days = parseDurationToDays(duration)
+    const timesPerDay = getTimesPerDay(frequency)
+    const calculated = Math.ceil(days * timesPerDay)
+    return calculated > 0 ? calculated : 1 // Minimum 1
+  }
+
+  // Auto-set dosage based on dispensing form
+  const handleDispensingFormChange = (formValue: number) => {
+    let autoDosage = ''
+    if (formValue === 1) { // Globules
+      autoDosage = '4 pills per dose'
+      // Set default quantity to 1 for globules
+      medicineForm.setFieldsValue({ dosage: autoDosage, quantity: 1 })
+    } else if (formValue === 2) { // Tablets
+      autoDosage = '1 tablet per dose'
+      // Auto-calculate quantity if duration and frequency are set
+      const durationValue = medicineForm.getFieldValue('durationValue')
+      const durationUnit = medicineForm.getFieldValue('durationUnit')
+      const frequency = medicineForm.getFieldValue('frequency')
+      if (durationValue && durationUnit && frequency) {
+        const duration = formatDuration(durationValue, durationUnit)
+        const calculatedQty = calculateQuantity(duration, frequency)
+        medicineForm.setFieldsValue({ dosage: autoDosage, quantity: calculatedQty })
+      } else {
+        medicineForm.setFieldsValue({ dosage: autoDosage })
+      }
+    } else if (formValue === 3) { // Packet
+      autoDosage = '1 packet per dose'
+      // Auto-calculate quantity if duration and frequency are set
+      const durationValue = medicineForm.getFieldValue('durationValue')
+      const durationUnit = medicineForm.getFieldValue('durationUnit')
+      const frequency = medicineForm.getFieldValue('frequency')
+      if (durationValue && durationUnit && frequency) {
+        const duration = formatDuration(durationValue, durationUnit)
+        const calculatedQty = calculateQuantity(duration, frequency)
+        medicineForm.setFieldsValue({ dosage: autoDosage, quantity: calculatedQty })
+      } else {
+        medicineForm.setFieldsValue({ dosage: autoDosage })
+      }
+    } else if (formValue === 4) { // Liquid
+      autoDosage = '4 Drops'
+      // Clear quantity - will be selected from dropdown
+      medicineForm.setFieldsValue({ dosage: autoDosage, quantity: undefined })
+    } else if (formValue === 5) { // Tonic
+      autoDosage = '5 ml'
+      // Clear quantity - will be selected from dropdown
+      medicineForm.setFieldsValue({ dosage: autoDosage, quantity: undefined })
+    }
+  }
+
+  // Handle duration or frequency change to auto-calculate quantity
+  const handleDurationOrFrequencyChange = () => {
+    const dispensingForm = medicineForm.getFieldValue('dispensingForm')
+    const durationValue = medicineForm.getFieldValue('durationValue')
+    const durationUnit = medicineForm.getFieldValue('durationUnit')
+    const frequency = medicineForm.getFieldValue('frequency')
+    
+    // Format duration string for calculation
+    const duration = formatDuration(durationValue, durationUnit)
+    
+    // Only auto-calculate for Tablets and Packets (not Globules)
+    if ((dispensingForm === 2 || dispensingForm === 3) && durationValue && durationUnit && frequency) {
+      const calculatedQty = calculateQuantity(duration, frequency)
+      medicineForm.setFieldsValue({ quantity: calculatedQty })
+    }
+  }
+
+  // Calculate dispensed quantity based on dispensing form
+  const calculateDispensedQuantity = (dispensingForm: number, quantity: number, containerSize?: number): number => {
+    switch (dispensingForm) {
+      case 1: // Globules
+        // quantity (containers) × containerSize (drams) × 4 drops/dram = drops
+        return quantity * (containerSize || 1) * 4
+      case 4: // Liquid
+        // Dispensed Qty in ml (same as prescribed quantity)
+        return quantity
+      case 5: // Tonic
+        // Dispensed Qty same as prescribed quantity
+        return quantity
+      case 2: // Tablets
+        // Dispensed Qty same as prescribed quantity
+        return quantity
+      case 3: // Packets
+        // 1 Packet = 5 drops
+        return quantity * 5
+      default:
+        return quantity
+    }
+  }
+
   const handleAddMedicine = async () => {
     try {
       const values = await medicineForm.validateFields()
       
+      // Format duration from value and unit
+      const duration = formatDuration(values.durationValue, values.durationUnit)
+      
+      const quantity = values.quantity || 1
+      const containerSize = values.dispensingForm === 1 ? values.containerSize : undefined
+      
       const medicine: PrescriptionMedicine = {
-        medicineId: 0, // Would be selected from clinic medicines
+        medicineId: values.medicineId || 0, // Set from selected medicine, or 0 for custom
         medicineName: values.medicineName,
+        dispensingForm: values.dispensingForm,
         dosage: values.dosage,
         frequency: values.frequency,
-        duration: values.duration,
-        quantity: values.quantity,
+        duration: duration, // Formatted as "4 weeks" or "7 days"
+        timing: values.timing || '',
+        containerSize: containerSize, // Only for Globules
+        quantity: quantity, // Prescribed quantity for patient
+        dispensedQuantity: calculateDispensedQuantity(values.dispensingForm, quantity, containerSize), // Internal: for inventory
         instructions: values.instructions
       }
 
       setMedicines([...medicines, medicine])
       setIsMedicineModalOpen(false)
       medicineForm.resetFields()
+      // Reset quantity to default 1 for next medicine entry
+      medicineForm.setFieldsValue({ quantity: 1 })
     } catch (error) {
       console.error('Validation failed:', error)
     }
@@ -147,42 +326,103 @@ export const PrescriptionFormPage = () => {
     )
   }
 
+  const getDispensingFormLabel = (form: number) => {
+    const formObj = DISPENSING_FORMS.find(f => f.value === form)
+    return formObj?.label || 'Unknown'
+  }
+
+  const formatDosageForDisplay = (dosage: string) => {
+    // Convert "4 pills per dose" to "4 pills", "1 tablet per dose" to "1 tablet", etc.
+    return dosage.replace(' per dose', '')
+  }
+
+  const formatQuantityForDisplay = (quantity: number | undefined, dispensingForm: number): string => {
+    if (quantity === undefined) return ''
+    if (dispensingForm === 4) { // Liquid
+      return `${quantity} ml`
+    }
+    if (dispensingForm === 5) { // Tonic
+      return `${quantity} ml`
+    }
+    return quantity.toString()
+  }
+
   const medicineColumns = [
     {
       title: 'Medicine',
-      dataIndex: 'medicineName',
-      key: 'medicineName'
-    },
-    {
-      title: 'Dosage',
-      dataIndex: 'dosage',
-      key: 'dosage'
-    },
-    {
-      title: 'Frequency',
-      dataIndex: 'frequency',
-      key: 'frequency'
-    },
-    {
-      title: 'Duration',
-      dataIndex: 'duration',
-      key: 'duration',
-      render: (duration: number) => `${duration} days`
+      key: 'medicine',
+      width: 300,
+      render: (_: any, record: PrescriptionMedicine) => {
+        const formLabel = getDispensingFormLabel(record.dispensingForm)
+        const containerInfo = record.dispensingForm === 1 && record.containerSize 
+          ? ` (${record.containerSize} dram)`
+          : ''
+        const quantityInfo = record.dispensingForm === 4 || record.dispensingForm === 5
+          ? ` (${formatQuantityForDisplay(record.quantity, record.dispensingForm)})`
+          : ''
+        const displayDosage = formatDosageForDisplay(record.dosage)
+        return (
+          <div>
+            <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+              {record.medicineName} – {formLabel}{containerInfo}{quantityInfo}
+            </div>
+            <div style={{ fontSize: '13px', color: '#666', marginTop: '4px', lineHeight: '1.5' }}>
+              Take {displayDosage}, {record.frequency}, {record.timing}
+            </div>
+            <div style={{ fontSize: '13px', color: '#666', marginTop: '2px' }}>
+              Duration: {record.duration}
+            </div>
+          </div>
+        )
+      }
     },
     {
       title: 'Quantity',
       dataIndex: 'quantity',
-      key: 'quantity'
+      key: 'quantity',
+      width: 100,
+      render: (quantity: number | undefined, record: PrescriptionMedicine) => {
+        if (quantity === undefined) return '-'
+        if (record.dispensingForm === 4 || record.dispensingForm === 5) {
+          return `${quantity} ml`
+        }
+        return quantity.toString()
+      }
+    },
+    {
+      title: 'Dispensed Qty',
+      dataIndex: 'dispensedQuantity',
+      key: 'dispensedQuantity',
+      width: 120,
+      render: (dispensedQuantity: number | undefined, record: PrescriptionMedicine) => {
+        if (dispensedQuantity === undefined) return '-'
+        // Globules: show in drops
+        if (record.dispensingForm === 1) {
+          return `${Math.round(dispensedQuantity)} drops`
+        }
+        // Packets: show in drops (1 Packet = 5 drops)
+        if (record.dispensingForm === 3) {
+          return `${Math.round(dispensedQuantity)} drops`
+        }
+        // Liquid: show in ml
+        if (record.dispensingForm === 4) {
+          return `${dispensedQuantity} ml`
+        }
+        // Tonic, Tablets: show as count (same as prescribed quantity)
+        return Math.round(dispensedQuantity).toString()
+      }
     },
     {
       title: 'Instructions',
       dataIndex: 'instructions',
       key: 'instructions',
-      ellipsis: true
+      ellipsis: true,
+      render: (instructions: string) => instructions || '-'
     },
     {
       title: 'Actions',
       key: 'actions',
+      width: 100,
       render: (_: any, __: any, index: number) => (
         <Button
           type="link"
@@ -330,8 +570,10 @@ export const PrescriptionFormPage = () => {
         onCancel={() => {
           setIsMedicineModalOpen(false)
           medicineForm.resetFields()
+          setMedicineSearchTerm('')
         }}
-        width={600}
+        width={700}
+        okText="Add Medicine"
       >
         <Form
           form={medicineForm}
@@ -341,28 +583,126 @@ export const PrescriptionFormPage = () => {
           <Form.Item
             label="Medicine Name"
             name="medicineName"
-            rules={[{ required: true, message: 'Please enter medicine name' }]}
+            rules={[{ required: true, message: 'Please enter or select medicine name' }]}
           >
-            <Input placeholder="e.g., Paracetamol 500mg" />
+            <AutoComplete
+              placeholder="Search or type medicine name (e.g., Nux Vomica)"
+              options={clinicMedicines.map(med => ({
+                value: med.name,
+                label: (
+                  <div>
+                    <div style={{ fontWeight: 500 }}>{med.name}</div>
+                    {med.genericName && (
+                      <div style={{ fontSize: '12px', color: '#666' }}>{med.genericName}</div>
+                    )}
+                    {med.manufacturer && (
+                      <div style={{ fontSize: '12px', color: '#999' }}>{med.manufacturer}</div>
+                    )}
+                  </div>
+                ),
+                medicine: med // Store the full medicine object
+              }))}
+              onSearch={setMedicineSearchTerm}
+              onSelect={(value, option) => {
+                const selectedMedicine = (option as any).medicine as ClinicMedicine
+                if (selectedMedicine) {
+                  medicineForm.setFieldsValue({
+                    medicineName: selectedMedicine.name,
+                    medicineId: selectedMedicine.id
+                  })
+                }
+              }}
+              filterOption={false} // We're doing server-side filtering
+              loading={isSearchingMedicines}
+              notFoundContent={debouncedSearchTerm.length < 2 ? 'Type at least 2 characters to search' : isSearchingMedicines ? 'Searching...' : 'No medicines found'}
+              allowClear
+            />
+          </Form.Item>
+          
+          {/* Hidden field to store medicineId */}
+          <Form.Item name="medicineId" hidden>
+            <Input type="hidden" />
+          </Form.Item>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, currentValues) => prevValues.dispensingForm !== currentValues.dispensingForm}
+          >
+            {({ getFieldValue }) => {
+              const dispensingForm = getFieldValue('dispensingForm')
+              const isGlobules = dispensingForm === 1
+              
+              return (
+                <div style={{ display: 'grid', gridTemplateColumns: isGlobules ? '1fr 1fr' : '1fr', gap: '16px' }}>
+                  <Form.Item
+                    label="Dispensing Form"
+                    name="dispensingForm"
+                    rules={[{ required: true, message: 'Please select dispensing form' }]}
+                  >
+                    <Select 
+                      placeholder="Select dispensing form"
+                      onChange={handleDispensingFormChange}
+                    >
+                      {DISPENSING_FORMS.map(form => (
+                        <Option key={form.value} value={form.value}>{form.label}</Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+
+                  {isGlobules && (
+                    <Form.Item
+                      label="Container Size"
+                      name="containerSize"
+                      rules={[{ required: true, message: 'Please select container size' }]}
+                    >
+                      <Select placeholder="Select dram size">
+                        <Option value={1}>1 dram</Option>
+                        <Option value={2}>2 dram</Option>
+                        <Option value={3}>3 dram</Option>
+                      </Select>
+                    </Form.Item>
+                  )}
+                </div>
+              )
+            }}
+          </Form.Item>
+
+          <Form.Item
+            label="Dosage (auto-set)"
+            name="dosage"
+            rules={[{ required: true, message: 'Dosage is required' }]}
+          >
+            <Input 
+              placeholder="Will be auto-set based on dispensing form"
+              readOnly
+              style={{ backgroundColor: '#f5f5f5' }}
+            />
           </Form.Item>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <Form.Item
-              label="Dosage"
-              name="dosage"
-              rules={[{ required: true, message: 'Please enter dosage' }]}
-            >
-              <Input placeholder="e.g., 500mg" />
-            </Form.Item>
-
             <Form.Item
               label="Frequency"
               name="frequency"
               rules={[{ required: true, message: 'Please select frequency' }]}
             >
-              <Select placeholder="Select frequency">
+              <Select 
+                placeholder="Select frequency"
+                onChange={() => handleDurationOrFrequencyChange()}
+              >
                 {FREQUENCIES.map(freq => (
                   <Option key={freq} value={freq}>{freq}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              label="Timing"
+              name="timing"
+              rules={[{ required: true, message: 'Please select timing' }]}
+            >
+              <Select placeholder="Select timing">
+                {TIMINGS.map(timing => (
+                  <Option key={timing} value={timing}>{timing}</Option>
                 ))}
               </Select>
             </Form.Item>
@@ -370,27 +710,114 @@ export const PrescriptionFormPage = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <Form.Item
-              label="Duration (days)"
-              name="duration"
+              label="Duration"
+              required
               rules={[{ required: true, message: 'Please enter duration' }]}
             >
-              <InputNumber
-                min={1}
-                style={{ width: '100%' }}
-                placeholder="e.g., 5"
-              />
+              <Input.Group compact>
+                <Form.Item
+                  name="durationValue"
+                  noStyle
+                  rules={[{ required: true, message: 'Required' }]}
+                >
+                  <InputNumber
+                    min={1}
+                    style={{ width: '60%' }}
+                    placeholder="Number"
+                    onChange={() => handleDurationOrFrequencyChange()}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="durationUnit"
+                  noStyle
+                  rules={[{ required: true, message: 'Required' }]}
+                >
+                  <Select
+                    style={{ width: '40%' }}
+                    placeholder="Unit"
+                    onChange={() => handleDurationOrFrequencyChange()}
+                  >
+                    <Option value="days">days</Option>
+                    <Option value="weeks">weeks</Option>
+                  </Select>
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
 
             <Form.Item
-              label="Quantity"
-              name="quantity"
-              rules={[{ required: true, message: 'Please enter quantity' }]}
+              noStyle
+              shouldUpdate={(prevValues, currentValues) => prevValues.dispensingForm !== currentValues.dispensingForm}
             >
-              <InputNumber
-                min={1}
-                style={{ width: '100%' }}
-                placeholder="e.g., 20"
-              />
+              {({ getFieldValue }) => {
+                const dispensingForm = getFieldValue('dispensingForm')
+                // Show quantity dropdown for Liquid
+                if (dispensingForm === 4) {
+                  return (
+                    <Form.Item
+                      label="Quantity"
+                      name="quantity"
+                      rules={[{ required: true, message: 'Please select quantity' }]}
+                    >
+                      <Select placeholder="Select quantity">
+                        {LIQUID_QUANTITIES.map(qty => (
+                          <Option key={qty.value} value={qty.value}>{qty.label}</Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  )
+                }
+                // Show quantity dropdown for Tonic
+                if (dispensingForm === 5) {
+                  return (
+                    <Form.Item
+                      label="Quantity"
+                      name="quantity"
+                      rules={[{ required: true, message: 'Please select quantity' }]}
+                    >
+                      <Select placeholder="Select quantity">
+                        {TONIC_QUANTITIES.map(qty => (
+                          <Option key={qty.value} value={qty.value}>{qty.label}</Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  )
+                }
+                // Show editable quantity for Globules (default 1)
+                if (dispensingForm === 1) {
+                  return (
+                    <Form.Item
+                      label="Quantity"
+                      name="quantity"
+                      rules={[{ required: true, message: 'Please enter quantity' }]}
+                      initialValue={1}
+                    >
+                      <InputNumber
+                        min={1}
+                        style={{ width: '100%' }}
+                        placeholder="Enter quantity (default: 1)"
+                      />
+                    </Form.Item>
+                  )
+                }
+                // Show auto-calculated quantity for Tablets and Packets
+                if (dispensingForm === 2 || dispensingForm === 3) {
+                  return (
+                    <Form.Item
+                      label="Quantity (auto-calculated, editable)"
+                      name="quantity"
+                      rules={[{ required: true, message: 'Please enter quantity' }]}
+                      tooltip="Quantity is auto-calculated based on duration and frequency. You can edit it if needed."
+                    >
+                      <InputNumber
+                        min={1}
+                        style={{ width: '100%' }}
+                        placeholder="Auto-calculated based on duration and frequency"
+                      />
+                    </Form.Item>
+                  )
+                }
+                return null
+              }}
             </Form.Item>
           </div>
 
@@ -400,7 +827,7 @@ export const PrescriptionFormPage = () => {
           >
             <TextArea
               rows={2}
-              placeholder="e.g., Take after meals with water"
+              placeholder="Additional instructions (optional)"
             />
           </Form.Item>
         </Form>

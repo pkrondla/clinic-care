@@ -7,7 +7,8 @@ export enum AppointmentStatus {
   Scheduled = 1,
   InProgress = 2,
   Completed = 3,
-  Cancelled = 4
+  Cancelled = 4,
+  Incomplete = 5
 }
 
 export interface AppointmentPatient {

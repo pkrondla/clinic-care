@@ -21,12 +21,16 @@ public class Prescription : TenantEntity
 public class PrescriptionItem : TenantEntity
 {
     public int PrescriptionId { get; set; }
-    public int MedicineId { get; set; }
+    public int? MedicineId { get; set; } // Nullable to allow custom medicine names
     public string MedicineName { get; set; } = string.Empty;
-    public string Dosage { get; set; } = string.Empty;
-    public string Frequency { get; set; } = string.Empty;
-    public string Duration { get; set; } = string.Empty;
-    public int Quantity { get; set; }
+    public DispensingForm DispensingForm { get; set; }
+    public string Dosage { get; set; } = string.Empty; // Auto-set based on DispensingForm
+    public string Frequency { get; set; } = string.Empty; // e.g., "Daily 3 times", "Weekly once"
+    public string Duration { get; set; } = string.Empty; // e.g., "4 weeks"
+    public string Timing { get; set; } = string.Empty; // e.g., "Before food", "Before brushing"
+    public int? ContainerSize { get; set; } // Only for Globules: 1, 2, or 3 dram
+    public int? Quantity { get; set; } // Required for all forms (prescribed quantity for patient)
+    public decimal DispensedQuantity { get; set; } // Internal: quantity dispensed from inventory (in drops for liquids/globules, same as quantity for tablets/packets)
     public decimal UnitPrice { get; set; }
     public decimal TotalPrice { get; set; }
     public string Instructions { get; set; } = string.Empty;
