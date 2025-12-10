@@ -1,7 +1,11 @@
 import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Divider } from 'antd'
-import { ArrowLeftOutlined, EditOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, EditOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined, DollarOutlined, FileTextOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useConsultation } from '@core/hooks/queries/useConsultations'
+import { useQuery } from '@tanstack/react-query'
+import { prescriptionService } from '@core/services/prescriptionService'
+import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
+import { message } from 'antd'
 import dayjs from 'dayjs'
 
 const { Title, Text } = Typography
@@ -9,7 +13,31 @@ const { Title, Text } = Typography
 export const ConsultationDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const createInvoiceMutation = useCreateInvoiceFromPrescription()
   const { data: consultation, isLoading } = useConsultation(Number(id))
+  
+  // Fetch prescription if it exists to check for invoice
+  const { data: prescription, refetch: refetchPrescription } = useQuery({
+    queryKey: ['prescription', consultation?.prescriptionId],
+    queryFn: () => prescriptionService.getById(consultation!.prescriptionId!),
+    enabled: !!consultation?.hasPrescription && !!consultation?.prescriptionId
+  })
+
+  const handleCreateInvoice = async () => {
+    if (!prescription) return
+    
+    try {
+      const invoice = await createInvoiceMutation.mutateAsync({
+        prescriptionId: prescription.id,
+      })
+      message.success(`Invoice ${invoice.invoiceNumber} created successfully!`)
+      // Refetch prescription to get updated invoice info
+      await refetchPrescription()
+      navigate(`/invoices/${invoice.id}`)
+    } catch (error) {
+      // Error is handled by the mutation
+    }
+  }
 
   if (isLoading) {
     return (
@@ -56,6 +84,34 @@ export const ConsultationDetailPage = () => {
             >
               Create Prescription
             </Button>
+          )}
+          {consultation.hasPrescription && consultation.prescriptionId && (
+            <>
+              {prescription?.hasInvoice && prescription?.invoiceId ? (
+                <Button
+                  type="primary"
+                  icon={<FileTextOutlined />}
+                  onClick={() => navigate(`/invoices/${prescription.invoiceId}`)}
+                >
+                  View Invoice
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  icon={<DollarOutlined />}
+                  onClick={handleCreateInvoice}
+                  loading={createInvoiceMutation.isPending}
+                >
+                  Create Invoice
+                </Button>
+              )}
+              <Button
+                icon={<MedicineBoxOutlined />}
+                onClick={() => navigate(`/prescriptions/${consultation.prescriptionId}`)}
+              >
+                View Prescription
+              </Button>
+            </>
           )}
         </Space>
       </div>

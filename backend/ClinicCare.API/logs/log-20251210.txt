@@ -916,3 +916,1183 @@ INNER JOIN (
 WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
 2025-12-10 12:25:11.694 +11:00 [INF] Found 0 in-progress appointments
 2025-12-10 12:25:12.670 +11:00 [INF] Completed token status update job
+2025-12-10 12:30:09.788 +11:00 [INF] Starting token status update job
+2025-12-10 12:30:10.870 +11:00 [INF] Executed DbCommand (137ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:30:10.993 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:30:11.062 +11:00 [INF] Completed token status update job
+2025-12-10 12:35:10.289 +11:00 [INF] Starting token status update job
+2025-12-10 12:35:10.311 +11:00 [INF] Executed DbCommand (14ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:35:10.318 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:35:10.319 +11:00 [INF] Completed token status update job
+2025-12-10 12:40:11.092 +11:00 [INF] Starting token status update job
+2025-12-10 12:40:11.119 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:40:11.126 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:40:11.126 +11:00 [INF] Completed token status update job
+2025-12-10 12:45:11.796 +11:00 [INF] Starting token status update job
+2025-12-10 12:45:11.933 +11:00 [INF] Executed DbCommand (16ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:45:11.936 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:45:11.937 +11:00 [INF] Completed token status update job
+2025-12-10 12:50:12.137 +11:00 [INF] Starting token status update job
+2025-12-10 12:50:12.146 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:50:12.149 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:50:12.150 +11:00 [INF] Completed token status update job
+2025-12-10 12:52:31.418 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 12:52:31.722 +11:00 [INF] CORS policy execution successful.
+2025-12-10 12:52:31.770 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 204 null null 353.7046ms
+2025-12-10 12:52:32.039 +11:00 [INF] Request starting HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 12:52:32.073 +11:00 [INF] CORS policy execution successful.
+2025-12-10 12:52:32.318 +11:00 [INF] Executed DbCommand (96ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:52:32.615 +11:00 [INF] Executing endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 12:52:32.851 +11:00 [INF] Executed DbCommand (29ms) [Parameters=[@__8__locals1_request_DoctorId_Value_0='?' (DbType = Int32), @__organizationId_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+FROM [DoctorProfiles] AS [d]
+WHERE ([d].[Id] = @__8__locals1_request_DoctorId_Value_0 OR [d].[UserId] = @__8__locals1_request_DoctorId_Value_0) AND [d].[OrganizationId] = @__organizationId_Value_1 AND [d].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:52:33.155 +11:00 [INF] Executed DbCommand (158ms) [Parameters=[@__organizationId_Value_0='?' (DbType = Int32), @__8__locals1_request_ClinicId_Value_1='?' (DbType = Int32), @__actualDoctorId_Value_2='?' (DbType = Int32), @__startDateTime_3='?' (DbType = DateTime2), @__endDateTime_4='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[ConsultationId], [p].[CreatedAt], [p].[InternalNotes], [p].[IsActive], [p].[IssuedDate], [p].[OrganizationId], [p].[PatientInstructions], [p].[PrescriptionNumber], [p].[Status], [p].[UpdatedAt], [c0].[Id], [c0].[AppointmentId], [c0].[ChiefComplaint], [c0].[ConsultationDate], [c0].[ConsultationFee], [c0].[ConsultationType], [c0].[CreatedAt], [c0].[Diagnosis], [c0].[DoctorId], [c0].[Examination], [c0].[IsActive], [c0].[Notes], [c0].[OrganizationId], [c0].[PatientId], [c0].[Symptoms], [c0].[TreatmentPlan], [c0].[UpdatedAt], [a0].[Id], [a0].[ClinicId], [a0].[CreatedAt], [a0].[DoctorId], [a0].[IsActive], [a0].[Notes], [a0].[OrganizationId], [a0].[PatientId], [a0].[Status], [a0].[TokenNumber], [a0].[Type], [a0].[UpdatedAt], [a0].[AppointmentDate], [p1].[Id], [p1].[Address], [p1].[BloodGroup], [p1].[CreatedAt], [p1].[DateOfBirth], [p1].[EmergencyContact], [p1].[FirstName], [p1].[Gender], [p1].[IsActive], [p1].[LastName], [p1].[MedicalHistory], [p1].[OrganizationId], [p1].[PatientCode], [p1].[Phone], [p1].[UpdatedAt], [p1].[UserId], [u0].[Id], [u0].[CreatedAt], [u0].[Email], [u0].[FirstName], [u0].[IsActive], [u0].[LastName], [u0].[OrganizationId], [u0].[PasswordHash], [u0].[Phone], [u0].[RefreshToken], [u0].[RefreshTokenExpiryTime], [u0].[Role], [u0].[SelectedClinicId], [u0].[UpdatedAt], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [u2].[Id], [u2].[CreatedAt], [u2].[Email], [u2].[FirstName], [u2].[IsActive], [u2].[LastName], [u2].[OrganizationId], [u2].[PasswordHash], [u2].[Phone], [u2].[RefreshToken], [u2].[RefreshTokenExpiryTime], [u2].[Role], [u2].[SelectedClinicId], [u2].[UpdatedAt], [p3].[Id], [p3].[ContainerSize], [p3].[CreatedAt], [p3].[DispensedQuantity], [p3].[DispensingForm], [p3].[Dosage], [p3].[Duration], [p3].[Frequency], [p3].[Instructions], [p3].[IsActive], [p3].[MedicineId], [p3].[MedicineName], [p3].[OrganizationId], [p3].[PrescriptionId], [p3].[Quantity], [p3].[Timing], [p3].[TotalPrice], [p3].[UnitPrice], [p3].[UpdatedAt]
+FROM [Prescriptions] AS [p]
+INNER JOIN (
+    SELECT [c].[Id], [c].[AppointmentId], [c].[ChiefComplaint], [c].[ConsultationDate], [c].[ConsultationFee], [c].[ConsultationType], [c].[CreatedAt], [c].[Diagnosis], [c].[DoctorId], [c].[Examination], [c].[IsActive], [c].[Notes], [c].[OrganizationId], [c].[PatientId], [c].[Symptoms], [c].[TreatmentPlan], [c].[UpdatedAt]
+    FROM [Consultations] AS [c]
+) AS [c0] ON [p].[ConsultationId] = [c0].[Id]
+INNER JOIN (
+    SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate]
+    FROM [Appointments] AS [a]
+) AS [a0] ON [c0].[AppointmentId] = [a0].[Id]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+    FROM [Patients] AS [p0]
+) AS [p1] ON [c0].[PatientId] = [p1].[Id]
+INNER JOIN (
+    SELECT [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt]
+    FROM [Users] AS [u]
+) AS [u0] ON [p1].[UserId] = [u0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [c0].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [u1].[Id], [u1].[CreatedAt], [u1].[Email], [u1].[FirstName], [u1].[IsActive], [u1].[LastName], [u1].[OrganizationId], [u1].[PasswordHash], [u1].[Phone], [u1].[RefreshToken], [u1].[RefreshTokenExpiryTime], [u1].[Role], [u1].[SelectedClinicId], [u1].[UpdatedAt]
+    FROM [Users] AS [u1]
+) AS [u2] ON [d0].[UserId] = [u2].[Id]
+LEFT JOIN (
+    SELECT [p2].[Id], [p2].[ContainerSize], [p2].[CreatedAt], [p2].[DispensedQuantity], [p2].[DispensingForm], [p2].[Dosage], [p2].[Duration], [p2].[Frequency], [p2].[Instructions], [p2].[IsActive], [p2].[MedicineId], [p2].[MedicineName], [p2].[OrganizationId], [p2].[PrescriptionId], [p2].[Quantity], [p2].[Timing], [p2].[TotalPrice], [p2].[UnitPrice], [p2].[UpdatedAt]
+    FROM [PrescriptionItems] AS [p2]
+) AS [p3] ON [p].[Id] = [p3].[PrescriptionId]
+WHERE [p].[OrganizationId] = @__organizationId_Value_0 AND [p].[IsActive] = CAST(1 AS bit) AND [a0].[ClinicId] = @__8__locals1_request_ClinicId_Value_1 AND [c0].[DoctorId] = @__actualDoctorId_Value_2 AND [p].[IssuedDate] >= @__startDateTime_3 AND [p].[IssuedDate] <= @__endDateTime_4
+ORDER BY [p].[IssuedDate] DESC, [p].[CreatedAt] DESC, [p].[Id], [c0].[Id], [a0].[Id], [p1].[Id], [u0].[Id], [d0].[Id], [u2].[Id]
+2025-12-10 12:52:33.196 +11:00 [INF] Setting HTTP status code 200.
+2025-12-10 12:52:33.201 +11:00 [INF] Writing value of type '<>f__AnonymousType14`2' as Json.
+2025-12-10 12:52:33.217 +11:00 [INF] Executed endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 12:52:33.219 +11:00 [INF] Request finished HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 200 null application/json; charset=utf-8 1180.5024ms
+2025-12-10 12:52:40.507 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions/7 - null null
+2025-12-10 12:52:40.548 +11:00 [INF] CORS policy execution successful.
+2025-12-10 12:52:40.552 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions/7 - 204 null null 44.8181ms
+2025-12-10 12:52:40.554 +11:00 [INF] Request starting HTTP/1.1 GET http://localhost:7000/api/prescriptions/7 - null null
+2025-12-10 12:52:40.564 +11:00 [INF] CORS policy execution successful.
+2025-12-10 12:52:40.572 +11:00 [INF] Executed DbCommand (2ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:52:40.586 +11:00 [INF] Executing endpoint 'HTTP: GET /api/prescriptions/{id:int} => GetPrescription'
+2025-12-10 12:52:40.647 +11:00 [INF] Setting HTTP status code 200.
+2025-12-10 12:52:40.652 +11:00 [INF] Writing value of type '<>f__AnonymousType14`2' as Json.
+2025-12-10 12:52:40.663 +11:00 [INF] Executed endpoint 'HTTP: GET /api/prescriptions/{id:int} => GetPrescription'
+2025-12-10 12:52:40.668 +11:00 [INF] Request finished HTTP/1.1 GET http://localhost:7000/api/prescriptions/7 - 200 null application/json; charset=utf-8 113.564ms
+2025-12-10 12:55:12.627 +11:00 [INF] Starting token status update job
+2025-12-10 12:55:12.657 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 12:55:12.664 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 12:55:12.665 +11:00 [INF] Completed token status update job
+2025-12-10 13:00:13.623 +11:00 [INF] Starting appointment reminder job
+2025-12-10 13:00:13.809 +11:00 [INF] Starting token status update job
+2025-12-10 13:00:14.722 +11:00 [INF] Executed DbCommand (91ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:00:14.735 +11:00 [INF] Executed DbCommand (174ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:00:14.745 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:00:14.869 +11:00 [INF] Completed token status update job
+2025-12-10 13:00:14.910 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 13:00:14.956 +11:00 [INF] Completed appointment reminder job
+2025-12-10 13:05:13.889 +11:00 [INF] Starting token status update job
+2025-12-10 13:05:13.902 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:05:13.908 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:05:13.908 +11:00 [INF] Completed token status update job
+2025-12-10 13:10:14.429 +11:00 [INF] Starting token status update job
+2025-12-10 13:10:14.603 +11:00 [INF] Executed DbCommand (23ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:10:14.606 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:10:14.607 +11:00 [INF] Completed token status update job
+2025-12-10 13:15:14.739 +11:00 [INF] Starting token status update job
+2025-12-10 13:15:14.810 +11:00 [INF] Executed DbCommand (10ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:15:14.817 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:15:14.817 +11:00 [INF] Completed token status update job
+2025-12-10 13:20:00.050 +11:00 [INF] Starting token status update job
+2025-12-10 13:20:00.115 +11:00 [INF] Executed DbCommand (10ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:20:00.117 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:20:00.117 +11:00 [INF] Completed token status update job
+2025-12-10 13:25:02.895 +11:00 [INF] Starting token status update job
+2025-12-10 13:25:03.682 +11:00 [INF] Executed DbCommand (184ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:25:04.228 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:25:04.330 +11:00 [INF] Completed token status update job
+2025-12-10 13:26:44.946 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 13:26:45.149 +11:00 [INF] CORS policy execution successful.
+2025-12-10 13:26:45.301 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 204 null null 365.634ms
+2025-12-10 13:26:45.335 +11:00 [INF] Request starting HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 13:26:45.413 +11:00 [INF] CORS policy execution successful.
+2025-12-10 13:26:45.753 +11:00 [INF] Executed DbCommand (108ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:26:46.527 +11:00 [INF] Executing endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 13:26:47.217 +11:00 [INF] Executed DbCommand (78ms) [Parameters=[@__8__locals1_request_DoctorId_Value_0='?' (DbType = Int32), @__organizationId_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+FROM [DoctorProfiles] AS [d]
+WHERE ([d].[Id] = @__8__locals1_request_DoctorId_Value_0 OR [d].[UserId] = @__8__locals1_request_DoctorId_Value_0) AND [d].[OrganizationId] = @__organizationId_Value_1 AND [d].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:26:48.015 +11:00 [INF] Executed DbCommand (677ms) [Parameters=[@__organizationId_Value_0='?' (DbType = Int32), @__8__locals1_request_ClinicId_Value_1='?' (DbType = Int32), @__actualDoctorId_Value_2='?' (DbType = Int32), @__startDateTime_3='?' (DbType = DateTime2), @__endDateTime_4='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[ConsultationId], [p].[CreatedAt], [p].[InternalNotes], [p].[IsActive], [p].[IssuedDate], [p].[OrganizationId], [p].[PatientInstructions], [p].[PrescriptionNumber], [p].[Status], [p].[UpdatedAt], [c0].[Id], [c0].[AppointmentId], [c0].[ChiefComplaint], [c0].[ConsultationDate], [c0].[ConsultationFee], [c0].[ConsultationType], [c0].[CreatedAt], [c0].[Diagnosis], [c0].[DoctorId], [c0].[Examination], [c0].[IsActive], [c0].[Notes], [c0].[OrganizationId], [c0].[PatientId], [c0].[Symptoms], [c0].[TreatmentPlan], [c0].[UpdatedAt], [a0].[Id], [a0].[ClinicId], [a0].[CreatedAt], [a0].[DoctorId], [a0].[IsActive], [a0].[Notes], [a0].[OrganizationId], [a0].[PatientId], [a0].[Status], [a0].[TokenNumber], [a0].[Type], [a0].[UpdatedAt], [a0].[AppointmentDate], [p1].[Id], [p1].[Address], [p1].[BloodGroup], [p1].[CreatedAt], [p1].[DateOfBirth], [p1].[EmergencyContact], [p1].[FirstName], [p1].[Gender], [p1].[IsActive], [p1].[LastName], [p1].[MedicalHistory], [p1].[OrganizationId], [p1].[PatientCode], [p1].[Phone], [p1].[UpdatedAt], [p1].[UserId], [u0].[Id], [u0].[CreatedAt], [u0].[Email], [u0].[FirstName], [u0].[IsActive], [u0].[LastName], [u0].[OrganizationId], [u0].[PasswordHash], [u0].[Phone], [u0].[RefreshToken], [u0].[RefreshTokenExpiryTime], [u0].[Role], [u0].[SelectedClinicId], [u0].[UpdatedAt], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [u2].[Id], [u2].[CreatedAt], [u2].[Email], [u2].[FirstName], [u2].[IsActive], [u2].[LastName], [u2].[OrganizationId], [u2].[PasswordHash], [u2].[Phone], [u2].[RefreshToken], [u2].[RefreshTokenExpiryTime], [u2].[Role], [u2].[SelectedClinicId], [u2].[UpdatedAt], [p3].[Id], [p3].[ContainerSize], [p3].[CreatedAt], [p3].[DispensedQuantity], [p3].[DispensingForm], [p3].[Dosage], [p3].[Duration], [p3].[Frequency], [p3].[Instructions], [p3].[IsActive], [p3].[MedicineId], [p3].[MedicineName], [p3].[OrganizationId], [p3].[PrescriptionId], [p3].[Quantity], [p3].[Timing], [p3].[TotalPrice], [p3].[UnitPrice], [p3].[UpdatedAt]
+FROM [Prescriptions] AS [p]
+INNER JOIN (
+    SELECT [c].[Id], [c].[AppointmentId], [c].[ChiefComplaint], [c].[ConsultationDate], [c].[ConsultationFee], [c].[ConsultationType], [c].[CreatedAt], [c].[Diagnosis], [c].[DoctorId], [c].[Examination], [c].[IsActive], [c].[Notes], [c].[OrganizationId], [c].[PatientId], [c].[Symptoms], [c].[TreatmentPlan], [c].[UpdatedAt]
+    FROM [Consultations] AS [c]
+) AS [c0] ON [p].[ConsultationId] = [c0].[Id]
+INNER JOIN (
+    SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate]
+    FROM [Appointments] AS [a]
+) AS [a0] ON [c0].[AppointmentId] = [a0].[Id]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+    FROM [Patients] AS [p0]
+) AS [p1] ON [c0].[PatientId] = [p1].[Id]
+INNER JOIN (
+    SELECT [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt]
+    FROM [Users] AS [u]
+) AS [u0] ON [p1].[UserId] = [u0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [c0].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [u1].[Id], [u1].[CreatedAt], [u1].[Email], [u1].[FirstName], [u1].[IsActive], [u1].[LastName], [u1].[OrganizationId], [u1].[PasswordHash], [u1].[Phone], [u1].[RefreshToken], [u1].[RefreshTokenExpiryTime], [u1].[Role], [u1].[SelectedClinicId], [u1].[UpdatedAt]
+    FROM [Users] AS [u1]
+) AS [u2] ON [d0].[UserId] = [u2].[Id]
+LEFT JOIN (
+    SELECT [p2].[Id], [p2].[ContainerSize], [p2].[CreatedAt], [p2].[DispensedQuantity], [p2].[DispensingForm], [p2].[Dosage], [p2].[Duration], [p2].[Frequency], [p2].[Instructions], [p2].[IsActive], [p2].[MedicineId], [p2].[MedicineName], [p2].[OrganizationId], [p2].[PrescriptionId], [p2].[Quantity], [p2].[Timing], [p2].[TotalPrice], [p2].[UnitPrice], [p2].[UpdatedAt]
+    FROM [PrescriptionItems] AS [p2]
+) AS [p3] ON [p].[Id] = [p3].[PrescriptionId]
+WHERE [p].[OrganizationId] = @__organizationId_Value_0 AND [p].[IsActive] = CAST(1 AS bit) AND [a0].[ClinicId] = @__8__locals1_request_ClinicId_Value_1 AND [c0].[DoctorId] = @__actualDoctorId_Value_2 AND [p].[IssuedDate] >= @__startDateTime_3 AND [p].[IssuedDate] <= @__endDateTime_4
+ORDER BY [p].[IssuedDate] DESC, [p].[CreatedAt] DESC, [p].[Id], [c0].[Id], [a0].[Id], [p1].[Id], [u0].[Id], [d0].[Id], [u2].[Id]
+2025-12-10 13:26:48.169 +11:00 [INF] Setting HTTP status code 200.
+2025-12-10 13:26:48.236 +11:00 [INF] Writing value of type '<>f__AnonymousType14`2' as Json.
+2025-12-10 13:26:48.302 +11:00 [INF] Executed endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 13:26:48.380 +11:00 [INF] Request finished HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 200 null application/json; charset=utf-8 3045.1274ms
+2025-12-10 13:30:06.906 +11:00 [INF] Starting token status update job
+2025-12-10 13:30:06.984 +11:00 [INF] Executed DbCommand (36ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:30:06.986 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:30:06.986 +11:00 [INF] Completed token status update job
+2025-12-10 13:35:08.132 +11:00 [INF] Starting token status update job
+2025-12-10 13:35:08.242 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:35:08.244 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:35:08.244 +11:00 [INF] Completed token status update job
+2025-12-10 13:40:08.404 +11:00 [INF] Starting token status update job
+2025-12-10 13:40:08.416 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:40:08.420 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:40:08.420 +11:00 [INF] Completed token status update job
+2025-12-10 13:45:08.656 +11:00 [INF] Starting token status update job
+2025-12-10 13:45:08.702 +11:00 [INF] Executed DbCommand (10ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:45:08.704 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:45:08.705 +11:00 [INF] Completed token status update job
+2025-12-10 13:50:08.901 +11:00 [INF] Starting token status update job
+2025-12-10 13:50:08.908 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:50:08.912 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:50:08.914 +11:00 [INF] Completed token status update job
+2025-12-10 13:55:09.151 +11:00 [INF] Starting token status update job
+2025-12-10 13:55:09.249 +11:00 [INF] Executed DbCommand (16ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 13:55:09.251 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 13:55:09.252 +11:00 [INF] Completed token status update job
+2025-12-10 14:00:09.366 +11:00 [INF] Starting appointment reminder job
+2025-12-10 14:00:09.397 +11:00 [INF] Starting token status update job
+2025-12-10 14:00:09.412 +11:00 [INF] Executed DbCommand (37ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:00:09.418 +11:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:00:09.420 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 14:00:09.420 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:00:09.422 +11:00 [INF] Completed appointment reminder job
+2025-12-10 14:00:09.425 +11:00 [INF] Completed token status update job
+2025-12-10 14:01:55.597 +11:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 14:01:55.610 +11:00 [INF] CORS policy execution successful.
+2025-12-10 14:01:55.612 +11:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 204 null null 15.444ms
+2025-12-10 14:01:55.615 +11:00 [INF] Request starting HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - null null
+2025-12-10 14:01:55.620 +11:00 [INF] CORS policy execution successful.
+2025-12-10 14:01:55.635 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__subdomain_0='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [o].[Id], [o].[Address], [o].[ContactEmail], [o].[ContactPhone], [o].[CreatedAt], [o].[DatabaseName], [o].[IsActive], [o].[Name], [o].[Subdomain], [o].[SubscriptionStatus], [o].[TrialEndDate], [o].[UpdatedAt]
+FROM [dbo].[Organizations] AS [o]
+WHERE [o].[Subdomain] = @__subdomain_0 AND [o].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:01:55.663 +11:00 [INF] Executing endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 14:01:55.680 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__8__locals1_request_DoctorId_Value_0='?' (DbType = Int32), @__organizationId_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+FROM [DoctorProfiles] AS [d]
+WHERE ([d].[Id] = @__8__locals1_request_DoctorId_Value_0 OR [d].[UserId] = @__8__locals1_request_DoctorId_Value_0) AND [d].[OrganizationId] = @__organizationId_Value_1 AND [d].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:01:55.729 +11:00 [INF] Executed DbCommand (38ms) [Parameters=[@__organizationId_Value_0='?' (DbType = Int32), @__8__locals1_request_ClinicId_Value_1='?' (DbType = Int32), @__actualDoctorId_Value_2='?' (DbType = Int32), @__startDateTime_3='?' (DbType = DateTime2), @__endDateTime_4='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[ConsultationId], [p].[CreatedAt], [p].[InternalNotes], [p].[IsActive], [p].[IssuedDate], [p].[OrganizationId], [p].[PatientInstructions], [p].[PrescriptionNumber], [p].[Status], [p].[UpdatedAt], [c0].[Id], [c0].[AppointmentId], [c0].[ChiefComplaint], [c0].[ConsultationDate], [c0].[ConsultationFee], [c0].[ConsultationType], [c0].[CreatedAt], [c0].[Diagnosis], [c0].[DoctorId], [c0].[Examination], [c0].[IsActive], [c0].[Notes], [c0].[OrganizationId], [c0].[PatientId], [c0].[Symptoms], [c0].[TreatmentPlan], [c0].[UpdatedAt], [a0].[Id], [a0].[ClinicId], [a0].[CreatedAt], [a0].[DoctorId], [a0].[IsActive], [a0].[Notes], [a0].[OrganizationId], [a0].[PatientId], [a0].[Status], [a0].[TokenNumber], [a0].[Type], [a0].[UpdatedAt], [a0].[AppointmentDate], [p1].[Id], [p1].[Address], [p1].[BloodGroup], [p1].[CreatedAt], [p1].[DateOfBirth], [p1].[EmergencyContact], [p1].[FirstName], [p1].[Gender], [p1].[IsActive], [p1].[LastName], [p1].[MedicalHistory], [p1].[OrganizationId], [p1].[PatientCode], [p1].[Phone], [p1].[UpdatedAt], [p1].[UserId], [u0].[Id], [u0].[CreatedAt], [u0].[Email], [u0].[FirstName], [u0].[IsActive], [u0].[LastName], [u0].[OrganizationId], [u0].[PasswordHash], [u0].[Phone], [u0].[RefreshToken], [u0].[RefreshTokenExpiryTime], [u0].[Role], [u0].[SelectedClinicId], [u0].[UpdatedAt], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [u2].[Id], [u2].[CreatedAt], [u2].[Email], [u2].[FirstName], [u2].[IsActive], [u2].[LastName], [u2].[OrganizationId], [u2].[PasswordHash], [u2].[Phone], [u2].[RefreshToken], [u2].[RefreshTokenExpiryTime], [u2].[Role], [u2].[SelectedClinicId], [u2].[UpdatedAt], [p3].[Id], [p3].[ContainerSize], [p3].[CreatedAt], [p3].[DispensedQuantity], [p3].[DispensingForm], [p3].[Dosage], [p3].[Duration], [p3].[Frequency], [p3].[Instructions], [p3].[IsActive], [p3].[MedicineId], [p3].[MedicineName], [p3].[OrganizationId], [p3].[PrescriptionId], [p3].[Quantity], [p3].[Timing], [p3].[TotalPrice], [p3].[UnitPrice], [p3].[UpdatedAt]
+FROM [Prescriptions] AS [p]
+INNER JOIN (
+    SELECT [c].[Id], [c].[AppointmentId], [c].[ChiefComplaint], [c].[ConsultationDate], [c].[ConsultationFee], [c].[ConsultationType], [c].[CreatedAt], [c].[Diagnosis], [c].[DoctorId], [c].[Examination], [c].[IsActive], [c].[Notes], [c].[OrganizationId], [c].[PatientId], [c].[Symptoms], [c].[TreatmentPlan], [c].[UpdatedAt]
+    FROM [Consultations] AS [c]
+) AS [c0] ON [p].[ConsultationId] = [c0].[Id]
+INNER JOIN (
+    SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate]
+    FROM [Appointments] AS [a]
+) AS [a0] ON [c0].[AppointmentId] = [a0].[Id]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+    FROM [Patients] AS [p0]
+) AS [p1] ON [c0].[PatientId] = [p1].[Id]
+INNER JOIN (
+    SELECT [u].[Id], [u].[CreatedAt], [u].[Email], [u].[FirstName], [u].[IsActive], [u].[LastName], [u].[OrganizationId], [u].[PasswordHash], [u].[Phone], [u].[RefreshToken], [u].[RefreshTokenExpiryTime], [u].[Role], [u].[SelectedClinicId], [u].[UpdatedAt]
+    FROM [Users] AS [u]
+) AS [u0] ON [p1].[UserId] = [u0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [c0].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [u1].[Id], [u1].[CreatedAt], [u1].[Email], [u1].[FirstName], [u1].[IsActive], [u1].[LastName], [u1].[OrganizationId], [u1].[PasswordHash], [u1].[Phone], [u1].[RefreshToken], [u1].[RefreshTokenExpiryTime], [u1].[Role], [u1].[SelectedClinicId], [u1].[UpdatedAt]
+    FROM [Users] AS [u1]
+) AS [u2] ON [d0].[UserId] = [u2].[Id]
+LEFT JOIN (
+    SELECT [p2].[Id], [p2].[ContainerSize], [p2].[CreatedAt], [p2].[DispensedQuantity], [p2].[DispensingForm], [p2].[Dosage], [p2].[Duration], [p2].[Frequency], [p2].[Instructions], [p2].[IsActive], [p2].[MedicineId], [p2].[MedicineName], [p2].[OrganizationId], [p2].[PrescriptionId], [p2].[Quantity], [p2].[Timing], [p2].[TotalPrice], [p2].[UnitPrice], [p2].[UpdatedAt]
+    FROM [PrescriptionItems] AS [p2]
+) AS [p3] ON [p].[Id] = [p3].[PrescriptionId]
+WHERE [p].[OrganizationId] = @__organizationId_Value_0 AND [p].[IsActive] = CAST(1 AS bit) AND [a0].[ClinicId] = @__8__locals1_request_ClinicId_Value_1 AND [c0].[DoctorId] = @__actualDoctorId_Value_2 AND [p].[IssuedDate] >= @__startDateTime_3 AND [p].[IssuedDate] <= @__endDateTime_4
+ORDER BY [p].[IssuedDate] DESC, [p].[CreatedAt] DESC, [p].[Id], [c0].[Id], [a0].[Id], [p1].[Id], [u0].[Id], [d0].[Id], [u2].[Id]
+2025-12-10 14:01:55.748 +11:00 [INF] Setting HTTP status code 200.
+2025-12-10 14:01:55.750 +11:00 [INF] Writing value of type '<>f__AnonymousType14`2' as Json.
+2025-12-10 14:01:55.757 +11:00 [INF] Executed endpoint 'HTTP: GET /api/prescriptions/ => GetPrescriptions'
+2025-12-10 14:01:55.758 +11:00 [INF] Request finished HTTP/1.1 GET http://localhost:7000/api/prescriptions?clinicId=1&doctorId=2&startDate=2025-12-03&endDate=2025-12-10 - 200 null application/json; charset=utf-8 143.6096ms
+2025-12-10 14:05:09.622 +11:00 [INF] Starting token status update job
+2025-12-10 14:05:09.630 +11:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:05:09.632 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:05:09.634 +11:00 [INF] Completed token status update job
+2025-12-10 14:10:09.890 +11:00 [INF] Starting token status update job
+2025-12-10 14:10:09.903 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:10:09.907 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:10:09.907 +11:00 [INF] Completed token status update job
+2025-12-10 14:15:10.115 +11:00 [INF] Starting token status update job
+2025-12-10 14:15:10.162 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:15:10.168 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:15:10.169 +11:00 [INF] Completed token status update job
+2025-12-10 14:20:10.460 +11:00 [INF] Starting token status update job
+2025-12-10 14:20:10.486 +11:00 [INF] Executed DbCommand (13ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:20:10.489 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:20:10.490 +11:00 [INF] Completed token status update job
+2025-12-10 14:25:10.820 +11:00 [INF] Starting token status update job
+2025-12-10 14:25:10.911 +11:00 [INF] Executed DbCommand (22ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:25:10.918 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:25:10.919 +11:00 [INF] Completed token status update job
+2025-12-10 14:30:11.278 +11:00 [INF] Starting token status update job
+2025-12-10 14:30:11.322 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:30:11.342 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:30:11.344 +11:00 [INF] Completed token status update job
+2025-12-10 14:35:11.641 +11:00 [INF] Starting token status update job
+2025-12-10 14:35:11.871 +11:00 [INF] Executed DbCommand (20ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:35:11.875 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:35:11.875 +11:00 [INF] Completed token status update job
+2025-12-10 14:40:12.374 +11:00 [INF] Starting token status update job
+2025-12-10 14:40:12.404 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:40:12.415 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:40:12.423 +11:00 [INF] Completed token status update job
+2025-12-10 14:45:13.161 +11:00 [INF] Starting token status update job
+2025-12-10 14:45:13.675 +11:00 [INF] Executed DbCommand (41ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:45:13.870 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:45:13.910 +11:00 [INF] Completed token status update job
+2025-12-10 14:50:14.358 +11:00 [INF] Starting token status update job
+2025-12-10 14:50:14.513 +11:00 [INF] Executed DbCommand (38ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:50:14.777 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:50:14.910 +11:00 [INF] Completed token status update job
+2025-12-10 14:55:15.181 +11:00 [INF] Starting token status update job
+2025-12-10 14:55:16.555 +11:00 [INF] Executed DbCommand (86ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 14:55:16.965 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 14:55:16.969 +11:00 [INF] Completed token status update job
+2025-12-10 15:00:00.703 +11:00 [INF] Starting appointment reminder job
+2025-12-10 15:00:00.718 +11:00 [INF] Starting token status update job
+2025-12-10 15:00:00.744 +11:00 [INF] Executed DbCommand (18ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:00:00.751 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:00:00.755 +11:00 [INF] Completed token status update job
+2025-12-10 15:00:00.780 +11:00 [INF] Executed DbCommand (37ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:00:00.801 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 15:00:00.803 +11:00 [INF] Completed appointment reminder job
+2025-12-10 15:05:01.907 +11:00 [INF] Starting token status update job
+2025-12-10 15:05:02.007 +11:00 [INF] Executed DbCommand (41ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:05:02.016 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:05:02.019 +11:00 [INF] Completed token status update job
+2025-12-10 15:10:02.799 +11:00 [INF] Starting token status update job
+2025-12-10 15:10:03.101 +11:00 [INF] Executed DbCommand (29ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:10:03.121 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:10:03.124 +11:00 [INF] Completed token status update job
+2025-12-10 15:15:03.407 +11:00 [INF] Starting token status update job
+2025-12-10 15:15:03.425 +11:00 [INF] Executed DbCommand (12ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:15:03.436 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:15:03.438 +11:00 [INF] Completed token status update job
+2025-12-10 15:20:04.105 +11:00 [INF] Starting token status update job
+2025-12-10 15:20:04.217 +11:00 [INF] Executed DbCommand (32ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:20:04.232 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:20:04.233 +11:00 [INF] Completed token status update job
+2025-12-10 15:25:05.004 +11:00 [INF] Starting token status update job
+2025-12-10 15:25:05.019 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:25:05.021 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:25:05.022 +11:00 [INF] Completed token status update job
+2025-12-10 15:30:05.355 +11:00 [INF] Starting token status update job
+2025-12-10 15:30:05.436 +11:00 [INF] Executed DbCommand (16ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:30:05.443 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:30:05.445 +11:00 [INF] Completed token status update job
+2025-12-10 15:35:05.682 +11:00 [INF] Starting token status update job
+2025-12-10 15:35:05.699 +11:00 [INF] Executed DbCommand (12ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:35:05.706 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:35:05.708 +11:00 [INF] Completed token status update job
+2025-12-10 15:40:06.109 +11:00 [INF] Starting token status update job
+2025-12-10 15:40:06.191 +11:00 [INF] Executed DbCommand (23ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:40:06.198 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:40:06.200 +11:00 [INF] Completed token status update job
+2025-12-10 15:45:06.556 +11:00 [INF] Starting token status update job
+2025-12-10 15:45:06.581 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:45:06.588 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:45:06.590 +11:00 [INF] Completed token status update job
+2025-12-10 15:50:07.079 +11:00 [INF] Starting token status update job
+2025-12-10 15:50:07.175 +11:00 [INF] Executed DbCommand (18ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:50:07.179 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:50:07.183 +11:00 [INF] Completed token status update job
+2025-12-10 15:55:07.595 +11:00 [INF] Starting token status update job
+2025-12-10 15:55:07.620 +11:00 [INF] Executed DbCommand (17ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 15:55:07.629 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 15:55:07.632 +11:00 [INF] Completed token status update job
+2025-12-10 16:00:07.903 +11:00 [INF] Starting appointment reminder job
+2025-12-10 16:00:07.937 +11:00 [INF] Starting token status update job
+2025-12-10 16:00:08.023 +11:00 [INF] Executed DbCommand (25ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:00:08.028 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:00:08.029 +11:00 [INF] Completed token status update job
+2025-12-10 16:00:08.053 +11:00 [INF] Executed DbCommand (66ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:00:08.059 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 16:00:08.063 +11:00 [INF] Completed appointment reminder job
+2025-12-10 16:05:08.382 +11:00 [INF] Starting token status update job
+2025-12-10 16:05:08.413 +11:00 [INF] Executed DbCommand (19ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:05:08.428 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:05:08.432 +11:00 [INF] Completed token status update job
+2025-12-10 16:10:08.972 +11:00 [INF] Starting token status update job
+2025-12-10 16:10:09.280 +11:00 [INF] Executed DbCommand (51ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:10:09.296 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:10:09.297 +11:00 [INF] Completed token status update job
+2025-12-10 16:15:09.464 +11:00 [INF] Starting token status update job
+2025-12-10 16:15:09.481 +11:00 [INF] Executed DbCommand (10ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:15:09.488 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:15:09.490 +11:00 [INF] Completed token status update job
+2025-12-10 16:20:10.350 +11:00 [INF] Starting token status update job
+2025-12-10 16:20:10.610 +11:00 [INF] Executed DbCommand (34ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:20:10.622 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:20:10.624 +11:00 [INF] Completed token status update job
+2025-12-10 16:25:10.834 +11:00 [INF] Starting token status update job
+2025-12-10 16:25:10.862 +11:00 [INF] Executed DbCommand (17ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:25:10.892 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:25:10.899 +11:00 [INF] Completed token status update job
+2025-12-10 16:30:11.423 +11:00 [INF] Starting token status update job
+2025-12-10 16:30:11.550 +11:00 [INF] Executed DbCommand (22ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:30:11.555 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:30:11.557 +11:00 [INF] Completed token status update job
+2025-12-10 16:35:11.815 +11:00 [INF] Starting token status update job
+2025-12-10 16:35:11.842 +11:00 [INF] Executed DbCommand (15ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:35:11.851 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:35:11.853 +11:00 [INF] Completed token status update job
+2025-12-10 16:40:12.474 +11:00 [INF] Starting token status update job
+2025-12-10 16:40:12.591 +11:00 [INF] Executed DbCommand (23ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:40:12.611 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:40:12.613 +11:00 [INF] Completed token status update job
+2025-12-10 16:45:13.176 +11:00 [INF] Starting token status update job
+2025-12-10 16:45:13.205 +11:00 [INF] Executed DbCommand (22ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:45:13.211 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:45:13.212 +11:00 [INF] Completed token status update job
+2025-12-10 16:50:13.781 +11:00 [INF] Starting token status update job
+2025-12-10 16:50:13.943 +11:00 [INF] Executed DbCommand (17ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:50:13.965 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:50:13.969 +11:00 [INF] Completed token status update job
+2025-12-10 16:55:14.173 +11:00 [INF] Starting token status update job
+2025-12-10 16:55:14.187 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 16:55:14.189 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 16:55:14.194 +11:00 [INF] Completed token status update job
+2025-12-10 17:00:14.407 +11:00 [INF] Starting appointment reminder job
+2025-12-10 17:00:14.438 +11:00 [INF] Starting token status update job
+2025-12-10 17:00:14.490 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:00:14.492 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:00:14.497 +11:00 [INF] Completed token status update job
+2025-12-10 17:00:14.499 +11:00 [INF] Executed DbCommand (18ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:00:14.502 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 17:00:14.503 +11:00 [INF] Completed appointment reminder job
+2025-12-10 17:05:14.770 +11:00 [INF] Starting token status update job
+2025-12-10 17:05:14.778 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:05:14.780 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:05:14.781 +11:00 [INF] Completed token status update job
+2025-12-10 17:10:14.987 +11:00 [INF] Starting token status update job
+2025-12-10 17:10:15.044 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:10:15.047 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:10:15.047 +11:00 [INF] Completed token status update job
+2025-12-10 17:15:00.245 +11:00 [INF] Starting token status update job
+2025-12-10 17:15:00.255 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:15:00.259 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:15:00.259 +11:00 [INF] Completed token status update job
+2025-12-10 17:20:00.496 +11:00 [INF] Starting token status update job
+2025-12-10 17:20:00.506 +11:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:20:00.507 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:20:00.508 +11:00 [INF] Completed token status update job
+2025-12-10 17:25:00.773 +11:00 [INF] Starting token status update job
+2025-12-10 17:25:00.838 +11:00 [INF] Executed DbCommand (16ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:25:00.841 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:25:00.842 +11:00 [INF] Completed token status update job
+2025-12-10 17:30:01.037 +11:00 [INF] Starting token status update job
+2025-12-10 17:30:01.047 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:30:01.049 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:30:01.051 +11:00 [INF] Completed token status update job
+2025-12-10 17:35:01.283 +11:00 [INF] Starting token status update job
+2025-12-10 17:35:01.292 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:35:01.294 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:35:01.295 +11:00 [INF] Completed token status update job
+2025-12-10 17:40:01.584 +11:00 [INF] Starting token status update job
+2025-12-10 17:40:01.642 +11:00 [INF] Executed DbCommand (14ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:40:01.644 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:40:01.644 +11:00 [INF] Completed token status update job
+2025-12-10 17:45:01.827 +11:00 [INF] Starting token status update job
+2025-12-10 17:45:01.839 +11:00 [INF] Executed DbCommand (7ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:45:01.840 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:45:01.841 +11:00 [INF] Completed token status update job
+2025-12-10 17:50:02.120 +11:00 [INF] Starting token status update job
+2025-12-10 17:50:02.174 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:50:02.176 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:50:02.176 +11:00 [INF] Completed token status update job
+2025-12-10 17:55:02.369 +11:00 [INF] Starting token status update job
+2025-12-10 17:55:02.379 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 17:55:02.384 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 17:55:02.385 +11:00 [INF] Completed token status update job
+2025-12-10 18:00:02.658 +11:00 [INF] Starting appointment reminder job
+2025-12-10 18:00:02.665 +11:00 [INF] Starting token status update job
+2025-12-10 18:00:02.710 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:00:02.717 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:00:02.717 +11:00 [INF] Completed token status update job
+2025-12-10 18:00:02.721 +11:00 [INF] Executed DbCommand (15ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:00:02.723 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 18:00:02.724 +11:00 [INF] Completed appointment reminder job
+2025-12-10 18:05:03.000 +11:00 [INF] Starting token status update job
+2025-12-10 18:05:03.070 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:05:03.072 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:05:03.073 +11:00 [INF] Completed token status update job
+2025-12-10 18:10:03.209 +11:00 [INF] Starting token status update job
+2025-12-10 18:10:03.217 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:10:03.220 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:10:03.220 +11:00 [INF] Completed token status update job
+2025-12-10 18:15:03.433 +11:00 [INF] Starting token status update job
+2025-12-10 18:15:03.441 +11:00 [INF] Executed DbCommand (6ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:15:03.443 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:15:03.444 +11:00 [INF] Completed token status update job
+2025-12-10 18:20:03.672 +11:00 [INF] Starting token status update job
+2025-12-10 18:20:03.715 +11:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:20:03.719 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:20:03.720 +11:00 [INF] Completed token status update job
+2025-12-10 18:25:03.925 +11:00 [INF] Starting token status update job
+2025-12-10 18:25:03.935 +11:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:25:03.937 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:25:03.938 +11:00 [INF] Completed token status update job
+2025-12-10 18:30:04.162 +11:00 [INF] Starting token status update job
+2025-12-10 18:30:04.212 +11:00 [INF] Executed DbCommand (9ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:30:04.214 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:30:04.215 +11:00 [INF] Completed token status update job
+2025-12-10 18:35:04.384 +11:00 [INF] Starting token status update job
+2025-12-10 18:35:04.433 +11:00 [INF] Executed DbCommand (10ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:35:04.434 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:35:04.435 +11:00 [INF] Completed token status update job
+2025-12-10 18:40:04.675 +11:00 [INF] Starting token status update job
+2025-12-10 18:40:04.713 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:40:04.715 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:40:04.715 +11:00 [INF] Completed token status update job
+2025-12-10 18:45:04.945 +11:00 [INF] Starting token status update job
+2025-12-10 18:45:04.983 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:45:04.989 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:45:04.990 +11:00 [INF] Completed token status update job
+2025-12-10 18:50:05.187 +11:00 [INF] Starting token status update job
+2025-12-10 18:50:05.229 +11:00 [INF] Executed DbCommand (8ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:50:05.231 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:50:05.232 +11:00 [INF] Completed token status update job
+2025-12-10 18:55:05.981 +11:00 [INF] Starting token status update job
+2025-12-10 18:55:06.059 +11:00 [INF] Executed DbCommand (14ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 18:55:06.060 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 18:55:06.061 +11:00 [INF] Completed token status update job
+2025-12-10 19:00:06.642 +11:00 [INF] Starting appointment reminder job
+2025-12-10 19:00:06.659 +11:00 [INF] Starting token status update job
+2025-12-10 19:00:06.734 +11:00 [INF] Executed DbCommand (16ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 19:00:06.734 +11:00 [INF] Executed DbCommand (19ms) [Parameters=[@__reminderDate_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId], [d0].[Id], [d0].[BaseClinicId], [d0].[ConsultationFeeInPerson], [d0].[ConsultationFeeTele], [d0].[CreatedAt], [d0].[ExperienceYears], [d0].[FollowupFeeInPerson], [d0].[FollowupFeeTele], [d0].[IsActive], [d0].[OrganizationId], [d0].[Qualification], [d0].[RegistrationNumber], [d0].[Specialization], [d0].[UpdatedAt], [d0].[UserId], [c0].[Id], [c0].[Address], [c0].[Code], [c0].[ContactEmail], [c0].[ContactPhone], [c0].[CreatedAt], [c0].[EveningEndTime], [c0].[EveningStartTime], [c0].[FullDayEndTime], [c0].[FullDayStartTime], [c0].[IsActive], [c0].[MorningEndTime], [c0].[MorningStartTime], [c0].[Name], [c0].[OperatingHoursType], [c0].[OrganizationId], [c0].[UpdatedAt]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+INNER JOIN (
+    SELECT [d].[Id], [d].[BaseClinicId], [d].[ConsultationFeeInPerson], [d].[ConsultationFeeTele], [d].[CreatedAt], [d].[ExperienceYears], [d].[FollowupFeeInPerson], [d].[FollowupFeeTele], [d].[IsActive], [d].[OrganizationId], [d].[Qualification], [d].[RegistrationNumber], [d].[Specialization], [d].[UpdatedAt], [d].[UserId]
+    FROM [DoctorProfiles] AS [d]
+) AS [d0] ON [a].[DoctorId] = [d0].[Id]
+INNER JOIN (
+    SELECT [c].[Id], [c].[Address], [c].[Code], [c].[ContactEmail], [c].[ContactPhone], [c].[CreatedAt], [c].[EveningEndTime], [c].[EveningStartTime], [c].[FullDayEndTime], [c].[FullDayStartTime], [c].[IsActive], [c].[MorningEndTime], [c].[MorningStartTime], [c].[Name], [c].[OperatingHoursType], [c].[OrganizationId], [c].[UpdatedAt]
+    FROM [Clinics] AS [c]
+) AS [c0] ON [a].[ClinicId] = [c0].[Id]
+WHERE [a].[Status] = 1 AND [a].[AppointmentDate] = @__reminderDate_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 19:00:06.736 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 19:00:06.739 +11:00 [INF] Completed token status update job
+2025-12-10 19:00:06.739 +11:00 [INF] Found 0 appointments to send reminders for
+2025-12-10 19:00:06.740 +11:00 [INF] Completed appointment reminder job
+2025-12-10 19:05:06.950 +11:00 [INF] Starting token status update job
+2025-12-10 19:05:07.081 +11:00 [INF] Executed DbCommand (9ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClinicId], [a].[CreatedAt], [a].[DoctorId], [a].[IsActive], [a].[Notes], [a].[OrganizationId], [a].[PatientId], [a].[Status], [a].[TokenNumber], [a].[Type], [a].[UpdatedAt], [a].[AppointmentDate], [p0].[Id], [p0].[Address], [p0].[BloodGroup], [p0].[CreatedAt], [p0].[DateOfBirth], [p0].[EmergencyContact], [p0].[FirstName], [p0].[Gender], [p0].[IsActive], [p0].[LastName], [p0].[MedicalHistory], [p0].[OrganizationId], [p0].[PatientCode], [p0].[Phone], [p0].[UpdatedAt], [p0].[UserId]
+FROM [Appointments] AS [a]
+INNER JOIN (
+    SELECT [p].[Id], [p].[Address], [p].[BloodGroup], [p].[CreatedAt], [p].[DateOfBirth], [p].[EmergencyContact], [p].[FirstName], [p].[Gender], [p].[IsActive], [p].[LastName], [p].[MedicalHistory], [p].[OrganizationId], [p].[PatientCode], [p].[Phone], [p].[UpdatedAt], [p].[UserId]
+    FROM [Patients] AS [p]
+) AS [p0] ON [a].[PatientId] = [p0].[Id]
+WHERE [a].[Status] = 2 AND [a].[AppointmentDate] = @__today_0 AND [a].[IsActive] = CAST(1 AS bit)
+2025-12-10 19:05:07.085 +11:00 [INF] Found 0 in-progress appointments
+2025-12-10 19:05:07.089 +11:00 [INF] Completed token status update job

@@ -1,8 +1,10 @@
 import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Table, Divider } from 'antd'
-import { ArrowLeftOutlined, DownloadOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, DownloadOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined, DollarOutlined, FileTextOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { prescriptionService, Prescription } from '@core/services/prescriptionService'
+import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
+import { message } from 'antd'
 import dayjs from 'dayjs'
 
 const { Title, Text } = Typography
@@ -18,11 +20,28 @@ const DISPENSING_FORMS: Record<number, string> = {
 export const PrescriptionDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { data: prescription, isLoading } = useQuery<Prescription>({
+  const createInvoiceMutation = useCreateInvoiceFromPrescription()
+  const { data: prescription, isLoading, refetch } = useQuery<Prescription>({
     queryKey: ['prescription', id],
     queryFn: () => prescriptionService.getById(Number(id!)),
     enabled: !!id && !isNaN(Number(id))
   })
+
+  const handleCreateInvoice = async () => {
+    if (!prescription) return
+    
+    try {
+      const invoice = await createInvoiceMutation.mutateAsync({
+        prescriptionId: prescription.id,
+      })
+      message.success(`Invoice ${invoice.invoiceNumber} created successfully!`)
+      // Refetch prescription to get updated invoice info
+      await refetch()
+      navigate(`/invoices/${invoice.id}`)
+    } catch (error) {
+      // Error is handled by the mutation
+    }
+  }
 
   const handleDownloadPdf = async (includeMedicineNames: boolean = true) => {
     if (!prescription) return
@@ -162,6 +181,24 @@ export const PrescriptionDetailPage = () => {
           >
             Back
           </Button>
+          {prescription.hasInvoice && prescription.invoiceId ? (
+            <Button
+              type="primary"
+              icon={<FileTextOutlined />}
+              onClick={() => navigate(`/invoices/${prescription.invoiceId}`)}
+            >
+              View Invoice
+            </Button>
+          ) : (
+            <Button
+              type="primary"
+              icon={<DollarOutlined />}
+              onClick={handleCreateInvoice}
+              loading={createInvoiceMutation.isPending}
+            >
+              Create Invoice
+            </Button>
+          )}
           <Button
             icon={<DownloadOutlined />}
             onClick={() => handleDownloadPdf(true)}

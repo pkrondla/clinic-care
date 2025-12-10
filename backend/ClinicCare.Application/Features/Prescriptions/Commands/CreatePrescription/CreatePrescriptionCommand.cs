@@ -44,5 +44,7 @@ public class PrescriptionDto
     public List<PrescriptionMedicineDto> Medicines { get; set; } = new();
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool HasInvoice { get; set; }
+    public int? InvoiceId { get; set; }
 }
 

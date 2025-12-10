@@ -27,6 +27,8 @@ export interface Prescription {
   medicines: PrescriptionMedicine[]
   notes?: string
   createdAt: string
+  hasInvoice?: boolean
+  invoiceId?: number
 }
 
 export interface CreatePrescriptionRequest {

@@ -102,6 +102,14 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                 .ThenByDescending(p => p.CreatedAt)
                 .ToListAsync(cancellationToken);
 
+            // Get all prescription IDs to check for invoices
+            var prescriptionIds = prescriptions.Select(p => p.Id).ToList();
+            var invoices = await _context.Invoices
+                .Where(i => prescriptionIds.Contains(i.PrescriptionId ?? 0) && i.IsActive)
+                .ToListAsync(cancellationToken);
+            
+            var invoiceLookup = invoices.ToDictionary(i => i.PrescriptionId ?? 0, i => i.Id);
+
             var dtos = prescriptions.Select(p => new PrescriptionDto
             {
                 Id = p.Id,
@@ -126,7 +134,9 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                     Instructions = item.Instructions
                 }).ToList(),
                 Notes = p.PatientInstructions,
-                CreatedAt = p.CreatedAt
+                CreatedAt = p.CreatedAt,
+                HasInvoice = invoiceLookup.ContainsKey(p.Id),
+                InvoiceId = invoiceLookup.ContainsKey(p.Id) ? invoiceLookup[p.Id] : null
             }).ToList();
 
             return Result<List<PrescriptionDto>>.Success(dtos);
