@@ -39,6 +39,7 @@ public class GetPrescriptionHandler : IRequestHandler<GetPrescriptionQuery, Resu
             
             dto.HasInvoice = invoice != null;
             dto.InvoiceId = invoice?.Id;
+            dto.InvoiceNumber = invoice?.InvoiceNumber;
             
             return Result<PrescriptionDto>.Success(dto);
         }

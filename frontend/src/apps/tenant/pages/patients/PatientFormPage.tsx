@@ -10,8 +10,12 @@ import {
   Col, 
   Typography, 
   Space,
-  Alert
+  Alert,
+  Upload,
+  message
 } from 'antd'
+import { UploadOutlined, UserOutlined } from '@ant-design/icons'
+import type { UploadFile, UploadProps } from 'antd'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useCreatePatient, useUpdatePatient, usePatient } from '@core/hooks/queries/usePatients'
@@ -45,6 +49,8 @@ export const PatientFormPage = () => {
   const [form] = Form.useForm()
   const isEdit = !!id
   const [errorMessages, setErrorMessages] = useState<string[]>([])
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [photoUrl, setPhotoUrl] = useState<string | undefined>(undefined)
 
   const { data: patient, isLoading: patientLoading } = usePatient(Number(id))
   const createPatientMutation = useCreatePatient()
@@ -56,6 +62,15 @@ export const PatientFormPage = () => {
         ...patient,
         dateOfBirth: dayjs(patient.dateOfBirth)
       })
+      if (patient.photoUrl) {
+        setPhotoUrl(patient.photoUrl)
+        setFileList([{
+          uid: '-1',
+          name: 'patient-photo.jpg',
+          status: 'done',
+          url: patient.photoUrl
+        }])
+      }
     }
   }, [isEdit, patient, form])
 
@@ -66,13 +81,57 @@ export const PatientFormPage = () => {
     }
   }
 
+  const getBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = error => reject(error)
+    })
+  }
+
+  const handleUploadChange: UploadProps['onChange'] = async (info) => {
+    if (info.file.status === 'uploading') {
+      setFileList([info.file])
+      return
+    }
+    if (info.file.status === 'done' || info.file.originFileObj) {
+      try {
+        const base64 = await getBase64(info.file.originFileObj as File)
+        setPhotoUrl(base64)
+        setFileList([info.file])
+        form.setFieldsValue({ photoUrl: base64 })
+      } catch (error) {
+        message.error('Failed to process image')
+      }
+    }
+    if (info.file.status === 'removed') {
+      setPhotoUrl(undefined)
+      setFileList([])
+      form.setFieldsValue({ photoUrl: undefined })
+    }
+  }
+
+  const beforeUpload = (file: File) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!')
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!')
+    }
+    return isJpgOrPng && isLt2M
+  }
+
   const onFinish = async (values: any) => {
     setErrorMessages([]) // Clear previous errors
     
     try {
       const formData = {
         ...values,
-        dateOfBirth: values.dateOfBirth.format('YYYY-MM-DD')
+        dateOfBirth: values.dateOfBirth.format('YYYY-MM-DD'),
+        photoUrl: photoUrl
       }
 
       if (isEdit) {
@@ -141,6 +200,33 @@ export const PatientFormPage = () => {
           }}
         >
           <Row gutter={[24, 0]}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="photoUrl"
+                label="Patient Photo"
+              >
+                <Upload
+                  name="photo"
+                  listType="picture-card"
+                  fileList={fileList}
+                  onChange={handleUploadChange}
+                  beforeUpload={beforeUpload}
+                  maxCount={1}
+                  onRemove={() => {
+                    setPhotoUrl(undefined)
+                    setFileList([])
+                    return true
+                  }}
+                >
+                  {fileList.length === 0 && (
+                    <div>
+                      <UserOutlined style={{ fontSize: 24 }} />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  )}
+                </Upload>
+              </Form.Item>
+            </Col>
             <Col xs={24} sm={12}>
               <Form.Item
                 name="firstName"

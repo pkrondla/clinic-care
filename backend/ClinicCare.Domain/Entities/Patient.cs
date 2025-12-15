@@ -16,6 +16,7 @@ public class Patient : TenantEntity
     public string Address { get; set; } = string.Empty;
     public string EmergencyContact { get; set; } = string.Empty;
     public string MedicalHistory { get; set; } = string.Empty;
+    public string? PhotoUrl { get; set; }
 
     public int Age => DateTime.Now.Year - DateOfBirth.Year;
 

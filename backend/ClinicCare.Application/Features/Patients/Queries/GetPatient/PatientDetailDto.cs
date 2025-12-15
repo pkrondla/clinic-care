@@ -17,6 +17,7 @@ public class PatientDetailDto
     public string Address { get; set; } = string.Empty;
     public string EmergencyContact { get; set; } = string.Empty;
     public string MedicalHistory { get; set; } = string.Empty;
+    public string? PhotoUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool IsActive { get; set; }
@@ -57,5 +58,12 @@ public class RecentConsultationDto
     public string DoctorName { get; set; } = string.Empty;
     public string ClinicName { get; set; } = string.Empty;
     public bool HasPrescription { get; set; }
+    public List<ConsultationPhotoSummaryDto>? Photos { get; set; }
 }
 
+public class ConsultationPhotoSummaryDto
+{
+    public int Id { get; set; }
+    public string PhotoUrl { get; set; } = string.Empty;
+    public string? Description { get; set; }
+}

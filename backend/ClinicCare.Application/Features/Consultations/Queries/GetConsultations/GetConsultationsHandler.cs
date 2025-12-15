@@ -1,6 +1,7 @@
 using AutoMapper;
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Features.Consultations.Commands.AddConsultationPhoto;
 using ClinicCare.Application.Features.Consultations.Commands.CreateConsultation;
 using ClinicCare.Domain.Enums;
 using MediatR;
@@ -40,6 +41,7 @@ public class GetConsultationsHandler : IRequestHandler<GetConsultationsQuery, Re
                 .Include(c => c.Doctor)
                     .ThenInclude(d => d.User)
                 .Include(c => c.Prescriptions)
+                .Include(c => c.Photos)
                 .Where(c => c.OrganizationId == organizationId.Value && c.IsActive);
 
             // Apply filters
@@ -127,7 +129,22 @@ public class GetConsultationsHandler : IRequestHandler<GetConsultationsQuery, Re
                 HasPrescription = c.Prescriptions != null && c.Prescriptions.Any(p => p.IsActive),
                 PrescriptionId = c.Prescriptions != null && c.Prescriptions.Any(p => p.IsActive) 
                     ? c.Prescriptions.FirstOrDefault(p => p.IsActive)?.Id 
-                    : null
+                    : null,
+                Photos = (c.Photos != null && c.Photos.Any())
+                    ? c.Photos
+                        .Where(p => p.IsActive)
+                        .OrderBy(p => p.DisplayOrder)
+                        .Select(p => new ConsultationPhotoDto
+                        {
+                            Id = p.Id,
+                            ConsultationId = p.ConsultationId,
+                            PhotoUrl = p.PhotoUrl,
+                            Description = p.Description,
+                            DisplayOrder = p.DisplayOrder,
+                            CreatedAt = p.CreatedAt
+                        })
+                        .ToList()
+                    : new List<ConsultationPhotoDto>()
             }).ToList();
 
             return Result<List<ConsultationDto>>.Success(dtos);

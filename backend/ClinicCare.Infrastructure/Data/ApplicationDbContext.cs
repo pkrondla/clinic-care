@@ -28,6 +28,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Patient> Patients => Set<Patient>();
     public DbSet<Domain.Modules.Appointments.Entities.Appointment> Appointments => Set<Domain.Modules.Appointments.Entities.Appointment>();
     public DbSet<Consultation> Consultations => Set<Consultation>();
+    public DbSet<ConsultationPhoto> ConsultationPhotos => Set<ConsultationPhoto>();
     public DbSet<Prescription> Prescriptions => Set<
     Prescription>();
     public DbSet<PrescriptionItem> PrescriptionItems => Set<PrescriptionItem>();

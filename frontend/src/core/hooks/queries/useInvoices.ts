@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import invoiceService, {
   GetInvoicesParams,
   CreateInvoiceFromPrescriptionRequest,
+  CreateInvoiceRequest,
+  UpdateInvoiceRequest,
   PayInvoiceRequest,
   UpdateCourierDocketRequest,
 } from '../../services/invoiceService';
@@ -77,6 +79,37 @@ export function useUpdateCourierDocket() {
     },
     onError: (error: any) => {
       message.error(error?.response?.data?.message || 'Failed to update courier docket');
+    },
+  });
+}
+
+export function useCreateInvoice() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: CreateInvoiceRequest) => invoiceService.createInvoice(request),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: invoiceKeys.all });
+      message.success('Invoice created successfully');
+    },
+    onError: (error: any) => {
+      message.error(error?.response?.data?.message || 'Failed to create invoice');
+    },
+  });
+}
+
+export function useUpdateInvoice() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: UpdateInvoiceRequest) => invoiceService.updateInvoice(request),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: invoiceKeys.all });
+      queryClient.invalidateQueries({ queryKey: invoiceKeys.detail(variables.id) });
+      message.success('Invoice updated successfully');
+    },
+    onError: (error: any) => {
+      message.error(error?.response?.data?.message || 'Failed to update invoice');
     },
   });
 }

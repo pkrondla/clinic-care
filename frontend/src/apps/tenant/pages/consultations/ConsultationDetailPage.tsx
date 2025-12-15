@@ -1,18 +1,21 @@
-import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Divider } from 'antd'
-import { ArrowLeftOutlined, EditOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined, DollarOutlined, FileTextOutlined } from '@ant-design/icons'
+import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Image } from 'antd'
+import { ArrowLeftOutlined, EditOutlined, MedicineBoxOutlined, DollarOutlined, FileTextOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useConsultation } from '@core/hooks/queries/useConsultations'
 import { useQuery } from '@tanstack/react-query'
 import { prescriptionService } from '@core/services/prescriptionService'
 import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
+import { useUser } from '@core/stores/authStore'
 import { message } from 'antd'
 import dayjs from 'dayjs'
+import type { ConsultationPhoto } from '@core/services/consultationService'
 
 const { Title, Text } = Typography
 
 export const ConsultationDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const user = useUser()
   const createInvoiceMutation = useCreateInvoiceFromPrescription()
   const { data: consultation, isLoading } = useConsultation(Number(id))
   
@@ -71,12 +74,17 @@ export const ConsultationDetailPage = () => {
             Back
           </Button>
           <Button
+            onClick={() => navigate(`/appointments/${consultation.appointmentId}`)}
+          >
+            View Appointment
+          </Button>
+          <Button
             icon={<EditOutlined />}
             onClick={() => navigate(`/consultations/${consultation.id}/edit`)}
           >
             Edit
           </Button>
-          {!consultation.hasPrescription && (
+          {!consultation.hasPrescription && (user?.role === 'Doctor' || user?.role === 'Admin') && (
             <Button
               type="primary"
               icon={<MedicineBoxOutlined />}
@@ -118,33 +126,42 @@ export const ConsultationDetailPage = () => {
 
       <Row gutter={[24, 24]}>
         {/* Consultation Details */}
-        <Col xs={24} lg={16}>
-          <Card title="Consultation Details">
-            <Descriptions column={1} bordered>
+        <Col xs={24}>
+          <Card title="Consultation Details" size="small">
+            <Descriptions column={2} bordered size="small">
               <Descriptions.Item label="Consultation Date">
-                <Space>
-                  <CalendarOutlined />
-                  <Text>{dayjs(consultation.consultationDate).format('MMMM DD, YYYY [at] hh:mm A')}</Text>
-                </Space>
+                <Text>{dayjs(consultation.consultationDate).format('MMM DD, YYYY hh:mm A')}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label="Consultation Fee">
+                <Text strong style={{ fontSize: '14px', color: '#1890ff' }}>
+                  ₹{consultation.consultationFee.toFixed(2)}
+                </Text>
               </Descriptions.Item>
               <Descriptions.Item label="Patient">
                 <Space>
-                  <UserOutlined />
                   <Text strong>{consultation.patientName}</Text>
+                  <Button
+                    type="link"
+                    size="small"
+                    onClick={() => navigate(`/patients/${consultation.patientId}`)}
+                    style={{ padding: 0, height: 'auto' }}
+                  >
+                    View Profile
+                  </Button>
                 </Space>
               </Descriptions.Item>
               <Descriptions.Item label="Doctor">
                 <Text strong>{consultation.doctorName}</Text>
               </Descriptions.Item>
-              <Descriptions.Item label="Consultation Fee">
-                <Text strong style={{ fontSize: '16px', color: '#1890ff' }}>
-                  ₹{consultation.consultationFee.toFixed(2)}
-                </Text>
-              </Descriptions.Item>
             </Descriptions>
+          </Card>
+        </Col>
+      </Row>
 
-            <Divider>Clinical Information</Divider>
-
+      {/* Clinical Information Card */}
+      <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
+        <Col xs={24}>
+          <Card title="Clinical Information">
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Chief Complaint">
                 <Text>{consultation.chiefComplaint || '-'}</Text>
@@ -177,47 +194,34 @@ export const ConsultationDetailPage = () => {
             </Descriptions>
           </Card>
         </Col>
-
-        {/* Related Information */}
-        <Col xs={24} lg={8}>
-          <Card title="Related Information">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Appointment ID</Text>
-                <div>
-                  <Button
-                    type="link"
-                    onClick={() => navigate(`/appointments/${consultation.appointmentId}`)}
-                    style={{ padding: 0 }}
-                  >
-                    View Appointment #{consultation.appointmentId}
-                  </Button>
-                </div>
-              </div>
-              <Divider style={{ margin: '8px 0' }} />
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Patient ID</Text>
-                <div>
-                  <Button
-                    type="link"
-                    onClick={() => navigate(`/patients/${consultation.patientId}`)}
-                    style={{ padding: 0 }}
-                  >
-                    View Patient Profile
-                  </Button>
-                </div>
-              </div>
-              <Divider style={{ margin: '8px 0' }} />
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Created At</Text>
-                <div>
-                  <Text>{dayjs(consultation.createdAt).format('MMMM DD, YYYY [at] hh:mm A')}</Text>
-                </div>
-              </div>
-            </Space>
-          </Card>
-        </Col>
       </Row>
+
+      {/* Consultation Photos */}
+      {consultation.photos && consultation.photos.length > 0 && (
+        <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
+          <Col xs={24}>
+            <Card title="Consultation Photos">
+              <Image.PreviewGroup>
+                <Space wrap>
+                  {consultation.photos.map((photo: ConsultationPhoto) => (
+                    <Image
+                      key={photo.id}
+                      width={120}
+                      height={120}
+                      src={photo.photoUrl}
+                      alt={photo.description || `Photo ${photo.id}`}
+                      style={{ objectFit: 'cover', cursor: 'pointer', borderRadius: '4px' }}
+                      preview={{
+                        mask: 'View'
+                      }}
+                    />
+                  ))}
+                </Space>
+              </Image.PreviewGroup>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </div>
   )
 }

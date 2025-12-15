@@ -67,6 +67,7 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
             Address = request.Address,
             EmergencyContact = request.EmergencyContact,
             MedicalHistory = request.MedicalHistory,
+            PhotoUrl = request.PhotoUrl,
             OrganizationId = organizationId,
             IsActive = true
         };
@@ -109,6 +110,7 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
             Address = patient.Address,
             EmergencyContact = patient.EmergencyContact,
             MedicalHistory = patient.MedicalHistory,
+            PhotoUrl = patient.PhotoUrl,
             CreatedAt = patient.CreatedAt,
             UpdatedAt = patient.UpdatedAt,
             IsActive = patient.IsActive

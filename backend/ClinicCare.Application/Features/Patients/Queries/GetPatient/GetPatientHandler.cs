@@ -35,6 +35,8 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
                     .ThenInclude(a => a.Clinic)
             .Include(p => p.Consultations)
                 .ThenInclude(c => c.Prescriptions)
+            .Include(p => p.Consultations)
+                .ThenInclude(c => c.Photos)
             .FirstOrDefaultAsync(p => p.Id == request.Id && p.OrganizationId == organizationId, cancellationToken);
 
         if (patient == null)
@@ -106,7 +108,17 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
                 ClinicName = c.Appointment?.Clinic != null 
                     ? c.Appointment.Clinic.Name ?? "Unknown"
                     : "Unknown",
-                HasPrescription = c.Prescriptions?.Any() ?? false
+                HasPrescription = c.Prescriptions?.Any() ?? false,
+                Photos = c.Photos?
+                    .Where(p => p.IsActive)
+                    .OrderBy(p => p.DisplayOrder)
+                    .Select(p => new ConsultationPhotoSummaryDto
+                    {
+                        Id = p.Id,
+                        PhotoUrl = p.PhotoUrl,
+                        Description = p.Description
+                    })
+                    .ToList()
             })
             .ToList();
 
@@ -127,6 +139,7 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
             Address = patient.Address ?? string.Empty,
             EmergencyContact = patient.EmergencyContact ?? string.Empty,
             MedicalHistory = patient.MedicalHistory ?? string.Empty,
+            PhotoUrl = patient.PhotoUrl,
             CreatedAt = patient.CreatedAt,
             UpdatedAt = patient.UpdatedAt,
             IsActive = patient.IsActive,

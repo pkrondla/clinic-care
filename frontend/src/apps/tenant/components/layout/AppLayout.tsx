@@ -137,13 +137,15 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     if (path.startsWith('/users')) return 'users'
     if (path.startsWith('/invoices')) return 'invoices'
     if (path.startsWith('/suppliers')) return 'suppliers'
-    if (path.startsWith('/purchase-orders')) return 'purchase-orders'
-    if (path.startsWith('/book-appointment')) return 'book-appointment'
-    if (path.startsWith('/doctors/schedule')) return 'doctor-schedule'
-    if (path.startsWith('/queue/doctor')) return 'queue'
-    if (path.startsWith('/queue/staff')) return 'queue'
-    if (path.startsWith('/queue')) return 'queue'
-    return 'dashboard'
+      if (path.startsWith('/purchase-orders')) return 'purchase-orders'
+      if (path.startsWith('/book-appointment')) return 'book-appointment'
+      if (path.startsWith('/doctors/schedule')) return 'doctor-schedule'
+      if (path.startsWith('/profile')) return 'profile'
+      if (path.startsWith('/settings')) return 'settings'
+      if (path.startsWith('/queue/doctor')) return 'queue'
+      if (path.startsWith('/queue/staff')) return 'queue'
+      if (path.startsWith('/queue')) return 'queue'
+      return 'dashboard'
   }
 
   // Get menu items based on user role
@@ -231,6 +233,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'prescriptions',
           icon: <MedicineBoxOutlined />,
           label: 'Prescriptions'
+        },
+        {
+          key: 'invoices',
+          icon: <DollarOutlined />,
+          label: 'Invoices'
         }
       ],
       [UserRole.Reception]: [
@@ -249,6 +256,11 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           key: 'queue',
           icon: <TeamOutlined />,
           label: 'Queue'
+        },
+        {
+          key: 'prescriptions',
+          icon: <MedicineBoxOutlined />,
+          label: 'Prescriptions'
         },
         {
           key: 'invoices',
@@ -327,8 +339,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Logout',
-      onClick: handleLogout
+      label: 'Logout'
     }
   ]
 
@@ -400,7 +411,18 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
             </Badge>
             
             <Dropdown
-              menu={{ items: userMenuItems }}
+              menu={{ 
+                items: userMenuItems,
+                onClick: ({ key }) => {
+                  if (key === 'profile') {
+                    navigate('/profile')
+                  } else if (key === 'settings') {
+                    navigate('/settings')
+                  } else if (key === 'logout') {
+                    handleLogout()
+                  }
+                }
+              }}
               placement="bottomRight"
               trigger={['click']}
             >

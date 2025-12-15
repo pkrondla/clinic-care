@@ -38,6 +38,7 @@ public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, Result<Invoice
                     .ThenInclude(c => c.Doctor)
                         .ThenInclude(d => d.User)
                 .Include(i => i.Prescription)
+                    .ThenInclude(p => p.PrescriptionItems.OrderBy(pi => pi.Id))
                 .Include(i => i.InvoiceItems)
                 .FirstOrDefaultAsync(i => i.Id == request.Id 
                                         && i.OrganizationId == organizationId.Value 
@@ -102,6 +103,21 @@ public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, Result<Invoice
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice,
                     TotalPrice = item.TotalPrice
+                }).ToList(),
+                PrescriptionItems = invoice.Prescription?.PrescriptionItems?.OrderBy(pi => pi.Id).Select(pi => new PrescriptionItemDto
+                {
+                    Id = pi.Id,
+                    MedicineName = pi.MedicineName,
+                    DispensingForm = (int)pi.DispensingForm,
+                    Dosage = pi.Dosage,
+                    Frequency = pi.Frequency,
+                    Duration = pi.Duration,
+                    Timing = pi.Timing,
+                    Quantity = pi.Quantity,
+                    ContainerSize = pi.ContainerSize,
+                    Instructions = pi.Instructions,
+                    UnitPrice = pi.UnitPrice,
+                    TotalPrice = pi.TotalPrice
                 }).ToList()
             };
 

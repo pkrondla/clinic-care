@@ -25,6 +25,7 @@ public class GetPatientsHandler : IRequestHandler<GetPatientsQuery, Result<Pagin
             .AsNoTracking()
             .Where(p => p.OrganizationId == organizationId && p.IsActive)
             .Include(p => p.User)
+            .Include(p => p.Appointments)
             .OrderByDescending(p => p.Id) // Simple ordering by Id
             .ToListAsync(cancellationToken);
 
@@ -98,29 +99,46 @@ public class GetPatientsHandler : IRequestHandler<GetPatientsQuery, Result<Pagin
             .ToList();
 
         // Map to DTOs
-        var patientDtos = paginatedPatients.Select(p => new PatientDto
+        var patientDtos = paginatedPatients.Select(p => 
         {
-            Id = p.Id,
-            UserId = p.UserId,
-            PatientCode = p.PatientCode,
-            Email = p.User.Email,
-            FirstName = p.User.FirstName,
-            LastName = p.User.LastName,
-            FullName = $"{p.User.FirstName} {p.User.LastName}",
-            Phone = p.User.Phone,
-            DateOfBirth = p.DateOfBirth,
-            Age = DateTime.Now.Year - p.DateOfBirth.Year,
-            Gender = p.Gender,
-            BloodGroup = p.BloodGroup,
-            Address = p.Address,
-            EmergencyContact = p.EmergencyContact,
-            MedicalHistory = p.MedicalHistory,
-            CreatedAt = p.CreatedAt,
-            UpdatedAt = p.UpdatedAt,
-            IsActive = p.IsActive,
-            TotalAppointments = 0, // Simplified for now
-            TotalConsultations = 0, // Simplified for now
-            LastVisitDate = null // Simplified for now
+            var appointments = p.Appointments?.ToList() ?? new List<Domain.Modules.Appointments.Entities.Appointment>();
+            var totalAppointments = appointments.Count;
+            
+            // Get last visit date from completed appointments
+            var lastVisitDate = appointments
+                .Where(a => a.Status == Domain.Enums.AppointmentStatus.Completed && a.AppointmentDate != null)
+                .OrderByDescending(a => a.AppointmentDate)
+                .Select(a => a.AppointmentDate!.Value.ToDateTime(TimeOnly.MinValue))
+                .FirstOrDefault();
+            
+            // Get total consultations from appointments that have consultations
+            var totalConsultations = appointments.Count(a => a.Consultation != null);
+            
+            return new PatientDto
+            {
+                Id = p.Id,
+                UserId = p.UserId,
+                PatientCode = p.PatientCode,
+                Email = p.User.Email,
+                FirstName = p.User.FirstName,
+                LastName = p.User.LastName,
+                FullName = $"{p.User.FirstName} {p.User.LastName}",
+                Phone = p.User.Phone,
+                DateOfBirth = p.DateOfBirth,
+                Age = DateTime.Now.Year - p.DateOfBirth.Year,
+                Gender = p.Gender,
+                BloodGroup = p.BloodGroup,
+                Address = p.Address,
+                EmergencyContact = p.EmergencyContact,
+                MedicalHistory = p.MedicalHistory,
+                PhotoUrl = p.PhotoUrl,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt,
+                IsActive = p.IsActive,
+                TotalAppointments = totalAppointments,
+                TotalConsultations = totalConsultations,
+                LastVisitDate = lastVisitDate != default ? lastVisitDate : null
+            };
         }).ToList();
 
         var result = new PaginatedResult<PatientDto>

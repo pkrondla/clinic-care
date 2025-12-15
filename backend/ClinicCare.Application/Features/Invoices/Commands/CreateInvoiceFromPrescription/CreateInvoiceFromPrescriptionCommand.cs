@@ -40,6 +40,7 @@ public class InvoiceDto
     public int? CourierStatus { get; set; }
     public string? CourierStatusText { get; set; }
     public List<InvoiceItemDto> Items { get; set; } = new();
+    public List<PrescriptionItemDto>? PrescriptionItems { get; set; }
 }
 
 public class InvoiceItemDto
@@ -48,6 +49,22 @@ public class InvoiceItemDto
     public string ItemType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+    public decimal TotalPrice { get; set; }
+}
+
+public class PrescriptionItemDto
+{
+    public int Id { get; set; }
+    public string MedicineName { get; set; } = string.Empty;
+    public int DispensingForm { get; set; }
+    public string Dosage { get; set; } = string.Empty;
+    public string Frequency { get; set; } = string.Empty;
+    public string Duration { get; set; } = string.Empty;
+    public string? Timing { get; set; }
+    public int? Quantity { get; set; }
+    public int? ContainerSize { get; set; }
+    public string? Instructions { get; set; }
     public decimal UnitPrice { get; set; }
     public decimal TotalPrice { get; set; }
 }

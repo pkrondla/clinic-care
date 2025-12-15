@@ -271,7 +271,6 @@ export const PatientsListPage = () => {
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} patients`
           }}
           onChange={handleTableChange}
-          scroll={{ x: 1000 }}
         />
       </Card>
     </div>

@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import { Card, Row, Col, Typography, Tag, Badge, Button, Space, Select, DatePicker, Empty, Spin } from 'antd'
+import { Card, Row, Col, Typography, Tag, Badge, Button, Space, Select, DatePicker, Empty, Spin, Modal, Alert } from 'antd'
 import { 
   ClockCircleOutlined, 
   UserOutlined, 
   CheckCircleOutlined,
   ReloadOutlined,
   PhoneOutlined,
-  HomeOutlined
+  HomeOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 import { useQueues, useStartAppointment, useCompleteAppointment } from '@core/hooks/queries/useQueues'
-import { useSelectedClinic } from '@core/stores/authStore'
+import { useUser, useSelectedClinic } from '@core/stores/authStore'
+import { UserRole } from '@core/types'
 import { useClinicUpdates } from '@core/hooks/useSignalR'
 import { useClinics } from '@core/hooks/queries/useClinics'
 import dayjs from 'dayjs'
@@ -19,8 +21,12 @@ const { Title } = Typography
 const { Option } = Select
 
 export const StaffQueuePage = () => {
+  const user = useUser()
   const selectedClinic = useSelectedClinic()
   const [selectedDate, setSelectedDate] = useState(dayjs())
+  const [confirmStartAppointmentId, setConfirmStartAppointmentId] = useState<number | null>(null)
+  const [confirmStartToken, setConfirmStartToken] = useState<QueueTokenDto | null>(null)
+  const [confirmStartDoctorName, setConfirmStartDoctorName] = useState<string | null>(null)
   const { data: clinics } = useClinics()
   const clinicId = selectedClinic?.id
 
@@ -37,8 +43,26 @@ export const StaffQueuePage = () => {
   const startAppointment = useStartAppointment()
   const completeAppointment = useCompleteAppointment()
 
-  const handleStart = async (appointmentId: number) => {
-    await startAppointment.mutateAsync(appointmentId)
+  const handleStart = (token: QueueTokenDto, doctorName: string) => {
+    setConfirmStartToken(token)
+    setConfirmStartAppointmentId(token.appointmentId)
+    setConfirmStartDoctorName(doctorName)
+  }
+
+  const handleConfirmStart = async () => {
+    if (!confirmStartAppointmentId) return
+
+    try {
+      await startAppointment.mutateAsync(confirmStartAppointmentId)
+      setConfirmStartAppointmentId(null)
+      setConfirmStartToken(null)
+      setConfirmStartDoctorName(null)
+    } catch (error) {
+      // Error is handled by the mutation's onError
+      setConfirmStartAppointmentId(null)
+      setConfirmStartToken(null)
+      setConfirmStartDoctorName(null)
+    }
   }
 
   const handleComplete = async (appointmentId: number) => {
@@ -201,7 +225,7 @@ export const StaffQueuePage = () => {
                               <Button
                                 size="small"
                                 type="primary"
-                                onClick={() => handleStart(token.appointmentId)}
+                                onClick={() => handleStart(token, queue.doctorName)}
                                 loading={startAppointment.isPending}
                               >
                                 Start
@@ -228,6 +252,97 @@ export const StaffQueuePage = () => {
           ))}
         </Row>
       )}
+
+      {/* Start Appointment Confirmation Modal */}
+      <Modal
+        title={
+          <Space>
+            <ExclamationCircleOutlined style={{ color: '#faad14' }} />
+            <span>Confirm Start Appointment</span>
+          </Space>
+        }
+        open={!!confirmStartToken}
+        onOk={handleConfirmStart}
+        onCancel={() => {
+          setConfirmStartAppointmentId(null)
+          setConfirmStartToken(null)
+          setConfirmStartDoctorName(null)
+        }}
+        okText="Yes, Start Appointment"
+        cancelText="Cancel"
+        okButtonProps={{ 
+          type: 'primary',
+          loading: startAppointment.isPending
+        }}
+        width={500}
+      >
+        {confirmStartToken && (
+          <Space direction="vertical" style={{ width: '100%' }} size="middle">
+            {user?.role !== UserRole.Doctor && (
+              <Alert
+                message="Important Reminder"
+                description={
+                  <div>
+                    <Typography.Text strong>
+                      Please confirm with the doctor before starting this appointment.
+                    </Typography.Text>
+                    <div style={{ marginTop: 8 }}>
+                      <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                        Doctors are the actual persons who start appointments and consultations. 
+                        Make sure the doctor is ready before proceeding.
+                      </Typography.Text>
+                    </div>
+                  </div>
+                }
+                type="warning"
+                icon={<ExclamationCircleOutlined />}
+                showIcon
+                style={{ marginBottom: 16 }}
+              />
+            )}
+            <div>
+              <Typography.Text strong>Are you sure you want to start this appointment?</Typography.Text>
+            </div>
+            <Card size="small" style={{ backgroundColor: '#f5f5f5' }}>
+              <Space direction="vertical" style={{ width: '100%' }} size="small">
+                <div>
+                  <Typography.Text type="secondary">Token Number: </Typography.Text>
+                  <Tag color="blue" style={{ fontSize: '14px', padding: '2px 8px' }}>
+                    #{confirmStartToken.tokenNumber}
+                  </Tag>
+                </div>
+                <div>
+                  <Typography.Text type="secondary">Patient Name: </Typography.Text>
+                  <Typography.Text strong>{confirmStartToken.patientName || 'Unknown'}</Typography.Text>
+                </div>
+                {confirmStartToken.patientCode && (
+                  <div>
+                    <Typography.Text type="secondary">Patient Code: </Typography.Text>
+                    <Typography.Text>{confirmStartToken.patientCode}</Typography.Text>
+                  </div>
+                )}
+                {confirmStartToken.patientMobile && (
+                  <div>
+                    <Typography.Text type="secondary">Mobile: </Typography.Text>
+                    <Typography.Text>
+                      <PhoneOutlined /> {confirmStartToken.patientMobile}
+                    </Typography.Text>
+                  </div>
+                )}
+                {confirmStartDoctorName && (
+                  <div>
+                    <Typography.Text type="secondary">Doctor: </Typography.Text>
+                    <Typography.Text>{confirmStartDoctorName}</Typography.Text>
+                  </div>
+                )}
+              </Space>
+            </Card>
+            <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+              This will change the appointment status to "In Progress".
+            </Typography.Text>
+          </Space>
+        )}
+      </Modal>
     </div>
   )
 }

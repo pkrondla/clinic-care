@@ -104,11 +104,19 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
 
             // Get all prescription IDs to check for invoices
             var prescriptionIds = prescriptions.Select(p => p.Id).ToList();
-            var invoices = await _context.Invoices
-                .Where(i => prescriptionIds.Contains(i.PrescriptionId ?? 0) && i.IsActive)
-                .ToListAsync(cancellationToken);
             
-            var invoiceLookup = invoices.ToDictionary(i => i.PrescriptionId ?? 0, i => i.Id);
+            // Load invoices - filter by non-null PrescriptionId first to avoid OPENJSON issues
+            // Convert to array to avoid EF Core OPENJSON translation issues with List
+            var invoices = prescriptionIds.Count > 0
+                ? await _context.Invoices
+                    .Where(i => i.PrescriptionId.HasValue && i.IsActive)
+                    .ToListAsync(cancellationToken)
+                : new List<Domain.Entities.Invoice>();
+            
+            // Filter in memory to avoid SQL translation issues
+            var invoiceLookup = invoices
+                .Where(i => i.PrescriptionId.HasValue && prescriptionIds.Contains(i.PrescriptionId.Value))
+                .ToDictionary(i => i.PrescriptionId!.Value, i => new { i.Id, i.InvoiceNumber });
 
             var dtos = prescriptions.Select(p => new PrescriptionDto
             {
@@ -136,7 +144,8 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                 Notes = p.PatientInstructions,
                 CreatedAt = p.CreatedAt,
                 HasInvoice = invoiceLookup.ContainsKey(p.Id),
-                InvoiceId = invoiceLookup.ContainsKey(p.Id) ? invoiceLookup[p.Id] : null
+                InvoiceId = invoiceLookup.ContainsKey(p.Id) ? invoiceLookup[p.Id].Id : null,
+                InvoiceNumber = invoiceLookup.ContainsKey(p.Id) ? invoiceLookup[p.Id].InvoiceNumber : null
             }).ToList();
 
             return Result<List<PrescriptionDto>>.Success(dtos);

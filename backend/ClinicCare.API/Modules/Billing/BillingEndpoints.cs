@@ -4,10 +4,13 @@ using ClinicCare.Application.Features.Invoices.Queries.GetInvoices;
 using ClinicCare.Application.Features.Invoices.Queries.GetInvoice;
 using ClinicCare.Application.Features.Invoices.Queries.GetInvoicePdf;
 using ClinicCare.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
+using ClinicCare.Application.Features.Invoices.Commands.CreateInvoice;
+using ClinicCare.Application.Features.Invoices.Commands.UpdateInvoice;
 using ClinicCare.Application.Features.Invoices.Commands.InitiateOnlinePayment;
 using ClinicCare.Application.Features.Invoices.Commands.PayInvoice;
 using ClinicCare.Application.Features.Invoices.Commands.ProcessPaymentWebhook;
 using ClinicCare.Application.Features.Invoices.Commands.UpdateCourierDocket;
+using ClinicCare.Application.Features.Invoices.Queries.PrepareInvoiceFromPrescription;
 using ClinicCare.Application.Common.Models;
 
 namespace ClinicCare.API.Modules.Billing;
@@ -28,6 +31,15 @@ public static class BillingEndpoints
             .Produces<object>(StatusCodes.Status200OK)
             .Produces<object>(StatusCodes.Status400BadRequest);
 
+        // Prepare invoice from prescription (get invoice data without creating)
+        // IMPORTANT: This must be registered BEFORE /{id:int} route to avoid route conflicts
+        group.MapGet("/prepare-from-prescription/{prescriptionId:int}", PrepareInvoiceFromPrescription)
+            .WithName("PrepareInvoiceFromPrescription")
+            .WithSummary("Get invoice preparation data from a prescription (without creating invoice)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest)
+            .Produces<object>(StatusCodes.Status404NotFound);
+
         // Get specific invoice
         group.MapGet("/{id:int}", GetInvoice)
             .WithName("GetInvoice")
@@ -39,6 +51,20 @@ public static class BillingEndpoints
         group.MapPost("/from-prescription", CreateInvoiceFromPrescription)
             .WithName("CreateInvoiceFromPrescription")
             .WithSummary("Create an invoice from a prescription")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Create invoice manually
+        group.MapPost("/", CreateInvoice)
+            .WithName("CreateInvoice")
+            .WithSummary("Create a new invoice manually")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Update invoice
+        group.MapPut("/{id:int}", UpdateInvoice)
+            .WithName("UpdateInvoice")
+            .WithSummary("Update an existing invoice")
             .Produces<object>(StatusCodes.Status200OK)
             .Produces<object>(StatusCodes.Status400BadRequest);
 
@@ -106,6 +132,26 @@ public static class BillingEndpoints
         return Results.Ok(new { data = result.Data });
     }
 
+    private static async Task<IResult> PrepareInvoiceFromPrescription(
+        int prescriptionId,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var query = new PrepareInvoiceFromPrescriptionQuery(prescriptionId);
+        var result = await mediator.Send(query, cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            if (result.Errors.Any(e => e.Contains("not found")))
+            {
+                return Results.NotFound(new { message = "Prescription not found", errors = result.Errors });
+            }
+            return Results.BadRequest(new { message = "Failed to prepare invoice", errors = result.Errors });
+        }
+
+        return Results.Ok(new { data = result.Data });
+    }
+
     private static async Task<IResult> CreateInvoiceFromPrescription(
         CreateInvoiceFromPrescriptionCommand command,
         IMediator mediator,
@@ -119,6 +165,42 @@ public static class BillingEndpoints
         }
 
         return Results.Ok(new { message = "Invoice created successfully", data = result.Data });
+    }
+
+    private static async Task<IResult> CreateInvoice(
+        CreateInvoiceCommand command,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to create invoice", errors = result.Errors });
+        }
+
+        return Results.Ok(new { message = "Invoice created successfully", data = result.Data });
+    }
+
+    private static async Task<IResult> UpdateInvoice(
+        int id,
+        UpdateInvoiceCommand command,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        if (id != command.Id)
+        {
+            return Results.BadRequest(new { message = "ID mismatch" });
+        }
+
+        var result = await mediator.Send(command, cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(new { message = "Failed to update invoice", errors = result.Errors });
+        }
+
+        return Results.Ok(new { message = "Invoice updated successfully", data = result.Data });
     }
 
     private static async Task<IResult> PayInvoice(

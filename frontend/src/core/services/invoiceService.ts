@@ -30,6 +30,7 @@ export interface Invoice {
   courierStatus?: number;
   courierStatusText?: string;
   items: InvoiceItem[];
+  prescriptionItems?: PrescriptionItem[];
 }
 
 export interface InvoiceItem {
@@ -37,6 +38,21 @@ export interface InvoiceItem {
   itemType: string;
   description: string;
   quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface PrescriptionItem {
+  id: number;
+  medicineName: string;
+  dispensingForm: number;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  timing?: string;
+  quantity?: number;
+  containerSize?: number;
+  instructions?: string;
   unitPrice: number;
   totalPrice: number;
 }
@@ -60,6 +76,46 @@ export interface UpdateCourierDocketRequest {
   courierTrackingUrl?: string;
 }
 
+export interface CreateInvoiceRequest {
+  clinicId: number;
+  patientId: number;
+  consultationId?: number;
+  prescriptionId?: number;
+  consultationAmount?: number;
+  medicineAmount?: number;
+  courierCharges?: number;
+  items: InvoiceItemRequest[];
+  invoiceDate?: string;
+}
+
+export interface InvoiceItemRequest {
+  itemType: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  medicineId?: number; // Optional: Medicine ID for stock reduction
+}
+
+export interface UpdateInvoiceRequest {
+  id: number;
+  clinicId?: number;
+  patientId?: number;
+  consultationAmount?: number;
+  medicineAmount?: number;
+  courierCharges?: number;
+  items?: InvoiceItemUpdateRequest[];
+  invoiceDate?: string;
+  status?: number;
+}
+
+export interface InvoiceItemUpdateRequest {
+  id?: number;
+  itemType: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
 export interface GetInvoicesParams {
   clinicId?: number;
   patientId?: number;
@@ -68,26 +124,55 @@ export interface GetInvoicesParams {
   endDate?: string;
 }
 
+export interface InvoicePreparation {
+  clinicId: number;
+  clinicName: string;
+  patientId: number;
+  patientName: string;
+  patientCode: string;
+  consultationId: number;
+  prescriptionId: number;
+  consultationAmount: number;
+  medicineAmount: number;
+  courierCharges: number;
+  items: InvoiceItemRequest[];
+}
+
 const invoiceService = {
   /**
    * Get list of invoices
    */
   async getInvoices(params: GetInvoicesParams = {}): Promise<Invoice[]> {
-    const response = await api.get<{ data: Invoice[] }>('/invoices', {
+    const response = await api.get<Invoice[]>('/invoices', {
       params,
     });
-    return response.data?.data || [];
+    return response.data || [];
   },
 
   /**
    * Get a specific invoice by ID
    */
   async getInvoice(id: number): Promise<Invoice> {
-    const response = await api.get<{ data: Invoice }>(`/invoices/${id}`);
-    if (!response.data?.data) {
+    const response = await api.get<Invoice>(`/invoices/${id}`);
+    if (!response.data) {
       throw new Error('Invoice not found');
     }
-    return response.data.data;
+    return response.data;
+  },
+
+  /**
+   * Prepare invoice from prescription (get invoice data without creating)
+   */
+  async prepareInvoiceFromPrescription(
+    prescriptionId: number
+  ): Promise<InvoicePreparation> {
+    const response = await api.get<InvoicePreparation>(
+      `/invoices/prepare-from-prescription/${prescriptionId}`
+    );
+    if (!response.data) {
+      throw new Error('Failed to prepare invoice');
+    }
+    return response.data;
   },
 
   /**
@@ -124,13 +209,11 @@ const invoiceService = {
    * Download invoice as PDF
    */
   async downloadInvoicePdf(id: number): Promise<Blob> {
-    const response = await api.get(`/invoices/${id}/pdf`, {
+    // For blob responses, we need to use apiClient directly (axios instance)
+    const response = await apiClient.get(`/invoices/${id}/pdf`, {
       responseType: 'blob',
     });
-    if (!response.data) {
-      throw new Error('Failed to download invoice PDF');
-    }
-    return response.data as Blob;
+    return response.data;
   },
 
   /**
@@ -145,6 +228,31 @@ const invoiceService = {
     );
     if (!response.data?.data) {
       throw new Error('Failed to update courier docket');
+    }
+    return response.data.data;
+  },
+
+  /**
+   * Create a new invoice manually
+   */
+  async createInvoice(request: CreateInvoiceRequest): Promise<Invoice> {
+    const response = await api.post<{ data: Invoice }>('/invoices', request);
+    if (!response.data?.data) {
+      throw new Error('Failed to create invoice');
+    }
+    return response.data.data;
+  },
+
+  /**
+   * Update an existing invoice
+   */
+  async updateInvoice(request: UpdateInvoiceRequest): Promise<Invoice> {
+    const response = await api.put<{ data: Invoice }>(
+      `/invoices/${request.id}`,
+      request
+    );
+    if (!response.data?.data) {
+      throw new Error('Failed to update invoice');
     }
     return response.data.data;
   },

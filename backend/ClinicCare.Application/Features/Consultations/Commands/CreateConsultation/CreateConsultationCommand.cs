@@ -1,4 +1,6 @@
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Features.Consultations.Commands.AddConsultationPhoto;
+using System.Text.Json.Serialization;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,5 +42,8 @@ public class ConsultationDto
     public DateTime CreatedAt { get; set; }
     public bool HasPrescription { get; set; }
     public int? PrescriptionId { get; set; }
+    
+    [JsonPropertyName("photos")]
+    public List<ConsultationPhotoDto> Photos { get; set; } = new();
 }
 

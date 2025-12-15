@@ -6,6 +6,8 @@ using ClinicCare.Domain.Entities;
 using ClinicCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ClinicCare.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
 
@@ -14,18 +16,21 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
     private readonly IApplicationDbContext _context;
     private readonly IPrescriptionRepository _prescriptionRepository;
     private readonly ICurrentUserService _currentUserService;
-    private readonly INotificationService _notificationService;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly ILogger<CreateInvoiceFromPrescriptionHandler> _logger;
 
     public CreateInvoiceFromPrescriptionHandler(
         IApplicationDbContext context,
         IPrescriptionRepository prescriptionRepository,
         ICurrentUserService currentUserService,
-        INotificationService notificationService)
+        IServiceScopeFactory serviceScopeFactory,
+        ILogger<CreateInvoiceFromPrescriptionHandler> logger)
     {
         _context = context;
         _prescriptionRepository = prescriptionRepository;
         _currentUserService = currentUserService;
-        _notificationService = notificationService;
+        _serviceScopeFactory = serviceScopeFactory;
+        _logger = logger;
     }
 
     public async Task<Result<InvoiceDto>> Handle(CreateInvoiceFromPrescriptionCommand request, CancellationToken cancellationToken)
@@ -104,18 +109,30 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
             // Add medicine items
             foreach (var prescriptionItem in prescription.PrescriptionItems)
             {
-                // Get medicine price from clinic medicine
-                var clinicMedicine = await _context.ClinicMedicines
-                    .FirstOrDefaultAsync(m => m.Id == prescriptionItem.MedicineId 
-                                            && m.ClinicId == appointment.ClinicId 
-                                            && m.OrganizationId == organizationId.Value, cancellationToken);
-
-                if (clinicMedicine == null)
+                decimal unitPrice = 0;
+                
+                // Get medicine price from clinic medicine if MedicineId is provided
+                if (prescriptionItem.MedicineId.HasValue && prescriptionItem.MedicineId.Value > 0)
                 {
-                    return Result<InvoiceDto>.Failure($"Medicine not found: {prescriptionItem.MedicineName}");
+                    var clinicMedicine = await _context.ClinicMedicines
+                        .FirstOrDefaultAsync(m => m.Id == prescriptionItem.MedicineId.Value 
+                                                && m.ClinicId == appointment.ClinicId 
+                                                && m.OrganizationId == organizationId.Value, cancellationToken);
+
+                    if (clinicMedicine == null)
+                    {
+                        return Result<InvoiceDto>.Failure($"Medicine not found: {prescriptionItem.MedicineName}");
+                    }
+
+                    unitPrice = clinicMedicine.SellingPrice;
+                }
+                else
+                {
+                    // Custom medicine without ClinicMedicine record - use price from prescription item if available
+                    // Otherwise, default to 0 (free medicine or price to be set manually)
+                    unitPrice = prescriptionItem.UnitPrice;
                 }
 
-                var unitPrice = clinicMedicine.SellingPrice;
                 // Quantity is always set: 1 for Globules (one container), calculated value for Tablets/Packets
                 var quantity = prescriptionItem.Quantity ?? 1; // Default to 1 if null (shouldn't happen)
                 var totalPrice = unitPrice * quantity;
@@ -184,7 +201,23 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
             await _context.SaveChangesAsync(cancellationToken);
 
             // 12. Update prescription items with prices
-            _context.PrescriptionItems.UpdateRange(prescription.PrescriptionItems);
+            // Load prescription items fresh from context to avoid tracking conflicts
+            // Use prescription ID instead of Contains to avoid SQL Server OPENJSON issues
+            var prescriptionItemsToUpdate = await _context.PrescriptionItems
+                .Where(pi => pi.PrescriptionId == prescription.Id)
+                .ToListAsync(cancellationToken);
+            
+            // Update only the price properties
+            foreach (var prescriptionItem in prescription.PrescriptionItems)
+            {
+                var itemToUpdate = prescriptionItemsToUpdate.FirstOrDefault(pi => pi.Id == prescriptionItem.Id);
+                if (itemToUpdate != null)
+                {
+                    itemToUpdate.UnitPrice = prescriptionItem.UnitPrice;
+                    itemToUpdate.TotalPrice = prescriptionItem.TotalPrice;
+                }
+            }
+            
             await _context.SaveChangesAsync(cancellationToken);
 
             // 13. Load invoice with details for response
@@ -206,10 +239,10 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
             {
                 Id = invoiceWithDetails.Id,
                 ClinicId = invoiceWithDetails.ClinicId,
-                ClinicName = invoiceWithDetails.Clinic.Name,
+                ClinicName = invoiceWithDetails.Clinic?.Name ?? "Unknown",
                 PatientId = invoiceWithDetails.PatientId,
-                PatientName = invoiceWithDetails.Patient.User?.FullName ?? "Unknown",
-                PatientCode = invoiceWithDetails.Patient.PatientCode,
+                PatientName = invoiceWithDetails.Patient?.User?.FullName ?? "Unknown",
+                PatientCode = invoiceWithDetails.Patient?.PatientCode ?? string.Empty,
                 ConsultationId = invoiceWithDetails.ConsultationId,
                 PrescriptionId = invoiceWithDetails.PrescriptionId,
                 PrescriptionNumber = invoiceWithDetails.Prescription?.PrescriptionNumber ?? string.Empty,
@@ -259,23 +292,30 @@ public class CreateInvoiceFromPrescriptionHandler : IRequestHandler<CreateInvoic
                 }).ToList()
             };
 
-            // 15. Send invoice notification (fire and forget)
+            // 15. Send invoice notification (fire and forget with new scope)
+            var invoiceId = dto.Id; // Capture invoice ID for background task
             _ = Task.Run(async () =>
             {
+                // Create a new scope for the background task to avoid disposed context issues
+                using var scope = _serviceScopeFactory.CreateScope();
+                var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+                
                 try
                 {
-                    await _notificationService.SendInvoiceNotificationAsync(dto.Id, cancellationToken);
+                    await notificationService.SendInvoiceNotificationAsync(invoiceId, CancellationToken.None);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Ignore notification errors - don't fail invoice creation
+                    // Log but don't fail invoice creation
+                    _logger.LogWarning(ex, "Failed to send invoice notification for invoice {InvoiceId}", invoiceId);
                 }
-            }, cancellationToken);
+            }, CancellationToken.None);
 
             return Result<InvoiceDto>.Success(dto);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating invoice from prescription {PrescriptionId}", request.PrescriptionId);
             return Result<InvoiceDto>.Failure($"Failed to create invoice: {ex.Message}");
         }
     }

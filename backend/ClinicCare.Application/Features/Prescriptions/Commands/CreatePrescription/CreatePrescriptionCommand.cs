@@ -46,5 +46,6 @@ public class PrescriptionDto
     public DateTime CreatedAt { get; set; }
     public bool HasInvoice { get; set; }
     public int? InvoiceId { get; set; }
+    public string? InvoiceNumber { get; set; }
 }
 

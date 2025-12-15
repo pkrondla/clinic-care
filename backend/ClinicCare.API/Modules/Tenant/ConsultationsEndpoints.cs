@@ -1,4 +1,6 @@
+using ClinicCare.Application.Features.Consultations.Commands.AddConsultationPhoto;
 using ClinicCare.Application.Features.Consultations.Commands.CreateConsultation;
+using ClinicCare.Application.Features.Consultations.Commands.DeleteConsultationPhoto;
 using ClinicCare.Application.Features.Consultations.Commands.UpdateConsultation;
 using ClinicCare.Application.Features.Consultations.Queries.GetConsultation;
 using ClinicCare.Application.Features.Consultations.Queries.GetPatientConsultations;
@@ -50,6 +52,20 @@ public static class ConsultationsEndpoints
             .WithSummary("Update consultation (Doctor only)")
             .Produces<object>(StatusCodes.Status200OK)
             .Produces<object>(StatusCodes.Status404NotFound);
+
+        // Add photo to consultation
+        group.MapPost("/{consultationId:int}/photos", AddConsultationPhoto)
+            .WithName("AddConsultationPhoto")
+            .WithSummary("Add photo to consultation")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Delete photo from consultation
+        group.MapDelete("/photos/{photoId:int}", DeleteConsultationPhoto)
+            .WithName("DeleteConsultationPhoto")
+            .WithSummary("Delete photo from consultation")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
 
         return app;
     }
@@ -114,6 +130,26 @@ public static class ConsultationsEndpoints
 
         return result.Succeeded
             ? Results.Ok(new { success = true, data = result.Data, message = "Consultation updated successfully" })
+            : Results.BadRequest(new { success = false, errors = result.Errors });
+    }
+
+    private static async Task<IResult> AddConsultationPhoto(IMediator mediator, int consultationId, AddConsultationPhotoCommand command, CancellationToken cancellationToken)
+    {
+        command.ConsultationId = consultationId;
+        var result = await mediator.Send(command, cancellationToken);
+
+        return result.Succeeded
+            ? Results.Ok(new { success = true, data = result.Data, message = "Photo added successfully" })
+            : Results.BadRequest(new { success = false, errors = result.Errors });
+    }
+
+    private static async Task<IResult> DeleteConsultationPhoto(IMediator mediator, int photoId, CancellationToken cancellationToken)
+    {
+        var command = new DeleteConsultationPhotoCommand { PhotoId = photoId };
+        var result = await mediator.Send(command, cancellationToken);
+
+        return result.Succeeded
+            ? Results.Ok(new { success = true, data = result.Data, message = "Photo deleted successfully" })
             : Results.BadRequest(new { success = false, errors = result.Errors });
     }
 }

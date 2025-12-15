@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Card, Table, Button, Space, Input, DatePicker, Row, Col, Tooltip, Tag } from 'antd'
+import { Card, Table, Button, Space, Input, DatePicker, Row, Col, Tooltip, Tag, Select } from 'antd'
 import { 
   PlusOutlined, 
   SearchOutlined, 
   ReloadOutlined,
   EyeOutlined,
-  DownloadOutlined
+  DownloadOutlined,
+  EditOutlined,
+  FileTextOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -21,7 +23,8 @@ export const PrescriptionsPage = () => {
   const user = useUser()
   
   const [searchText, setSearchText] = useState('')
-  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs().subtract(7, 'days'), dayjs()])
+  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs(), dayjs()])
+  const [invoiceFilter, setInvoiceFilter] = useState<'all' | 'generated' | 'not-generated'>('all')
 
   const params: GetPrescriptionsParams = {
     clinicId: selectedClinic?.id,
@@ -36,14 +39,32 @@ export const PrescriptionsPage = () => {
     enabled: !!selectedClinic?.id
   })
 
-  // Filter prescriptions based on search text
+  // Filter prescriptions based on search text and invoice status
   const filteredPrescriptions = prescriptions.filter(prescription => {
+    // Filter by invoice status
+    const hasInvoice = prescription.hasInvoice === true
+    
+    if (invoiceFilter === 'generated') {
+      // Only show prescriptions with invoice (hasInvoice must be true)
+      if (!hasInvoice) {
+        return false
+      }
+    } else if (invoiceFilter === 'not-generated') {
+      // Only show prescriptions without invoice (hasInvoice must be false or undefined)
+      if (hasInvoice) {
+        return false
+      }
+    }
+    // If filter is 'all', show all prescriptions
+    
+    // Filter by search text
     const searchLower = searchText.toLowerCase()
     return (
       prescription.prescriptionNumber?.toLowerCase().includes(searchLower) ||
       prescription.patientName?.toLowerCase().includes(searchLower) ||
       prescription.doctorName?.toLowerCase().includes(searchLower) ||
-      prescription.medicines?.some(m => m.medicineName?.toLowerCase().includes(searchLower))
+      prescription.medicines?.some(m => m.medicineName?.toLowerCase().includes(searchLower)) ||
+      prescription.invoiceNumber?.toLowerCase().includes(searchLower)
     )
   })
 
@@ -99,6 +120,26 @@ export const PrescriptionsPage = () => {
         medicines?.length ? `${medicines.length} medicine(s)` : '-'
     },
     {
+      title: 'Invoice',
+      key: 'invoice',
+      width: 180,
+      render: (_: any, record: Prescription) => {
+        if (record.hasInvoice && record.invoiceId && record.invoiceNumber) {
+          return (
+            <Tag 
+              color="green" 
+              icon={<FileTextOutlined />}
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`/invoices/${record.invoiceId}`)}
+            >
+              {record.invoiceNumber}
+            </Tag>
+          )
+        }
+        return <Tag color="default">Not Generated</Tag>
+      }
+    },
+    {
       title: 'Actions',
       key: 'actions',
       width: 150,
@@ -112,6 +153,15 @@ export const PrescriptionsPage = () => {
               onClick={() => navigate(`/prescriptions/${record.id}`)}
             />
           </Tooltip>
+          {(user?.role === 'Doctor' || user?.role === 'Admin') && (
+            <Tooltip title="Edit Prescription">
+              <Button
+                type="text"
+                icon={<EditOutlined />}
+                onClick={() => navigate(`/prescriptions/${record.id}/edit`)}
+              />
+            </Tooltip>
+          )}
           <Tooltip title="Download PDF">
             <Button
               type="text"
@@ -142,13 +192,15 @@ export const PrescriptionsPage = () => {
             <h2 style={{ margin: 0 }}>Prescriptions</h2>
           </Col>
           <Col>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => navigate('/prescriptions/new')}
-            >
-              New Prescription
-            </Button>
+            {(user?.role === 'Doctor' || user?.role === 'Admin') && (
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => navigate('/prescriptions/new')}
+              >
+                New Prescription
+              </Button>
+            )}
           </Col>
         </Row>
       </div>
@@ -157,7 +209,7 @@ export const PrescriptionsPage = () => {
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           {/* Filters */}
           <Row gutter={[16, 16]}>
-            <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={6}>
               <Input
                 placeholder="Search by prescription #, patient, doctor or medicine"
                 prefix={<SearchOutlined />}
@@ -166,13 +218,26 @@ export const PrescriptionsPage = () => {
                 allowClear
               />
             </Col>
-            <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={6}>
               <RangePicker
                 style={{ width: '100%' }}
                 value={dateRange}
                 onChange={(dates) => setDateRange(dates as [Dayjs | null, Dayjs | null])}
                 format="DD/MM/YYYY"
               />
+            </Col>
+            <Col xs={24} sm={12} md={6}>
+              <Select
+                style={{ width: '100%' }}
+                placeholder="Filter by Invoice Status"
+                value={invoiceFilter}
+                onChange={(value) => setInvoiceFilter(value)}
+                allowClear={false}
+              >
+                <Select.Option value="all">All Prescriptions</Select.Option>
+                <Select.Option value="generated">With Invoice</Select.Option>
+                <Select.Option value="not-generated">Without Invoice</Select.Option>
+              </Select>
             </Col>
           </Row>
 

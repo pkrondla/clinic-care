@@ -23,11 +23,13 @@ public class PrescriptionRepository : IPrescriptionRepository
     {
         return await _context.Prescriptions
             .Include(p => p.Consultation)
-                .ThenInclude(c => c.Appointment)
-                    .ThenInclude(a => a.Patient)
+                .ThenInclude(c => c!.Patient)
+                    .ThenInclude(pat => pat!.User)
             .Include(p => p.Consultation)
-                .ThenInclude(c => c.Appointment)
-                    .ThenInclude(a => a.Doctor)
+                .ThenInclude(c => c!.Doctor)
+                    .ThenInclude(d => d!.User)
+            .Include(p => p.Consultation)
+                .ThenInclude(c => c!.Appointment)
             .Include(p => p.PrescriptionItems)
                 // Don't include Medicine navigation property - it's ignored in configuration
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
@@ -45,8 +47,15 @@ public class PrescriptionRepository : IPrescriptionRepository
     {
         return await _context.Prescriptions
             .Include(p => p.Consultation)
-                .ThenInclude(c => c.Appointment)
-            .Where(p => p.Consultation.Appointment.PatientId == patientId)
+                .ThenInclude(c => c!.Patient)
+                    .ThenInclude(pat => pat!.User)
+            .Include(p => p.Consultation)
+                .ThenInclude(c => c!.Doctor)
+                    .ThenInclude(d => d!.User)
+            .Include(p => p.Consultation)
+                .ThenInclude(c => c!.Appointment)
+            .Include(p => p.PrescriptionItems)
+            .Where(p => p.Consultation != null && p.Consultation.PatientId == patientId)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync(cancellationToken);
     }

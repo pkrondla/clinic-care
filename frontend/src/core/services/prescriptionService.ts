@@ -29,12 +29,19 @@ export interface Prescription {
   createdAt: string
   hasInvoice?: boolean
   invoiceId?: number
+  invoiceNumber?: string
 }
 
 export interface CreatePrescriptionRequest {
   consultationId: number
   patientId: number
   doctorId: number
+  medicines: PrescriptionMedicine[]
+  notes?: string
+}
+
+export interface UpdatePrescriptionRequest {
+  id: number
   medicines: PrescriptionMedicine[]
   notes?: string
 }
@@ -83,6 +90,14 @@ export const prescriptionService = {
       return response.data
     }
     throw new Error('Failed to create prescription: No data returned')
+  },
+
+  update: async (data: UpdatePrescriptionRequest): Promise<Prescription> => {
+    const response = await api.put<Prescription>(`/prescriptions/${data.id}`, data)
+    if (response.data) {
+      return response.data
+    }
+    throw new Error('Failed to update prescription: No data returned')
   },
 
   downloadPdf: async (id: number, includeMedicineNames: boolean = true): Promise<Blob> => {

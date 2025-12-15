@@ -22,12 +22,14 @@ public class ConsultationRepository : IConsultationRepository
     public async Task<Consultation?> GetByIdWithDetailsAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Consultations
+            .Include(c => c.Patient)
+                .ThenInclude(p => p!.User)
+            .Include(c => c.Doctor)
+                .ThenInclude(d => d!.User)
             .Include(c => c.Appointment)
-                .ThenInclude(a => a.Patient)
-            .Include(c => c.Appointment)
-                .ThenInclude(a => a.Doctor)
             .Include(c => c.Prescriptions)
                 .ThenInclude(p => p.PrescriptionItems)
+            .Include(c => c.Photos)
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
     }
 
@@ -42,9 +44,13 @@ public class ConsultationRepository : IConsultationRepository
     public async Task<List<Consultation>> GetByPatientIdAsync(int patientId, CancellationToken cancellationToken = default)
     {
         return await _context.Consultations
+            .Include(c => c.Patient)
+                .ThenInclude(p => p!.User)
+            .Include(c => c.Doctor)
+                .ThenInclude(d => d!.User)
             .Include(c => c.Appointment)
-                .ThenInclude(a => a.Doctor)
-            .Where(c => c.Appointment.PatientId == patientId)
+            .Include(c => c.Photos)
+            .Where(c => c.PatientId == patientId)
             .OrderByDescending(c => c.CreatedAt)
             .ToListAsync(cancellationToken);
     }

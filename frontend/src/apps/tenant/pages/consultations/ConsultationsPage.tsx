@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { Card, Table, Button, Space, Input, DatePicker, Row, Col, Tooltip } from 'antd'
+import { Card, Table, Button, Space, Input, DatePicker, Row, Col, Tooltip, Image, Badge, Modal } from 'antd'
 import { 
   PlusOutlined, 
   SearchOutlined, 
   ReloadOutlined,
   EyeOutlined,
   MedicineBoxOutlined,
-  EditOutlined
+  EditOutlined,
+  CameraOutlined
 } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { consultationService, Consultation, GetConsultationsParams } from '@core/services/consultationService'
 import { useSelectedClinic, useUser } from '@core/stores/authStore'
@@ -18,15 +19,22 @@ const { RangePicker } = DatePicker
 
 export const ConsultationsPage = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const selectedClinic = useSelectedClinic()
   const user = useUser()
   
   const [searchText, setSearchText] = useState('')
-  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs().subtract(7, 'days'), dayjs()])
+  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs(), dayjs()])
+  const [photoPreviewConsultation, setPhotoPreviewConsultation] = useState<Consultation | null>(null)
+  
+  // Get patientId from URL query params
+  const patientIdParam = searchParams.get('patientId')
+  const patientId = patientIdParam ? parseInt(patientIdParam) : undefined
 
   const params: GetConsultationsParams = {
     clinicId: selectedClinic?.id,
     doctorId: user?.role === 'Doctor' ? user.id : undefined,
+    patientId: patientId,
     startDate: dateRange[0]?.format('YYYY-MM-DD'),
     endDate: dateRange[1]?.format('YYYY-MM-DD')
   }
@@ -91,6 +99,29 @@ export const ConsultationsPage = () => {
       render: (fee: number) => `₹${fee.toFixed(2)}`
     },
     {
+      title: 'Photos',
+      key: 'photos',
+      width: 80,
+      align: 'center' as const,
+      render: (_: any, record: Consultation) => {
+        const photoCount = record.photos?.length || 0
+        return photoCount > 0 ? (
+          <Button
+            type="text"
+            icon={
+              <Badge count={photoCount} showZero={false}>
+                <CameraOutlined style={{ fontSize: 18, color: '#1890ff' }} />
+              </Badge>
+            }
+            onClick={() => setPhotoPreviewConsultation(record)}
+            size="small"
+          />
+        ) : (
+          <CameraOutlined style={{ fontSize: 18, color: '#d9d9d9' }} />
+        )
+      }
+    },
+    {
       title: 'Actions',
       key: 'actions',
       width: 200,
@@ -120,7 +151,7 @@ export const ConsultationsPage = () => {
               />
             </Tooltip>
           )}
-          {!record.hasPrescription && (
+          {!record.hasPrescription && (user?.role === 'Doctor' || user?.role === 'Admin') && (
             <Tooltip title="Create Prescription">
               <Button
                 type="text"
@@ -219,6 +250,54 @@ export const ConsultationsPage = () => {
           />
         </Space>
       </Card>
+
+      {/* Photo Preview Modal */}
+      <Modal
+        title="Consultation Photos"
+        open={!!photoPreviewConsultation}
+        onCancel={() => setPhotoPreviewConsultation(null)}
+        footer={null}
+        width={800}
+      >
+        {photoPreviewConsultation?.photos && photoPreviewConsultation.photos.length > 0 ? (
+          <Image.PreviewGroup>
+            <Space wrap size={[16, 16]}>
+              {photoPreviewConsultation.photos.map((photo) => (
+                <div key={photo.id} style={{ position: 'relative' }}>
+                  <Image
+                    src={photo.photoUrl}
+                    alt={photo.description || 'Consultation photo'}
+                    style={{
+                      width: 150,
+                      height: 150,
+                      objectFit: 'cover',
+                      borderRadius: 8,
+                      cursor: 'pointer'
+                    }}
+                  />
+                  {photo.description && (
+                    <div style={{ 
+                      fontSize: '12px', 
+                      marginTop: 8, 
+                      maxWidth: 150, 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center'
+                    }}>
+                      {photo.description}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </Space>
+          </Image.PreviewGroup>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
+            No photos available
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

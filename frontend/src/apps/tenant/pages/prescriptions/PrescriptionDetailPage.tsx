@@ -1,9 +1,9 @@
-import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Table, Divider } from 'antd'
-import { ArrowLeftOutlined, DownloadOutlined, MedicineBoxOutlined, UserOutlined, CalendarOutlined, DollarOutlined, FileTextOutlined } from '@ant-design/icons'
+import { Card, Row, Col, Typography, Tag, Button, Space, Descriptions, Spin, Table } from 'antd'
+import { ArrowLeftOutlined, DownloadOutlined, MedicineBoxOutlined, DollarOutlined, FileTextOutlined, PrinterOutlined } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { prescriptionService, Prescription } from '@core/services/prescriptionService'
-import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
+import { useSelectedClinic } from '@core/stores/authStore'
 import { message } from 'antd'
 import dayjs from 'dayjs'
 
@@ -20,27 +20,17 @@ const DISPENSING_FORMS: Record<number, string> = {
 export const PrescriptionDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const createInvoiceMutation = useCreateInvoiceFromPrescription()
+  const selectedClinic = useSelectedClinic()
   const { data: prescription, isLoading, refetch } = useQuery<Prescription>({
     queryKey: ['prescription', id],
     queryFn: () => prescriptionService.getById(Number(id!)),
     enabled: !!id && !isNaN(Number(id))
   })
 
-  const handleCreateInvoice = async () => {
+  const handleCreateInvoice = () => {
     if (!prescription) return
-    
-    try {
-      const invoice = await createInvoiceMutation.mutateAsync({
-        prescriptionId: prescription.id,
-      })
-      message.success(`Invoice ${invoice.invoiceNumber} created successfully!`)
-      // Refetch prescription to get updated invoice info
-      await refetch()
-      navigate(`/invoices/${invoice.id}`)
-    } catch (error) {
-      // Error is handled by the mutation
-    }
+    // Navigate to invoice form with prescription ID (same as when saving prescription)
+    navigate(`/invoices/new?prescriptionId=${prescription.id}`)
   }
 
   const handleDownloadPdf = async (includeMedicineNames: boolean = true) => {
@@ -86,7 +76,106 @@ export const PrescriptionDetailPage = () => {
     return quantity.toString()
   }
 
+  const handlePrintLabels = () => {
+    if (!prescription || !prescription.medicines) return
+    
+    const clinicName = selectedClinic?.name || 'Clinic'
+    
+    // Create a print window with label layout
+    const printWindow = window.open('', '_blank', 'width=800,height=600')
+    if (!printWindow) return
+    
+    let labelsHtml = ''
+    
+    prescription.medicines.forEach((medicine, index) => {
+      const serialNo = index + 1
+      const quantity = medicine.quantity || 1
+      
+      // Generate labels based on quantity
+      for (let i = 0; i < quantity; i++) {
+        labelsHtml += `
+          <div class="label">
+            <div class="clinic-name">${clinicName}</div>
+            <div class="medicine-info">#${serialNo}, ${medicine.dosage || '-'}, ${medicine.frequency || '-'}, ${medicine.timing || '-'}</div>
+          </div>
+        `
+      }
+    })
+    
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Medicine Labels - ${prescription.prescriptionNumber}</title>
+          <style>
+            @page {
+              size: 1.5in 1in;
+              margin: 0;
+            }
+            
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: Arial, sans-serif;
+            }
+            
+            .label {
+              width: 1.5in;
+              height: 1in;
+              padding: 4px 6px;
+              box-sizing: border-box;
+              page-break-after: always;
+              border: 1px solid #ddd;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+            
+            .clinic-name {
+              font-size: 10px;
+              font-weight: bold;
+              margin-bottom: 3px;
+              text-align: center;
+              border-bottom: 1px solid #000;
+              padding-bottom: 2px;
+            }
+            
+            .medicine-info {
+              font-size: 9px;
+              line-height: 1.3;
+              text-align: center;
+            }
+            
+            @media print {
+              .label {
+                border: none;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          ${labelsHtml}
+        </body>
+      </html>
+    `)
+    
+    printWindow.document.close()
+    
+    // Trigger print after content loads
+    printWindow.onload = () => {
+      printWindow.focus()
+      printWindow.print()
+    }
+  }
+
   const medicineColumns = [
+    {
+      title: 'S.No',
+      key: 'serialNumber',
+      width: 60,
+      align: 'center' as const,
+      render: (_: any, __: any, index: number) => index + 1
+    },
     {
       title: 'Medicine Name',
       dataIndex: 'medicineName',
@@ -181,6 +270,12 @@ export const PrescriptionDetailPage = () => {
           >
             Back
           </Button>
+          <Button
+            icon={<MedicineBoxOutlined />}
+            onClick={() => navigate(`/consultations/${prescription.consultationId}`)}
+          >
+            View Consultation
+          </Button>
           {prescription.hasInvoice && prescription.invoiceId ? (
             <Button
               type="primary"
@@ -194,7 +289,6 @@ export const PrescriptionDetailPage = () => {
               type="primary"
               icon={<DollarOutlined />}
               onClick={handleCreateInvoice}
-              loading={createInvoiceMutation.isPending}
             >
               Create Invoice
             </Button>
@@ -211,43 +305,59 @@ export const PrescriptionDetailPage = () => {
           >
             Download PDF (Patient)
           </Button>
+          <Button
+            icon={<PrinterOutlined />}
+            onClick={handlePrintLabels}
+            type="default"
+          >
+            Print Labels
+          </Button>
         </Space>
       </div>
 
       <Row gutter={[24, 24]}>
         {/* Prescription Details */}
-        <Col xs={24} lg={16}>
-          <Card title="Prescription Details">
-            <Descriptions column={1} bordered>
+        <Col xs={24}>
+          <Card title="Prescription Details" size="small">
+            <Descriptions column={2} bordered size="small">
               <Descriptions.Item label="Prescription Number">
-                <Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>
+                <Tag color="blue" style={{ fontSize: '13px', padding: '2px 8px' }}>
                   {prescription.prescriptionNumber}
                 </Tag>
               </Descriptions.Item>
               <Descriptions.Item label="Date">
-                <Space>
-                  <CalendarOutlined />
-                  <Text>{dayjs(prescription.prescriptionDate).format('MMMM DD, YYYY [at] hh:mm A')}</Text>
-                </Space>
+                <Text>{dayjs(prescription.prescriptionDate).format('MMM DD, YYYY hh:mm A')}</Text>
               </Descriptions.Item>
               <Descriptions.Item label="Patient">
                 <Space>
-                  <UserOutlined />
                   <Text strong>{prescription.patientName}</Text>
+                  <Button
+                    type="link"
+                    size="small"
+                    onClick={() => navigate(`/patients/${prescription.patientId}`)}
+                    style={{ padding: 0, height: 'auto' }}
+                  >
+                    View Profile
+                  </Button>
                 </Space>
               </Descriptions.Item>
               <Descriptions.Item label="Doctor">
                 <Text strong>{prescription.doctorName}</Text>
               </Descriptions.Item>
               {prescription.notes && (
-                <Descriptions.Item label="Notes">
-                  <Text style={{ whiteSpace: 'pre-wrap' }}>{prescription.notes}</Text>
+                <Descriptions.Item label="Notes" span={2}>
+                  <Text style={{ whiteSpace: 'pre-wrap', fontSize: '13px' }}>{prescription.notes}</Text>
                 </Descriptions.Item>
               )}
             </Descriptions>
+          </Card>
+        </Col>
+      </Row>
 
-            <Divider>Medicines</Divider>
-
+      {/* Medicines Card */}
+      <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
+        <Col xs={24}>
+          <Card title="Medicines">
             <Table
               dataSource={prescription.medicines || []}
               columns={medicineColumns}
@@ -255,48 +365,6 @@ export const PrescriptionDetailPage = () => {
               pagination={false}
               size="small"
             />
-          </Card>
-        </Col>
-
-        {/* Related Information */}
-        <Col xs={24} lg={8}>
-          <Card title="Related Information">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Consultation ID</Text>
-                <div>
-                  <Button
-                    type="link"
-                    icon={<MedicineBoxOutlined />}
-                    onClick={() => navigate(`/consultations/${prescription.consultationId}`)}
-                    style={{ padding: 0 }}
-                  >
-                    View Consultation #{prescription.consultationId}
-                  </Button>
-                </div>
-              </div>
-              <Divider style={{ margin: '8px 0' }} />
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Patient ID</Text>
-                <div>
-                  <Button
-                    type="link"
-                    icon={<UserOutlined />}
-                    onClick={() => navigate(`/patients/${prescription.patientId}`)}
-                    style={{ padding: 0 }}
-                  >
-                    View Patient Profile
-                  </Button>
-                </div>
-              </div>
-              <Divider style={{ margin: '8px 0' }} />
-              <div>
-                <Text type="secondary" style={{ fontSize: '12px' }}>Created At</Text>
-                <div>
-                  <Text>{dayjs(prescription.createdAt).format('MMMM DD, YYYY [at] hh:mm A')}</Text>
-                </div>
-              </div>
-            </Space>
           </Card>
         </Col>
       </Row>

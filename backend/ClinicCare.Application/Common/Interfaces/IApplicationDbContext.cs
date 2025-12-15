@@ -22,6 +22,7 @@ public interface IApplicationDbContext
     DbSet<Patient> Patients { get; }
     DbSet<Domain.Modules.Appointments.Entities.Appointment> Appointments { get; }
     DbSet<Consultation> Consultations { get; }
+    DbSet<ConsultationPhoto> ConsultationPhotos { get; }
     DbSet<Prescription> Prescriptions { get; }
     DbSet<PrescriptionItem> PrescriptionItems { get; }
     DbSet<ClinicMedicine> ClinicMedicines { get; }

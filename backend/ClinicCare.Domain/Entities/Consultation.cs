@@ -24,5 +24,6 @@ public class Consultation : TenantEntity
     public DoctorProfile Doctor { get; set; } = null!;
     public Patient Patient { get; set; } = null!;
     public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+    public ICollection<ConsultationPhoto> Photos { get; set; } = new List<ConsultationPhoto>();
     public Invoice? Invoice { get; set; }
 }

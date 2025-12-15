@@ -16,6 +16,7 @@ export interface Patient extends BaseEntity {
   address: string
   emergencyContact: string
   medicalHistory: string
+  photoUrl?: string
   totalAppointments: number
   totalConsultations: number
   lastVisitDate?: string
@@ -48,6 +49,11 @@ export interface RecentConsultation {
   doctorName: string
   clinicName: string
   hasPrescription: boolean
+  photos?: Array<{
+    id: number
+    photoUrl: string
+    description?: string
+  }>
 }
 
 export interface PatientSearch {
@@ -73,6 +79,7 @@ export interface CreatePatientRequest {
   address: string
   emergencyContact: string
   medicalHistory: string
+  photoUrl?: string
   password: string
 }
 
@@ -87,6 +94,7 @@ export interface UpdatePatientRequest {
   address: string
   emergencyContact: string
   medicalHistory: string
+  photoUrl?: string
 }
 
 export interface PatientFilters extends BaseFilter {

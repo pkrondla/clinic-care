@@ -57,6 +57,7 @@ public class UpdatePatientHandler : IRequestHandler<UpdatePatientCommand, Result
         patient.Address = request.Address;
         patient.EmergencyContact = request.EmergencyContact;
         patient.MedicalHistory = request.MedicalHistory;
+        patient.PhotoUrl = request.PhotoUrl;
         patient.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync(cancellationToken);
@@ -78,6 +79,7 @@ public class UpdatePatientHandler : IRequestHandler<UpdatePatientCommand, Result
             Address = patient.Address,
             EmergencyContact = patient.EmergencyContact,
             MedicalHistory = patient.MedicalHistory,
+            PhotoUrl = patient.PhotoUrl,
             CreatedAt = patient.CreatedAt,
             UpdatedAt = patient.UpdatedAt,
             IsActive = patient.IsActive

@@ -25,6 +25,7 @@ import { UsersPage } from '../pages/users/UsersPage'
 import { ReportsPage } from '../pages/reports/ReportsPage'
 import { InvoicesPage } from '../pages/invoices/InvoicesPage'
 import { InvoiceDetailPage } from '../pages/invoices/InvoiceDetailPage'
+import { InvoiceFormPage } from '../pages/invoices/InvoiceFormPage'
 import { SuppliersPage } from '../pages/suppliers/SuppliersPage'
 import { PurchaseOrdersPage } from '../pages/purchase-orders/PurchaseOrdersPage'
 import { PurchaseOrderDetailPage } from '../pages/purchase-orders/PurchaseOrderDetailPage'
@@ -32,6 +33,8 @@ import { PurchaseOrderFormPage } from '../pages/purchase-orders/PurchaseOrderFor
 import { StockAuditPage } from '../pages/inventory/StockAuditPage'
 import { DoctorSchedulePage } from '../pages/doctors/DoctorSchedulePage'
 import { LoginPage } from '../pages/auth/LoginPage'
+import { ProfilePage } from '../pages/profile/ProfilePage'
+import { SettingsPage } from '../pages/settings/SettingsPage'
 import { useAuth } from '@core/stores/authStore'
 import { UserRole } from '@core/types/auth'
 
@@ -314,7 +317,19 @@ export const TenantRoutes = () => {
       <Route
         path="/prescriptions/new"
         element={
-          <ProtectedTenantRoute>
+          <ProtectedTenantRoute allowedRoles={[UserRole.Doctor, UserRole.Admin]}>
+            <AppLayout>
+              <PrescriptionFormPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Prescription Edit */}
+      <Route
+        path="/prescriptions/:id/edit"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Doctor, UserRole.Admin]}>
             <AppLayout>
               <PrescriptionFormPage />
             </AppLayout>
@@ -406,11 +421,33 @@ export const TenantRoutes = () => {
       />
 
       <Route
+        path="/invoices/new"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <InvoiceFormPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
         path="/invoices/:id"
         element={
           <ProtectedTenantRoute>
             <AppLayout>
               <InvoiceDetailPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
+        path="/invoices/:id/edit"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <InvoiceFormPage />
             </AppLayout>
           </ProtectedTenantRoute>
         }
@@ -469,6 +506,30 @@ export const TenantRoutes = () => {
           <ProtectedTenantRoute allowedRoles={[UserRole.Admin, UserRole.Staff]}>
             <AppLayout>
               <PurchaseOrderDetailPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Profile */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <ProfilePage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      {/* Settings */}
+      <Route
+        path="/settings"
+        element={
+          <ProtectedTenantRoute>
+            <AppLayout>
+              <SettingsPage />
             </AppLayout>
           </ProtectedTenantRoute>
         }

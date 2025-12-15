@@ -18,6 +18,8 @@ import {
   ReloadOutlined,
   FilterOutlined,
   DollarOutlined,
+  PlusOutlined,
+  EditOutlined,
 } from '@ant-design/icons'
 import { useInvoices } from '@core/hooks/queries/useInvoices'
 import { useNavigate } from 'react-router-dom'
@@ -53,6 +55,10 @@ export const InvoicesPage = () => {
     navigate(`/invoices/${id}`)
   }
 
+  const handleEdit = (id: number) => {
+    navigate(`/invoices/${id}/edit`)
+  }
+
   const handleFilterChange = (key: string, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
   }
@@ -84,16 +90,18 @@ export const InvoicesPage = () => {
       title: 'Invoice Number',
       dataIndex: 'invoiceNumber',
       key: 'invoiceNumber',
-      width: 150,
+      width: 120,
       render: (text: string) => <Tag color="blue">{text}</Tag>,
     },
     {
       title: 'Patient',
       dataIndex: 'patientName',
       key: 'patientName',
+      width: 150,
+      ellipsis: true,
       render: (text: string, record: Invoice) => (
         <div>
-          <div>{text}</div>
+          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</div>
           <div style={{ fontSize: '12px', color: '#999' }}>{record.patientCode}</div>
         </div>
       ),
@@ -102,14 +110,14 @@ export const InvoicesPage = () => {
       title: 'Prescription',
       dataIndex: 'prescriptionNumber',
       key: 'prescriptionNumber',
-      width: 150,
+      width: 100,
       render: (text: string) => text || '-',
     },
     {
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      width: 120,
+      width: 100,
       align: 'right' as const,
       render: (amount: number) => `₹${amount.toFixed(2)}`,
     },
@@ -117,7 +125,7 @@ export const InvoicesPage = () => {
       title: 'Paid',
       dataIndex: 'paidAmount',
       key: 'paidAmount',
-      width: 120,
+      width: 100,
       align: 'right' as const,
       render: (amount: number) => `₹${amount.toFixed(2)}`,
     },
@@ -125,7 +133,7 @@ export const InvoicesPage = () => {
       title: 'Balance',
       dataIndex: 'balanceAmount',
       key: 'balanceAmount',
-      width: 120,
+      width: 100,
       align: 'right' as const,
       render: (amount: number, record: Invoice) => (
         <Tag color={amount > 0 ? 'orange' : 'green'}>₹{amount.toFixed(2)}</Tag>
@@ -135,7 +143,7 @@ export const InvoicesPage = () => {
       title: 'Status',
       dataIndex: 'statusText',
       key: 'status',
-      width: 100,
+      width: 90,
       render: (text: string, record: Invoice) => {
         const color =
           record.status === 3
@@ -152,16 +160,16 @@ export const InvoicesPage = () => {
       title: 'Date',
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      width: 120,
+      width: 100,
       render: (date: string) => dayjs(date).format('DD/MM/YYYY'),
     },
     {
       title: 'Actions',
       key: 'actions',
-      width: 100,
+      width: 130,
       fixed: 'right' as const,
       render: (_: any, record: Invoice) => (
-        <Space>
+        <Space size="small">
           <Button
             type="link"
             icon={<EyeOutlined />}
@@ -169,6 +177,14 @@ export const InvoicesPage = () => {
             size="small"
           >
             View
+          </Button>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record.id)}
+            size="small"
+          >
+            Edit
           </Button>
         </Space>
       ),
@@ -185,6 +201,13 @@ export const InvoicesPage = () => {
         </Col>
         <Col>
           <Space>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => navigate('/invoices/new')}
+            >
+              New Invoice
+            </Button>
             <Button icon={<ReloadOutlined />} onClick={() => refetch()} loading={isLoading}>
               Refresh
             </Button>
@@ -272,7 +295,7 @@ export const InvoicesPage = () => {
           dataSource={invoices}
           loading={isLoading}
           rowKey="id"
-          scroll={{ x: 1200 }}
+          scroll={{ x: 1000 }}
           pagination={{
             pageSize: 10,
             showSizeChanger: true,

@@ -31,6 +31,7 @@ public class TenantDbContext : DbContext, ITenantDbContext
     // Appointments & Consultations
     public DbSet<Domain.Modules.Appointments.Entities.Appointment> Appointments => Set<Domain.Modules.Appointments.Entities.Appointment>();
     public DbSet<Consultation> Consultations => Set<Consultation>();
+    public DbSet<ConsultationPhoto> ConsultationPhotos => Set<ConsultationPhoto>();
     
     // Prescriptions
     public DbSet<Prescription> Prescriptions => Set<Prescription>();

@@ -15,6 +15,7 @@ public class CreatePatientCommand : IRequest<Result<PatientDto>>
     public string Address { get; set; } = string.Empty;
     public string EmergencyContact { get; set; } = string.Empty;
     public string MedicalHistory { get; set; } = string.Empty;
+    public string? PhotoUrl { get; set; }
     public string Password { get; set; } = string.Empty;
 }
 

@@ -1,4 +1,5 @@
 using ClinicCare.Application.Common.Interfaces;
+using ClinicCare.Application.Common.Interfaces.Global;
 using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Features.Invoices.Queries.GetInvoice;
 using ClinicCare.Domain.Enums;
@@ -15,11 +16,13 @@ public class PdfService : IPdfService
 {
     private readonly IMediator _mediator;
     private readonly IApplicationDbContext _context;
+    private readonly IGlobalDbContext _globalContext;
 
-    public PdfService(IMediator mediator, IApplicationDbContext context)
+    public PdfService(IMediator mediator, IApplicationDbContext context, IGlobalDbContext globalContext)
     {
         _mediator = mediator;
         _context = context;
+        _globalContext = globalContext;
     }
 
     public async Task<byte[]> GenerateInvoicePdfAsync(int invoiceId, CancellationToken cancellationToken = default)
@@ -35,15 +38,27 @@ public class PdfService : IPdfService
 
         var invoice = result.Data;
 
-        // Get organization and clinic details
+        // Get invoice entity to get OrganizationId
+        var invoiceEntity = await _context.Invoices
+            .Include(i => i.Prescription)
+                .ThenInclude(p => p.PrescriptionItems.OrderBy(pi => pi.Id))
+            .FirstOrDefaultAsync(i => i.Id == invoiceId, cancellationToken);
+
+        // Get organization from global database using OrganizationId from invoice
+        var organization = invoiceEntity != null
+            ? await _globalContext.Organizations
+                .FirstOrDefaultAsync(o => o.Id == invoiceEntity.OrganizationId, cancellationToken)
+            : null;
+
+        // Get patient and clinic details
         var patient = await _context.Patients
             .Include(p => p.User)
             .FirstOrDefaultAsync(p => p.Id == invoice.PatientId, cancellationToken);
 
-        var organization = patient != null
-            ? await _context.Organizations
-                .FirstOrDefaultAsync(o => o.Id == patient.OrganizationId, cancellationToken)
-            : null;
+        // Get prescription items in order for serial number matching
+        var prescriptionItems = invoiceEntity?.Prescription?.PrescriptionItems
+            .OrderBy(pi => pi.Id)
+            .ToList() ?? new List<Domain.Entities.PrescriptionItem>();
 
         var clinic = await _context.Clinics
             .FirstOrDefaultAsync(c => c.Id == invoice.ClinicId, cancellationToken);
@@ -121,15 +136,17 @@ public class PdfService : IPdfService
                         {
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.RelativeColumn(3);
-                                columns.ConstantColumn(80);
-                                columns.ConstantColumn(80);
-                                columns.ConstantColumn(100);
+                                columns.ConstantColumn(50);  // Serial Number
+                                columns.RelativeColumn(4);   // Description (increased)
+                                columns.ConstantColumn(60);  // Qty (3 digits: 100)
+                                columns.ConstantColumn(90);   // Unit Price (999.00)
+                                columns.ConstantColumn(100);  // Total (9999.00)
                             });
 
                             // Header
                             table.Header(header =>
                             {
+                                header.Cell().Element(CellStyle).AlignCenter().Text("S.No").Bold();
                                 header.Cell().Element(CellStyle).Text("Description").Bold();
                                 header.Cell().Element(CellStyle).AlignRight().Text("Qty").Bold();
                                 header.Cell().Element(CellStyle).AlignRight().Text("Unit Price").Bold();
@@ -145,11 +162,119 @@ public class PdfService : IPdfService
                                 }
                             });
 
-                            // Items
+                            // Items - Combine prescription items and other invoice items
+                            // Invoice items are created in order: Consultation, Medicines (in prescription order), Courier
+                            int serialNumber = 0;
+                            int medicineSerialNumber = 0;
+                            int prescriptionItemIndex = 0;
+
+                            // Helper function to get dispensing form name
+                            string GetDispensingFormName(Domain.Enums.DispensingForm form)
+                            {
+                                return form switch
+                                {
+                                    Domain.Enums.DispensingForm.Globules => "Globules",
+                                    Domain.Enums.DispensingForm.Tablets => "Tablets",
+                                    Domain.Enums.DispensingForm.Packet => "Packet",
+                                    Domain.Enums.DispensingForm.Liquid => "Liquid",
+                                    Domain.Enums.DispensingForm.Tonic => "Tonic",
+                                    _ => "Unknown"
+                                };
+                            }
+
+                            // Helper function to format quantity
+                            string FormatQuantity(int? quantity, Domain.Enums.DispensingForm form)
+                            {
+                                if (quantity == null) return "-";
+                                if (form == Domain.Enums.DispensingForm.Liquid || form == Domain.Enums.DispensingForm.Tonic)
+                                {
+                                    return $"{quantity} ml";
+                                }
+                                return quantity.ToString() ?? "-";
+                            }
+
                             foreach (var item in invoice.Items)
                             {
-                                table.Cell().Element(CellStyle).Text(item.Description);
-                                table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity.ToString());
+                                string descriptionText = "";
+                                string detailsText = "";
+                                
+                                // For medicine items, build description with prescription details
+                                if (item.ItemType == "Medicine")
+                                {
+                                    medicineSerialNumber++;
+                                    serialNumber = medicineSerialNumber;
+                                    
+                                    if (prescriptionItemIndex < prescriptionItems.Count)
+                                    {
+                                        var prescriptionItem = prescriptionItems[prescriptionItemIndex];
+                                        prescriptionItemIndex++;
+                                        
+                                        // Build description: Medicine #X (Form)
+                                        var formName = GetDispensingFormName(prescriptionItem.DispensingForm);
+                                        descriptionText = $"Medicine #{serialNumber}";
+                                        if (prescriptionItem.ContainerSize.HasValue && prescriptionItem.DispensingForm == Domain.Enums.DispensingForm.Globules)
+                                        {
+                                            descriptionText += $" ({formName} {prescriptionItem.ContainerSize} dram)";
+                                        }
+                                        else
+                                        {
+                                            descriptionText += $" ({formName})";
+                                        }
+                                        
+                                        // Build details: Dosage, Frequency, Timing, Duration (comma-separated)
+                                        var detailsParts = new List<string>();
+                                        if (!string.IsNullOrEmpty(prescriptionItem.Dosage))
+                                            detailsParts.Add(prescriptionItem.Dosage);
+                                        if (!string.IsNullOrEmpty(prescriptionItem.Frequency))
+                                            detailsParts.Add(prescriptionItem.Frequency);
+                                        if (!string.IsNullOrEmpty(prescriptionItem.Timing))
+                                            detailsParts.Add(prescriptionItem.Timing);
+                                        if (!string.IsNullOrEmpty(prescriptionItem.Duration))
+                                            detailsParts.Add(prescriptionItem.Duration);
+                                        
+                                        detailsText = detailsParts.Count > 0 ? string.Join(", ", detailsParts) : "-";
+                                        
+                                        // Add instructions if present
+                                        if (!string.IsNullOrEmpty(prescriptionItem.Instructions))
+                                        {
+                                            detailsText += $"\nInstructions: {prescriptionItem.Instructions}";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        descriptionText = $"Medicine #{serialNumber}";
+                                        detailsText = "-";
+                                    }
+                                }
+                                else
+                                {
+                                    // For Consultation and Courier, use normal description
+                                    serialNumber++;
+                                    descriptionText = item.Description;
+                                    detailsText = "-";
+                                }
+
+                                table.Cell().Element(CellStyle).AlignCenter().Text(serialNumber.ToString());
+                                
+                                // Description cell with merged content
+                                table.Cell().Element(CellStyle).Column(col =>
+                                {
+                                    col.Item().Text(descriptionText).FontSize(10).Bold();
+                                    if (!string.IsNullOrEmpty(detailsText) && detailsText != "-")
+                                    {
+                                        col.Item().PaddingTop(2).Text(detailsText).FontSize(10);
+                                    }
+                                });
+                                
+                                // For medicine items, use prescription quantity; for others, use invoice item quantity
+                                string quantityText = item.Quantity.ToString();
+                                if (item.ItemType == "Medicine" && prescriptionItemIndex > 0 && prescriptionItemIndex <= prescriptionItems.Count)
+                                {
+                                    var prescriptionItem = prescriptionItems[prescriptionItemIndex - 1];
+                                    quantityText = FormatQuantity(prescriptionItem.Quantity, prescriptionItem.DispensingForm);
+                                }
+                                
+                                table.Cell().Element(CellStyle).AlignRight().Text(quantityText);
                                 table.Cell().Element(CellStyle).AlignRight().Text($"₹{item.UnitPrice:F2}");
                                 table.Cell().Element(CellStyle).AlignRight().Text($"₹{item.TotalPrice:F2}");
 
@@ -368,6 +493,7 @@ public class PdfService : IPdfService
                         {
                             table.ColumnsDefinition(columns =>
                             {
+                                columns.ConstantColumn(50);  // Serial Number
                                 if (includeMedicineNames)
                                 {
                                     columns.RelativeColumn(3);
@@ -387,6 +513,7 @@ public class PdfService : IPdfService
                             // Header
                             table.Header(header =>
                             {
+                                header.Cell().Element(CellStyle).AlignCenter().Text("S.No").Bold();
                                 if (includeMedicineNames)
                                 {
                                     header.Cell().Element(CellStyle).Text("Medicine Name").Bold();
@@ -409,9 +536,15 @@ public class PdfService : IPdfService
                                 }
                             });
 
-                            // Items
-                            foreach (var item in prescription.PrescriptionItems)
+                            // Items - Order by ID to maintain consistent order
+                            var orderedItems = prescription.PrescriptionItems.OrderBy(pi => pi.Id).ToList();
+                            int serialNumber = 0;
+
+                            foreach (var item in orderedItems)
                             {
+                                serialNumber++;
+                                table.Cell().Element(CellStyle).AlignCenter().Text(serialNumber.ToString());
+                                
                                 if (includeMedicineNames)
                                 {
                                     table.Cell().Element(CellStyle).Text(item.MedicineName);

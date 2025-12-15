@@ -1,4 +1,5 @@
 using ClinicCare.Application.Features.Prescriptions.Commands.CreatePrescription;
+using ClinicCare.Application.Features.Prescriptions.Commands.UpdatePrescription;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPatientPrescriptions;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPrescription;
 using ClinicCare.Application.Features.Prescriptions.Queries.GetPrescriptionPdf;
@@ -41,6 +42,13 @@ public static class PrescriptionsEndpoints
         group.MapPost("/", CreatePrescription)
             .WithName("CreatePrescription")
             .WithSummary("Create new prescription (Doctor only)")
+            .Produces<object>(StatusCodes.Status200OK)
+            .Produces<object>(StatusCodes.Status400BadRequest);
+
+        // Update prescription
+        group.MapPut("/{id:int}", UpdatePrescription)
+            .WithName("UpdatePrescription")
+            .WithSummary("Update an existing prescription (Doctor/Admin only)")
             .Produces<object>(StatusCodes.Status200OK)
             .Produces<object>(StatusCodes.Status400BadRequest);
 
@@ -123,6 +131,37 @@ public static class PrescriptionsEndpoints
             {
                 Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
             }
+            return Results.BadRequest(new { success = false, errors = new[] { $"An error occurred: {ex.Message}" } });
+        }
+    }
+
+    private static async Task<IResult> UpdatePrescription(
+        int id,
+        UpdatePrescriptionCommand command,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        if (id != command.Id)
+        {
+            return Results.BadRequest(new { success = false, errors = new[] { "ID mismatch" } });
+        }
+
+        try
+        {
+            var result = await mediator.Send(command, cancellationToken);
+
+            if (!result.Succeeded)
+            {
+                Console.WriteLine($"Prescription update failed. Errors: {string.Join(", ", result.Errors)}");
+            }
+
+            return result.Succeeded
+                ? Results.Ok(new { success = true, data = result.Data, message = "Prescription updated successfully" })
+                : Results.BadRequest(new { success = false, errors = result.Errors });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception in UpdatePrescription endpoint: {ex.Message}");
             return Results.BadRequest(new { success = false, errors = new[] { $"An error occurred: {ex.Message}" } });
         }
     }

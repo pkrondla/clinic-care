@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   Card,
   Button,
@@ -27,7 +27,7 @@ import {
 import { useInvoice, usePayInvoice, useUpdateCourierDocket } from '@core/hooks/queries/useInvoices'
 import { useInitiateOnlinePayment } from '@core/hooks/queries/usePayments'
 import invoiceService from '@core/services/invoiceService'
-import type { InvoiceItem } from '@core/services/invoiceService'
+import type { InvoiceItem, PrescriptionItem } from '@core/services/invoiceService'
 import dayjs from 'dayjs'
 
 const { Title, Text } = Typography
@@ -79,27 +79,50 @@ export const InvoiceDetailPage = () => {
         const returnUrl = `${window.location.origin}/invoices/${invoiceId}?payment=success`
         const cancelUrl = `${window.location.origin}/invoices/${invoiceId}?payment=cancelled`
         
-        await initiateOnlinePaymentMutation.mutateAsync({
-          invoiceId: invoiceId,
-          returnUrl,
-          cancelUrl,
-        })
-        // The mutation will redirect to payment URL
+        initiateOnlinePaymentMutation.mutate(
+          {
+            invoiceId: invoiceId,
+            returnUrl,
+            cancelUrl,
+          },
+          {
+            onSuccess: () => {
+              // The mutation will redirect to payment URL
+            },
+            onError: (error: any) => {
+              // Error message is shown by the mutation hook
+              console.error('Online payment initiation failed:', error)
+            },
+          }
+        )
         return
       }
       
       // Otherwise, process manual payment
-      await payInvoiceMutation.mutateAsync({
-        invoiceId: invoiceId,
-        amount: values.amount,
-        paymentMethod: values.paymentMethod,
-        paymentReference: values.paymentReference,
-      })
-      setPaymentModalVisible(false)
-      paymentForm.resetFields()
-      refetch()
-    } catch (error) {
-      console.error('Payment failed:', error)
+      payInvoiceMutation.mutate(
+        {
+          invoiceId: invoiceId,
+          amount: values.amount,
+          paymentMethod: values.paymentMethod,
+          paymentReference: values.paymentReference,
+        },
+        {
+          onSuccess: () => {
+            // Close modal and reset form after successful payment
+            // Success message is shown by the mutation hook
+            setPaymentModalVisible(false)
+            paymentForm.resetFields()
+            refetch()
+          },
+          onError: (error: any) => {
+            // Error message is shown by the mutation hook
+            console.error('Payment failed:', error)
+          },
+        }
+      )
+    } catch (error: any) {
+      // Validation error
+      console.error('Form validation failed:', error)
     }
   }
 
@@ -137,41 +160,150 @@ export const InvoiceDetailPage = () => {
     }
   }
 
-  const itemColumns = [
+  const DISPENSING_FORMS: Record<number, string> = {
+    1: 'Globules',
+    2: 'Tablets',
+    3: 'Packet',
+    4: 'Liquid',
+    5: 'Tonic'
+  }
+
+  const formatQuantity = (quantity: number | undefined, dispensingForm: number): string => {
+    if (quantity === undefined) return '-'
+    if (dispensingForm === 4 || dispensingForm === 5) {
+      return `${quantity} ml`
+    }
+    return quantity.toString()
+  }
+
+  // Create combined data source for medicines and other charges
+  const getCombinedItems = () => {
+    const items: Array<{
+      id: string | number
+      type: 'medicine' | 'other'
+      serialNumber: number
+      description: string
+      details: string
+      quantity: string | number
+      unitPrice: number
+      totalPrice: number
+    }> = []
+
+    let serialNumber = 0
+    let medicineSerialNumber = 0
+
+    // Add prescription medicines first
+    if (invoice.prescriptionItems && invoice.prescriptionItems.length > 0) {
+      invoice.prescriptionItems.forEach((prescriptionItem, index) => {
+        medicineSerialNumber++
+        serialNumber++
+        
+        // Build details string: Dosage, Frequency, Timing, Duration (comma-separated)
+        const detailsParts: string[] = []
+        if (prescriptionItem.dosage) detailsParts.push(prescriptionItem.dosage)
+        if (prescriptionItem.frequency) detailsParts.push(prescriptionItem.frequency)
+        if (prescriptionItem.timing) detailsParts.push(prescriptionItem.timing)
+        if (prescriptionItem.duration) detailsParts.push(prescriptionItem.duration)
+        
+        const details = detailsParts.length > 0 ? detailsParts.join(', ') : '-'
+        const instructions = prescriptionItem.instructions || null
+        
+        items.push({
+          id: `medicine-${prescriptionItem.id}`,
+          type: 'medicine',
+          serialNumber: medicineSerialNumber,
+          description: `Medicine #${medicineSerialNumber}${prescriptionItem.containerSize && prescriptionItem.dispensingForm === 1 ? ` (${DISPENSING_FORMS[prescriptionItem.dispensingForm]} ${prescriptionItem.containerSize} dram)` : prescriptionItem.dispensingForm ? ` (${DISPENSING_FORMS[prescriptionItem.dispensingForm]})` : ''}`,
+          details,
+          instructions,
+          quantity: formatQuantity(prescriptionItem.quantity, prescriptionItem.dispensingForm),
+          unitPrice: prescriptionItem.unitPrice,
+          totalPrice: prescriptionItem.totalPrice
+        })
+      })
+    }
+
+    // Add other invoice items (Consultation, Courier)
+    const otherItems = invoice.items.filter(item => item.itemType !== 'Medicine')
+    otherItems.forEach((item) => {
+      serialNumber++
+      items.push({
+        id: `other-${item.id}`,
+        type: 'other',
+        serialNumber,
+        description: item.description,
+        details: '-',
+        instructions: null,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        totalPrice: item.totalPrice
+      })
+    })
+
+    return items
+  }
+
+  // Type for combined items
+  type CombinedItem = {
+    id: string | number
+    type: 'medicine' | 'other'
+    serialNumber: number
+    description: string
+    details: string
+    instructions?: string | null
+    quantity: string | number
+    unitPrice: number
+    totalPrice: number
+  }
+
+  // Unified columns for all items
+  const invoiceColumns = [
     {
-      title: 'Item Type',
-      dataIndex: 'itemType',
-      key: 'itemType',
-      width: 120,
+      title: 'S.No',
+      key: 'serialNumber',
+      width: 60,
+      align: 'center' as const,
+      render: (_: any, record: CombinedItem) => record.serialNumber
     },
     {
       title: 'Description',
-      dataIndex: 'description',
       key: 'description',
+      render: (_: any, record: CombinedItem) => (
+        <div style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+          <div style={{ fontWeight: 500, marginBottom: '4px' }}>{record.description}</div>
+          {record.details !== '-' && (
+            <div style={{ color: '#666', marginBottom: '4px' }}>
+              {record.details}
+            </div>
+          )}
+          {record.instructions && (
+            <div style={{ color: '#1890ff', marginTop: '4px' }}>
+              Instructions: {record.instructions}
+            </div>
+          )}
+        </div>
+      )
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
+      title: 'Qty',
       key: 'quantity',
-      width: 100,
+      width: 80,
       align: 'right' as const,
+      render: (_: any, record: CombinedItem) => record.quantity
     },
     {
       title: 'Unit Price',
-      dataIndex: 'unitPrice',
       key: 'unitPrice',
-      width: 120,
+      width: 100,
       align: 'right' as const,
-      render: (price: number) => `₹${price.toFixed(2)}`,
+      render: (_: any, record: CombinedItem) => `₹${record.unitPrice.toFixed(2)}`
     },
     {
       title: 'Total',
-      dataIndex: 'totalPrice',
       key: 'totalPrice',
-      width: 120,
+      width: 110,
       align: 'right' as const,
-      render: (price: number) => <strong>₹{price.toFixed(2)}</strong>,
-    },
+      render: (_: any, record: CombinedItem) => <strong>₹{record.totalPrice.toFixed(2)}</strong>
+    }
   ]
 
   if (isLoading) {
@@ -231,13 +363,16 @@ export const InvoiceDetailPage = () => {
             </Descriptions>
           </Card>
 
-          {/* Invoice Items */}
+          {/* Invoice Items - Combined Table */}
           <Card title="Invoice Items">
             <Table
-              columns={itemColumns}
-              dataSource={invoice.items}
+              columns={invoiceColumns}
+              dataSource={invoice ? getCombinedItems() : []}
               rowKey="id"
               pagination={false}
+              size="small"
+              scroll={{ x: 'max-content' }}
+              style={{ width: '100%' }}
               summary={() => (
                 <Table.Summary fixed>
                   <Table.Summary.Row>

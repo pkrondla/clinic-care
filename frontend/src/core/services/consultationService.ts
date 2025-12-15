@@ -1,5 +1,14 @@
 import { api } from './apiClient'
 
+export interface ConsultationPhoto {
+  id: number
+  consultationId: number
+  photoUrl: string
+  description?: string
+  displayOrder: number
+  createdAt: string
+}
+
 export interface Consultation {
   id: number
   appointmentId: number
@@ -18,6 +27,7 @@ export interface Consultation {
   createdAt: string
   hasPrescription?: boolean
   prescriptionId?: number
+  photos?: ConsultationPhoto[]
 }
 
 export interface CreateConsultationRequest {
@@ -116,6 +126,20 @@ export const consultationService = {
     const response = await api.put<Consultation>(`/consultations/${id}`, data)
     // Backend returns { success: true, data: Consultation }
     return response.data || (response as any).data?.data
+  },
+
+  addPhoto: async (consultationId: number, photoUrl: string, description?: string): Promise<ConsultationPhoto> => {
+    const response = await api.post<ConsultationPhoto>(`/consultations/${consultationId}/photos`, {
+      consultationId,
+      photoUrl,
+      description
+    })
+    return response.data || (response as any).data?.data
+  },
+
+  deletePhoto: async (photoId: number): Promise<boolean> => {
+    const response = await api.delete<boolean>(`/consultations/photos/${photoId}`)
+    return response.data ?? true
   }
 }
 

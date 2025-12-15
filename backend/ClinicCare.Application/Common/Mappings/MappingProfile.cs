@@ -112,7 +112,8 @@ public class MappingProfile : Profile
                 : string.Empty))
             .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor != null && src.Doctor.User != null 
                 ? $"{src.Doctor.User.FirstName} {src.Doctor.User.LastName}".Trim() 
-                : string.Empty));
+                : string.Empty))
+            .ForMember(dest => dest.Photos, opt => opt.Ignore()); // Photos are mapped manually in handlers
 
         // Prescription mappings
         CreateMap<Prescription, PrescriptionDto>()

@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select, AutoComplete } from 'antd'
-import { SaveOutlined, ArrowLeftOutlined, PlusOutlined, DeleteOutlined, DollarOutlined, DownloadOutlined } from '@ant-design/icons'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { prescriptionService, type CreatePrescriptionRequest, type PrescriptionMedicine } from '@core/services/prescriptionService'
-import { useCreateInvoiceFromPrescription } from '@core/hooks/queries/useInvoices'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom'
+import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select, AutoComplete, Typography, Tag, Descriptions, Spin } from 'antd'
+import { SaveOutlined, ArrowLeftOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { prescriptionService, type CreatePrescriptionRequest, type UpdatePrescriptionRequest, type PrescriptionMedicine, type Prescription } from '@core/services/prescriptionService'
 import { useAuth } from '@core/stores/authStore'
 import { clinicMedicineService, type ClinicMedicine } from '@core/services/clinicMedicineService'
 import { useDebouncedValue } from '@core/hooks/useDebouncedValue'
+import { UserRole } from '@core/types'
+import dayjs from 'dayjs'
+
+const { Text } = Typography
 
 const { TextArea } = Input
 const { Option } = Select
@@ -58,15 +61,48 @@ export const PrescriptionFormPage = () => {
   const [medicineForm] = Form.useForm()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { id } = useParams<{ id: string }>()
   const { user } = useAuth()
+  const queryClient = useQueryClient()
   
+  const isEditMode = !!id
+  const prescriptionId = isEditMode ? parseInt(id!) : null
   const consultationId = searchParams.get('consultationId')
   const patientId = searchParams.get('patientId')
 
   const [medicines, setMedicines] = useState<PrescriptionMedicine[]>([])
   const [isMedicineModalOpen, setIsMedicineModalOpen] = useState(false)
   const [medicineSearchTerm, setMedicineSearchTerm] = useState('')
+  const [selectedPrescriptionId, setSelectedPrescriptionId] = useState<number | null>(null)
   const debouncedSearchTerm = useDebouncedValue(medicineSearchTerm, 300)
+
+  // Load prescription data for edit mode
+  const { data: existingPrescription, isLoading: isLoadingPrescription } = useQuery({
+    queryKey: ['prescription', prescriptionId],
+    queryFn: () => prescriptionService.getById(prescriptionId!),
+    enabled: isEditMode && !!prescriptionId
+  })
+  
+  // Fetch patient prescriptions for doctors in create mode
+  const currentPatientId = isEditMode ? existingPrescription?.patientId : parseInt(patientId || '0')
+  const { data: patientPrescriptions = [], isLoading: isLoadingPatientPrescriptions } = useQuery<Prescription[]>({
+    queryKey: ['patient-prescriptions', currentPatientId],
+    queryFn: () => prescriptionService.getByPatient(currentPatientId || 0),
+    enabled: !isEditMode && !!currentPatientId && currentPatientId > 0 && (user?.role === UserRole.Doctor || user?.role === UserRole.Admin)
+  })
+  
+  // Get last 5 prescriptions (already sorted descending by backend)
+  const last5Prescriptions = patientPrescriptions.slice(0, 5)
+  
+  // Fetch selected prescription details
+  const { data: selectedPrescription, isLoading: isLoadingSelectedPrescription } = useQuery<Prescription>({
+    queryKey: ['prescription', selectedPrescriptionId],
+    queryFn: () => prescriptionService.getById(selectedPrescriptionId!),
+    enabled: !!selectedPrescriptionId && selectedPrescriptionId > 0
+  })
+  
+  // Show previous prescriptions only for doctors/admins in create mode
+  const showPreviousPrescriptions = !isEditMode && (user?.role === UserRole.Doctor || user?.role === UserRole.Admin) && currentPatientId > 0 && last5Prescriptions.length > 0
 
   // Search clinic medicines
   const { data: clinicMedicines = [], isLoading: isSearchingMedicines } = useQuery({
@@ -78,33 +114,41 @@ export const PrescriptionFormPage = () => {
   const createMutation = useMutation({
     mutationFn: prescriptionService.create,
     onSuccess: (data) => {
-      message.success(`Prescription created successfully! Number: ${data.prescriptionNumber}`)
-      // Don't navigate away - allow user to generate invoice
+      message.success(`Prescription saved successfully! Number: ${data.prescriptionNumber}`)
+      // Refresh previous prescriptions list
+      if (currentPatientId && currentPatientId > 0) {
+        queryClient.invalidateQueries({ queryKey: ['patient-prescriptions', currentPatientId] })
+      }
+      // Navigate to invoice form with prescription ID
+      navigate(`/invoices/new?prescriptionId=${data.id}`)
     },
     onError: () => {
       message.error('Failed to create prescription')
     }
   })
 
-  const createInvoiceMutation = useCreateInvoiceFromPrescription()
-  const [prescriptionId, setPrescriptionId] = useState<number | null>(null)
 
-  const handleGenerateInvoice = async () => {
-    if (!prescriptionId) {
-      message.error('Please create prescription first')
-      return
-    }
-
-    try {
-      const invoice = await createInvoiceMutation.mutateAsync({
-        prescriptionId: prescriptionId,
+  // Populate form when prescription data is loaded
+  useEffect(() => {
+    if (isEditMode && existingPrescription) {
+      form.setFieldsValue({
+        notes: existingPrescription.notes
       })
-      message.success(`Invoice ${invoice.invoiceNumber} created successfully!`)
-      navigate(`/invoices/${invoice.id}`)
-    } catch (error) {
-      // Error is handled by the mutation
+      setMedicines(existingPrescription.medicines || [])
     }
-  }
+  }, [isEditMode, existingPrescription, form])
+
+  const updateMutation = useMutation({
+    mutationFn: prescriptionService.update,
+    onSuccess: (data) => {
+      message.success(`Prescription updated successfully! Number: ${data.prescriptionNumber}`)
+      navigate(`/prescriptions/${data.id}`)
+    },
+    onError: () => {
+      message.error('Failed to update prescription')
+    }
+  })
+
 
   // Calculate times per day from frequency string
   const getTimesPerDay = (frequency: string): number => {
@@ -272,6 +316,37 @@ export const PrescriptionFormPage = () => {
   const handleRemoveMedicine = (index: number) => {
     setMedicines(medicines.filter((_, i) => i !== index))
   }
+  
+  const handleViewPrescription = (prescriptionId: number) => {
+    setSelectedPrescriptionId(prescriptionId)
+  }
+  
+  const handleClonePrescription = () => {
+    if (!selectedPrescription) return
+    
+    // Clone medicines
+    const clonedMedicines: PrescriptionMedicine[] = selectedPrescription.medicines.map(med => ({
+      medicineId: med.medicineId || 0,
+      medicineName: med.medicineName,
+      dispensingForm: med.dispensingForm,
+      dosage: med.dosage,
+      frequency: med.frequency,
+      duration: med.duration,
+      timing: med.timing,
+      containerSize: med.containerSize,
+      quantity: med.quantity,
+      dispensedQuantity: med.dispensedQuantity,
+      instructions: med.instructions
+    }))
+    
+    setMedicines(clonedMedicines)
+    form.setFieldsValue({
+      notes: selectedPrescription.notes || ''
+    })
+    
+    message.success('Prescription cloned successfully')
+    setSelectedPrescriptionId(null) // Close modal after cloning
+  }
 
   const handleSubmit = async () => {
     try {
@@ -282,25 +357,37 @@ export const PrescriptionFormPage = () => {
 
       const values = await form.validateFields()
       
-      const prescriptionData: CreatePrescriptionRequest = {
-        consultationId: parseInt(consultationId || '0'),
-        patientId: parseInt(patientId || '0'),
-        doctorId: user?.id || 0,
-        medicines: medicines,
-        notes: values.notes
-      }
-
-      createMutation.mutate(prescriptionData, {
-        onSuccess: (data) => {
-          setPrescriptionId(data.id)
+      if (isEditMode && prescriptionId) {
+        // Update existing prescription
+        const updateData: UpdatePrescriptionRequest = {
+          id: prescriptionId,
+          medicines: medicines,
+          notes: values.notes
         }
-      })
+        updateMutation.mutate(updateData)
+      } else {
+        // Create new prescription
+        if (!consultationId || !patientId) {
+          message.error('Consultation ID and Patient ID are required to create a prescription')
+          return
+        }
+        
+        const prescriptionData: CreatePrescriptionRequest = {
+          consultationId: parseInt(consultationId),
+          patientId: parseInt(patientId),
+          doctorId: user?.id || 0,
+          medicines: medicines,
+          notes: values.notes
+        }
+
+        createMutation.mutate(prescriptionData)
+      }
     } catch (error) {
       console.error('Validation failed:', error)
     }
   }
 
-  if (!consultationId || !patientId) {
+  if (!isEditMode && (!consultationId || !patientId)) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
         <Card>
@@ -438,6 +525,14 @@ export const PrescriptionFormPage = () => {
 
   return (
     <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+      {isLoadingPrescription ? (
+        <Card>
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            Loading prescription...
+          </div>
+        </Card>
+      ) : (
+        <>
       <div style={{ marginBottom: '24px' }}>
         <Button
           icon={<ArrowLeftOutlined />}
@@ -447,12 +542,70 @@ export const PrescriptionFormPage = () => {
           Back
         </Button>
         <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600 }}>
-          Create Prescription
+          {isEditMode ? 'Edit Prescription' : 'Create Prescription'}
         </h1>
         <p style={{ margin: '8px 0 0 0', color: '#666' }}>
-          Add medicines and instructions for the patient
+          {isEditMode ? 'Update medicines and instructions for the patient' : 'Add medicines and instructions for the patient'}
         </p>
       </div>
+
+      {/* Previous Prescriptions - Only for doctors/admins in create mode */}
+      {showPreviousPrescriptions && (
+        <Card 
+          title="Previous Prescriptions" 
+          style={{ marginBottom: 24 }}
+          extra={<Text type="secondary">Last 5 prescriptions</Text>}
+        >
+          <Table
+            dataSource={last5Prescriptions}
+            rowKey="id"
+            pagination={false}
+            size="small"
+            loading={isLoadingPatientPrescriptions}
+            columns={[
+              {
+                title: 'Date',
+                dataIndex: 'prescriptionDate',
+                key: 'prescriptionDate',
+                width: 120,
+                render: (date: string) => dayjs(date).format('MMM DD, YYYY'),
+              },
+              {
+                title: 'Prescription Number',
+                dataIndex: 'prescriptionNumber',
+                key: 'prescriptionNumber',
+                width: 150,
+                render: (text: string) => <Tag color="blue">{text}</Tag>,
+              },
+              {
+                title: 'Medicines',
+                key: 'medicines',
+                render: (_: any, record: Prescription) => `${record.medicines?.length || 0} medicine(s)`,
+              },
+              {
+                title: 'Doctor',
+                dataIndex: 'doctorName',
+                key: 'doctorName',
+                width: 150,
+              },
+              {
+                title: 'Actions',
+                key: 'actions',
+                width: 100,
+                render: (_: any, record: Prescription) => (
+                  <Button
+                    type="link"
+                    size="small"
+                    onClick={() => handleViewPrescription(record.id)}
+                  >
+                    View
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </Card>
+      )}
 
       <Card style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -498,17 +651,17 @@ export const PrescriptionFormPage = () => {
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Space>
-              {!prescriptionId ? (
+              {isEditMode ? (
                 <>
                   <Button
                     type="primary"
                     icon={<SaveOutlined />}
                     onClick={handleSubmit}
-                    loading={createMutation.isPending}
+                    loading={updateMutation.isPending}
                     size="large"
-                    disabled={medicines.length === 0}
+                    disabled={medicines.length === 0 || isLoadingPrescription}
                   >
-                    Create Prescription
+                    Update Prescription
                   </Button>
                   <Button
                     onClick={() => navigate(-1)}
@@ -521,39 +674,19 @@ export const PrescriptionFormPage = () => {
                 <>
                   <Button
                     type="primary"
-                    icon={<DollarOutlined />}
-                    onClick={handleGenerateInvoice}
-                    loading={createInvoiceMutation.isPending}
+                    icon={<SaveOutlined />}
+                    onClick={handleSubmit}
+                    loading={createMutation.isPending}
                     size="large"
+                    disabled={medicines.length === 0}
                   >
-                    Generate Invoice
+                    Save & Create Invoice
                   </Button>
                   <Button
-                    onClick={async () => {
-                      try {
-                        const blob = await prescriptionService.downloadPdf(prescriptionId, true)
-                        const url = window.URL.createObjectURL(blob)
-                        const link = document.createElement('a')
-                        link.href = url
-                        link.download = `Prescription_${prescriptionId}_Internal.pdf`
-                        document.body.appendChild(link)
-                        link.click()
-                        document.body.removeChild(link)
-                        window.URL.revokeObjectURL(url)
-                        message.success('Prescription PDF downloaded')
-                      } catch (error) {
-                        message.error('Failed to download prescription PDF')
-                      }
-                    }}
+                    onClick={() => navigate(-1)}
                     size="large"
                   >
-                    Download PDF (Internal)
-                  </Button>
-                  <Button
-                    onClick={() => navigate(`/patients/${patientId}`)}
-                    size="large"
-                  >
-                    Back to Patient
+                    Cancel
                   </Button>
                 </>
               )}
@@ -831,7 +964,150 @@ export const PrescriptionFormPage = () => {
             />
           </Form.Item>
         </Form>
+        </Modal>
+
+      {/* Prescription Details Modal */}
+      <Modal
+        title={
+          <Space>
+            <Text strong>Previous Prescription Details</Text>
+            {selectedPrescription && (
+              <Text type="secondary" style={{ fontSize: '12px' }}>
+                {dayjs(selectedPrescription.prescriptionDate).format('MMMM DD, YYYY')}
+              </Text>
+            )}
+          </Space>
+        }
+        open={!!selectedPrescriptionId}
+        onCancel={() => setSelectedPrescriptionId(null)}
+        footer={[
+          <Button key="close" onClick={() => setSelectedPrescriptionId(null)}>
+            Close
+          </Button>,
+          <Button 
+            key="clone" 
+            type="primary" 
+            onClick={handleClonePrescription}
+            disabled={!selectedPrescription}
+          >
+            Clone
+          </Button>
+        ]}
+        width={900}
+      >
+        {isLoadingSelectedPrescription ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <Spin size="large" />
+          </div>
+        ) : selectedPrescription ? (
+          <div>
+            {/* Prescription Details */}
+            <Card size="small" style={{ marginBottom: 16 }}>
+              <Descriptions column={2} size="small" bordered>
+                <Descriptions.Item label="Prescription Number">
+                  <Tag color="blue">{selectedPrescription.prescriptionNumber}</Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Date">
+                  {dayjs(selectedPrescription.prescriptionDate).format('MMMM DD, YYYY [at] hh:mm A')}
+                </Descriptions.Item>
+                <Descriptions.Item label="Doctor">
+                  {selectedPrescription.doctorName}
+                </Descriptions.Item>
+                <Descriptions.Item label="Patient">
+                  {selectedPrescription.patientName}
+                </Descriptions.Item>
+                {selectedPrescription.notes && (
+                  <Descriptions.Item label="Notes" span={2}>
+                    <Text style={{ whiteSpace: 'pre-wrap' }}>{selectedPrescription.notes}</Text>
+                  </Descriptions.Item>
+                )}
+              </Descriptions>
+            </Card>
+
+            {/* Medicines Table */}
+            {selectedPrescription.medicines && selectedPrescription.medicines.length > 0 && (
+              <Card size="small" title="Medicines">
+                <Table
+                  dataSource={selectedPrescription.medicines}
+                  rowKey={(record, index) => `${record.medicineId}-${index}`}
+                  pagination={false}
+                  size="small"
+                  columns={[
+                    {
+                      title: 'S.No',
+                      key: 'serial',
+                      width: 50,
+                      align: 'center' as const,
+                      render: (_: any, __: any, index: number) => index + 1
+                    },
+                    {
+                      title: 'Medicine',
+                      key: 'medicine',
+                      render: (_: any, record: PrescriptionMedicine) => (
+                        <div>
+                          <Text strong>{record.medicineName}</Text>
+                          <div style={{ fontSize: '11px', color: '#999' }}>
+                            {getDispensingFormLabel(record.dispensingForm)}
+                            {record.containerSize && record.dispensingForm === 1 && ` (${record.containerSize} dram)`}
+                          </div>
+                        </div>
+                      )
+                    },
+                    {
+                      title: 'Dosage',
+                      dataIndex: 'dosage',
+                      key: 'dosage',
+                      width: 120
+                    },
+                    {
+                      title: 'Frequency',
+                      dataIndex: 'frequency',
+                      key: 'frequency',
+                      width: 120
+                    },
+                    {
+                      title: 'Duration',
+                      dataIndex: 'duration',
+                      key: 'duration',
+                      width: 100
+                    },
+                    {
+                      title: 'Timing',
+                      dataIndex: 'timing',
+                      key: 'timing',
+                      width: 100
+                    },
+                    {
+                      title: 'Quantity',
+                      dataIndex: 'quantity',
+                      key: 'quantity',
+                      width: 100,
+                      render: (quantity: number | undefined, record: PrescriptionMedicine) => {
+                        if (quantity === undefined) return '-'
+                        if (record.dispensingForm === 4 || record.dispensingForm === 5) {
+                          return `${quantity} ml`
+                        }
+                        return quantity.toString()
+                      }
+                    },
+                    {
+                      title: 'Instructions',
+                      dataIndex: 'instructions',
+                      key: 'instructions',
+                      ellipsis: true,
+                      render: (text: string) => text || '-'
+                    }
+                  ]}
+                />
+              </Card>
+            )}
+          </div>
+        ) : (
+          <div>Prescription not found</div>
+        )}
       </Modal>
+        </>
+      )}
     </div>
   )
 }

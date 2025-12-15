@@ -6,6 +6,7 @@ import {
   CheckCircleOutlined,
   ReloadOutlined
 } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 import { useAppointments, useAppointmentStats } from '@core/hooks/queries/useAppointments'
 import { useUser, useSelectedClinic } from '@core/stores/authStore'
 import { UserRole, AppointmentStatus, AppointmentType } from '@core/types'
@@ -16,6 +17,7 @@ const { Title } = Typography
 export const DashboardPage = () => {
   const user = useUser()
   const selectedClinic = useSelectedClinic()
+  const navigate = useNavigate()
   
   const getDashboardTitle = () => {
     switch (user?.role) {
@@ -222,13 +224,23 @@ export const DashboardPage = () => {
           <Col xs={24} lg={12}>
             <Card title="Quick Actions">
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Button type="primary" block>
+                <Button 
+                  type="primary" 
+                  block
+                  onClick={() => navigate('/queue/doctor')}
+                >
                   View Patient Queue
                 </Button>
-                <Button block>
+                <Button 
+                  block
+                  onClick={() => navigate('/consultations/new')}
+                >
                   New Consultation
                 </Button>
-                <Button block>
+                <Button 
+                  block
+                  onClick={() => navigate('/prescriptions')}
+                >
                   Prescription History
                 </Button>
               </Space>
