@@ -1,5 +1,6 @@
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
 using ClinicCare.Domain.Entities;
 using ClinicCare.Domain.Enums;
@@ -15,15 +16,18 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<UpdateInvoiceHandler> _logger;
+    private readonly INotificationService _notificationService;
 
     public UpdateInvoiceHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
-        ILogger<UpdateInvoiceHandler> logger)
+        ILogger<UpdateInvoiceHandler> logger,
+        INotificationService notificationService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _logger = logger;
+        _notificationService = notificationService;
     }
 
     public async Task<Result<InvoiceDto>> Handle(UpdateInvoiceCommand request, CancellationToken cancellationToken)
@@ -45,6 +49,9 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
             {
                 return Result<InvoiceDto>.Failure("Invoice not found");
             }
+
+            // Track courier status change for notification
+            var previousCourierStatus = invoice.CourierStatus;
 
             // Update clinic if provided
             if (request.ClinicId.HasValue)
@@ -162,9 +169,33 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
                 invoice.InvoiceDate = request.InvoiceDate.Value;
             }
 
+            // Update courier status if provided
+            if (request.CourierStatus.HasValue)
+            {
+                invoice.CourierStatus = (CourierStatus)request.CourierStatus.Value;
+            }
+
             invoice.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            // Send courier delivered notification if status changed to Delivered
+            if (request.CourierStatus.HasValue && 
+                (CourierStatus)request.CourierStatus.Value == CourierStatus.Delivered &&
+                previousCourierStatus != CourierStatus.Delivered)
+            {
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _notificationService.SendCourierDeliveredNotificationAsync(invoice.Id, cancellationToken);
+                    }
+                    catch
+                    {
+                        // Ignore notification errors - don't fail invoice update
+                    }
+                }, cancellationToken);
+            }
 
             // Load invoice with details for response
             var invoiceWithDetails = await _context.Invoices

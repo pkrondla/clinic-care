@@ -195,14 +195,16 @@ const invoiceService = {
    * Process payment for an invoice
    */
   async payInvoice(request: PayInvoiceRequest): Promise<Invoice> {
-    const response = await api.post<{ data: Invoice }>(
+    const response = await api.post<{ message?: string; data: Invoice }>(
       `/invoices/${request.invoiceId}/pay`,
       request
     );
-    if (!response.data?.data) {
+    // Backend returns {message: '...', data: Invoice}
+    // api.post returns response.data, so response = {message: '...', data: Invoice}
+    if (!response.data) {
       throw new Error('Failed to process payment');
     }
-    return response.data.data;
+    return response.data;
   },
 
   /**
@@ -236,11 +238,13 @@ const invoiceService = {
    * Create a new invoice manually
    */
   async createInvoice(request: CreateInvoiceRequest): Promise<Invoice> {
-    const response = await api.post<{ data: Invoice }>('/invoices', request);
-    if (!response.data?.data) {
+    const response = await api.post<{ message?: string; data: Invoice }>('/invoices', request);
+    // Backend returns {message: '...', data: Invoice}
+    // api.post returns response.data, so response = {message: '...', data: Invoice}
+    if (!response.data) {
       throw new Error('Failed to create invoice');
     }
-    return response.data.data;
+    return response.data;
   },
 
   /**

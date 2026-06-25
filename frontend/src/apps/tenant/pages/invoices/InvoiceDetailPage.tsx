@@ -107,16 +107,18 @@ export const InvoiceDetailPage = () => {
           paymentReference: values.paymentReference,
         },
         {
-          onSuccess: () => {
-            // Close modal and reset form after successful payment
+          onSuccess: async () => {
             // Success message is shown by the mutation hook
+            // Close modal and reset form after successful payment
             setPaymentModalVisible(false)
             paymentForm.resetFields()
-            refetch()
+            // Refetch invoice data to update payment summary
+            await refetch()
           },
           onError: (error: any) => {
             // Error message is shown by the mutation hook
             console.error('Payment failed:', error)
+            // Don't close modal on error so user can retry
           },
         }
       )
@@ -152,11 +154,15 @@ export const InvoiceDetailPage = () => {
         courierCompany: values.courierCompany,
         courierTrackingUrl: values.courierTrackingUrl,
       })
+      // Success message is shown by the mutation hook
+      // Close modal and reset form
       setCourierModalVisible(false)
       courierForm.resetFields()
-      refetch()
+      // Refetch invoice data to show updated courier details
+      await refetch()
     } catch (error) {
       // Error is handled by the mutation hook
+      // Don't close modal on error so user can retry
     }
   }
 
@@ -392,73 +398,86 @@ export const InvoiceDetailPage = () => {
         <Col xs={24} lg={8}>
           {/* Payment Summary */}
           <Card title="Payment Summary" style={{ marginBottom: 16 }}>
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space direction="vertical" style={{ width: '100%' }} size="small">
               <div>
-                <Text type="secondary">Total Amount</Text>
-                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                <Text type="secondary" style={{ fontSize: '12px' }}>Total Amount</Text>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '4px' }}>
                   ₹{invoice.totalAmount.toFixed(2)}
                 </div>
               </div>
-              <Divider />
-              <div>
-                <Text type="secondary">Paid Amount</Text>
-                <div style={{ fontSize: '20px', color: '#3f8600' }}>
-                  ₹{invoice.paidAmount.toFixed(2)}
-                </div>
-              </div>
-              <div>
-                <Text type="secondary">Balance Amount</Text>
-                <div
-                  style={{
-                    fontSize: '20px',
-                    color: invoice.balanceAmount > 0 ? '#cf1322' : '#3f8600',
-                  }}
-                >
-                  ₹{invoice.balanceAmount.toFixed(2)}
-                </div>
-              </div>
+              <Divider style={{ margin: '8px 0' }} />
+              <Row gutter={16}>
+                <Col span={12}>
+                  <div>
+                    <Text type="secondary" style={{ fontSize: '12px' }}>Paid Amount</Text>
+                    <div style={{ fontSize: '16px', color: '#3f8600', marginTop: '4px' }}>
+                      ₹{invoice.paidAmount.toFixed(2)}
+                    </div>
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <Text type="secondary" style={{ fontSize: '12px' }}>Balance Amount</Text>
+                    <div
+                      style={{
+                        fontSize: '16px',
+                        color: invoice.balanceAmount > 0 ? '#cf1322' : '#3f8600',
+                        marginTop: '4px',
+                      }}
+                    >
+                      ₹{invoice.balanceAmount.toFixed(2)}
+                    </div>
+                  </div>
+                </Col>
+              </Row>
               {invoice.paymentDate && (
                 <>
-                  <Divider />
-                  <div>
-                    <Text type="secondary">Payment Date</Text>
-                    <div>{dayjs(invoice.paymentDate).format('DD/MM/YYYY HH:mm')}</div>
-                  </div>
-                  <div>
-                    <Text type="secondary">Payment Method</Text>
-                    <div>{invoice.paymentMethod}</div>
-                  </div>
+                  <Divider style={{ margin: '8px 0' }} />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <div>
+                        <Text type="secondary" style={{ fontSize: '12px' }}>Payment Date</Text>
+                        <div style={{ fontSize: '13px', marginTop: '4px' }}>{dayjs(invoice.paymentDate).format('DD/MM/YYYY HH:mm')}</div>
+                      </div>
+                    </Col>
+                    <Col span={12}>
+                      <div>
+                        <Text type="secondary" style={{ fontSize: '12px' }}>Payment Method</Text>
+                        <div style={{ fontSize: '13px', marginTop: '4px' }}>{invoice.paymentMethod}</div>
+                      </div>
+                    </Col>
+                  </Row>
                   {invoice.paymentReference && (
                     <div>
-                      <Text type="secondary">Payment Reference</Text>
-                      <div>{invoice.paymentReference}</div>
+                      <Text type="secondary" style={{ fontSize: '12px' }}>Payment Reference</Text>
+                      <div style={{ fontSize: '13px', marginTop: '4px' }}>{invoice.paymentReference}</div>
                     </div>
                   )}
                 </>
               )}
               {invoice.courierDocketNumber && (
                 <>
-                  <Divider />
+                  <Divider style={{ margin: '8px 0' }} />
                   <div>
-                    <Text type="secondary">Courier Docket</Text>
-                    <div style={{ fontWeight: 'bold' }}>{invoice.courierDocketNumber}</div>
+                    <Text type="secondary" style={{ fontSize: '12px' }}>Courier Docket</Text>
+                    <div style={{ fontWeight: 'bold', fontSize: '13px', marginTop: '4px' }}>{invoice.courierDocketNumber}</div>
                   </div>
                   {invoice.courierCompany && (
                     <div>
-                      <Text type="secondary">Courier Company</Text>
-                      <div>{invoice.courierCompany}</div>
+                      <Text type="secondary" style={{ fontSize: '12px' }}>Courier Company</Text>
+                      <div style={{ fontSize: '13px', marginTop: '4px' }}>{invoice.courierCompany}</div>
                     </div>
                   )}
                   {invoice.courierStatusText && (
                     <div>
-                      <Text type="secondary">Courier Status</Text>
-                      <div>
+                      <Text type="secondary" style={{ fontSize: '12px' }}>Courier Status</Text>
+                      <div style={{ marginTop: '4px' }}>
                         <Tag color={
                           invoice.courierStatus === 4 ? 'green' :
                           invoice.courierStatus === 5 ? 'red' :
                           invoice.courierStatus === 3 ? 'orange' :
                           'blue'
-                        }>
+                        } size="small">
                           {invoice.courierStatusText}
                         </Tag>
                       </div>
@@ -466,9 +485,9 @@ export const InvoiceDetailPage = () => {
                   )}
                   {invoice.courierTrackingUrl && (
                     <div>
-                      <Text type="secondary">Tracking</Text>
-                      <div>
-                        <a href={invoice.courierTrackingUrl} target="_blank" rel="noopener noreferrer">
+                      <Text type="secondary" style={{ fontSize: '12px' }}>Tracking</Text>
+                      <div style={{ marginTop: '4px' }}>
+                        <a href={invoice.courierTrackingUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px' }}>
                           Track Shipment
                         </a>
                       </div>
@@ -492,13 +511,23 @@ export const InvoiceDetailPage = () => {
                   Process Payment
                 </Button>
               )}
-              {invoice.courierCharges > 0 && !invoice.courierDocketNumber && (
+              {invoice.courierCharges > 0 && (
                 <Button
                   type="default"
                   block
-                  onClick={() => setCourierModalVisible(true)}
+                  onClick={() => {
+                    // Pre-fill form with existing courier details if available
+                    if (invoice.courierDocketNumber) {
+                      courierForm.setFieldsValue({
+                        courierDocketNumber: invoice.courierDocketNumber,
+                        courierCompany: invoice.courierCompany || '',
+                        courierTrackingUrl: invoice.courierTrackingUrl || '',
+                      })
+                    }
+                    setCourierModalVisible(true)
+                  }}
                 >
-                  Update Courier Docket
+                  {invoice.courierDocketNumber ? 'Update Courier Docket' : 'Add Courier Docket'}
                 </Button>
               )}
               <Button
@@ -599,7 +628,7 @@ export const InvoiceDetailPage = () => {
 
       {/* Courier Docket Modal */}
       <Modal
-        title="Update Courier Docket"
+        title={invoice.courierDocketNumber ? "Update Courier Docket" : "Add Courier Docket"}
         open={courierModalVisible}
         onOk={handleUpdateCourier}
         onCancel={() => {
@@ -607,6 +636,7 @@ export const InvoiceDetailPage = () => {
           courierForm.resetFields()
         }}
         confirmLoading={updateCourierMutation.isPending}
+        okText={invoice.courierDocketNumber ? "Update" : "Add"}
       >
         <Form form={courierForm} layout="vertical">
           <Form.Item

@@ -9,6 +9,7 @@ using ClinicCare.API.Modules.Tenant;
 using ClinicCare.API.Modules.Users;
 using ClinicCare.API.Modules.Doctors;
 using ClinicCare.API.Modules.Reports;
+using ClinicCare.API.Modules.Settings;
 
 namespace ClinicCare.API.Endpoints;
 
@@ -42,6 +43,10 @@ public static class EndpointsRegistry
                app.MapBillingEndpoints();
                app.MapPaymentWebhookEndpoints(); // Payment webhooks (no auth)
                app.MapReportsEndpoints(); // Reports
+               app.MapWhatsAppEndpoints(); // WhatsApp Settings
+               app.MapEmailEndpoints(); // Email Settings
+               app.MapSmsEndpoints(); // SMS Settings
+               app.MapNotificationPreferencesEndpoints(); // Notification Preferences
                app.MapTestEndpoints(); // Includes password hash generation endpoint
 
         return app;

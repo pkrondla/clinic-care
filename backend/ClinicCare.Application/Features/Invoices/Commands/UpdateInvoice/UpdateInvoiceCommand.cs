@@ -21,6 +21,7 @@ public class UpdateInvoiceCommand : IRequest<Result<InvoiceDto>>
 
     public DateTime? InvoiceDate { get; set; }
     public int? Status { get; set; }
+    public int? CourierStatus { get; set; }
 }
 
 public class InvoiceItemCommand

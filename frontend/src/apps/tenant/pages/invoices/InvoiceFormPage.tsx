@@ -245,8 +245,10 @@ export const InvoiceFormPage = () => {
           status: values.status,
         }
 
-        await updateMutation.mutateAsync(updateData)
-        message.success('Invoice updated successfully')
+        const updatedInvoice = await updateMutation.mutateAsync(updateData)
+        message.success(`Invoice updated successfully! Number: ${updatedInvoice.invoiceNumber}`, 3)
+        // Optionally navigate to detail page or stay on form
+        // navigate(`/invoices/${updatedInvoice.id}`)
       } else {
         const createData = {
           clinicId: values.clinicId,
@@ -258,11 +260,31 @@ export const InvoiceFormPage = () => {
         }
 
         const createdInvoice = await createMutation.mutateAsync(createData)
-        message.success('Invoice created successfully')
-        navigate(`/invoices/${createdInvoice.id}`)
+        
+        // Show success message with invoice number
+        if (createdInvoice?.invoiceNumber) {
+          message.success(`Invoice created successfully! Number: ${createdInvoice.invoiceNumber}`, 3)
+        } else {
+          message.success('Invoice created successfully!', 3)
+        }
+        
+        // Navigate to invoice detail page after a brief delay to ensure message is visible
+        if (createdInvoice?.id) {
+          setTimeout(() => {
+            navigate(`/invoices/${createdInvoice.id}`)
+          }, 500)
+        } else {
+          console.error('Invoice created but missing ID:', createdInvoice)
+          message.error('Invoice created but failed to retrieve invoice ID')
+        }
       }
-    } catch (error) {
-      // Error is handled by mutation
+    } catch (error: any) {
+      // Error is handled by mutation hook, but log for debugging
+      console.error('Error in handleSubmit:', error)
+      if (!error?.response) {
+        // Only show error if mutation hook didn't handle it
+        message.error(error?.message || 'Failed to save invoice')
+      }
     }
   }
 

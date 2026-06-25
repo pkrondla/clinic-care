@@ -1,5 +1,6 @@
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
 using ClinicCare.Application.Features.Invoices.Queries.GetInvoice;
 using ClinicCare.Domain.Enums;
@@ -13,15 +14,18 @@ public class PayInvoiceHandler : IRequestHandler<PayInvoiceCommand, Result<Invoi
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMediator _mediator;
+    private readonly INotificationService _notificationService;
 
     public PayInvoiceHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
-        IMediator mediator)
+        IMediator mediator,
+        INotificationService notificationService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _mediator = mediator;
+        _notificationService = notificationService;
     }
 
     public async Task<Result<InvoiceDto>> Handle(PayInvoiceCommand request, CancellationToken cancellationToken)
@@ -86,6 +90,19 @@ public class PayInvoiceHandler : IRequestHandler<PayInvoiceCommand, Result<Invoi
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            // Send payment received notification (fire and forget)
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _notificationService.SendPaymentReceivedNotificationAsync(request.InvoiceId, cancellationToken);
+                }
+                catch
+                {
+                    // Ignore notification errors - don't fail payment processing
+                }
+            }, cancellationToken);
 
             // Return updated invoice
             var getInvoiceQuery = new GetInvoiceQuery(request.InvoiceId);

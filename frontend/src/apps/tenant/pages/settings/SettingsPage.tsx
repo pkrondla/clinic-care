@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Card, Form, Switch, Select, Button, Space, Typography, Divider, message, Descriptions } from 'antd'
-import { SaveOutlined } from '@ant-design/icons'
+import { SaveOutlined, MessageOutlined, NotificationOutlined, MailOutlined, MobileOutlined } from '@ant-design/icons'
 import { useTheme } from '@core/stores/uiStore'
 import { useAuth } from '@core/stores/authStore'
+import { useNavigate } from 'react-router-dom'
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -10,6 +11,7 @@ const { Option } = Select
 export const SettingsPage = () => {
   const { theme, setTheme } = useTheme()
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
@@ -36,6 +38,111 @@ export const SettingsPage = () => {
   return (
     <div>
       <Title level={2} style={{ marginBottom: 24 }}>Settings</Title>
+
+      <Card 
+        title="WhatsApp Notifications" 
+        style={{ marginBottom: 24 }}
+        extra={
+          <Button 
+            type="primary" 
+            icon={<MessageOutlined />}
+            onClick={() => navigate('/settings/whatsapp')}
+          >
+            Configure WhatsApp
+          </Button>
+        }
+      >
+        <Descriptions column={1} bordered>
+          <Descriptions.Item label="Status">
+            <Text>Configure WhatsApp Business API to enable notifications</Text>
+          </Descriptions.Item>
+        </Descriptions>
+        <Button 
+          type="link" 
+          onClick={() => navigate('/settings/whatsapp')}
+          style={{ padding: 0, marginTop: 8 }}
+        >
+          Go to WhatsApp Settings →
+        </Button>
+      </Card>
+
+      <Card 
+        title="Email Notifications" 
+        style={{ marginBottom: 24 }}
+        extra={
+          <Button 
+            type="primary" 
+            icon={<MailOutlined />}
+            onClick={() => navigate('/settings/email')}
+          >
+            Configure Email
+          </Button>
+        }
+      >
+        <Descriptions column={1} bordered>
+          <Descriptions.Item label="Status">
+            <Text>Configure SMTP settings to enable email notifications</Text>
+          </Descriptions.Item>
+        </Descriptions>
+        <Button 
+          type="link" 
+          onClick={() => navigate('/settings/email')}
+          style={{ padding: 0, marginTop: 8 }}
+        >
+          Go to Email Settings →
+        </Button>
+      </Card>
+
+      <Card 
+        title="SMS Notifications" 
+        style={{ marginBottom: 24 }}
+        extra={
+          <Button 
+            type="primary" 
+            icon={<MobileOutlined />}
+            onClick={() => navigate('/settings/sms')}
+          >
+            Configure SMS
+          </Button>
+        }
+      >
+        <Descriptions column={1} bordered>
+          <Descriptions.Item label="Status">
+            <Text>Configure SMS provider settings to enable SMS notifications</Text>
+          </Descriptions.Item>
+        </Descriptions>
+        <Button 
+          type="link" 
+          onClick={() => navigate('/settings/sms')}
+          style={{ padding: 0, marginTop: 8 }}
+        >
+          Go to SMS Settings →
+        </Button>
+      </Card>
+
+      <Card 
+        title="Notification Preferences" 
+        style={{ marginBottom: 24 }}
+        extra={
+          <Button 
+            type="primary" 
+            icon={<NotificationOutlined />}
+            onClick={() => navigate('/settings/notifications')}
+          >
+            Manage Preferences
+          </Button>
+        }
+      >
+        <Text>Configure which notifications are sent via WhatsApp, Email, or SMS for each event type.</Text>
+        <br />
+        <Button 
+          type="link" 
+          onClick={() => navigate('/settings/notifications')}
+          style={{ padding: 0, marginTop: 8 }}
+        >
+          Go to Notification Preferences →
+        </Button>
+      </Card>
 
       <Card title="Appearance">
         <Form

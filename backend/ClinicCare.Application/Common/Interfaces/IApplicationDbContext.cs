@@ -34,6 +34,10 @@ public interface IApplicationDbContext
     DbSet<Supplier> Suppliers { get; }
     DbSet<PurchaseOrder> PurchaseOrders { get; }
     DbSet<PurchaseOrderItem> PurchaseOrderItems { get; }
+    DbSet<WhatsAppBusinessSettings> WhatsAppBusinessSettings { get; }
+    DbSet<EmailSettings> EmailSettings { get; }
+    DbSet<SmsSettings> SmsSettings { get; }
+    DbSet<NotificationPreferences> NotificationPreferences { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

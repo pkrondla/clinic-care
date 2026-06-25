@@ -35,6 +35,10 @@ import { DoctorSchedulePage } from '../pages/doctors/DoctorSchedulePage'
 import { LoginPage } from '../pages/auth/LoginPage'
 import { ProfilePage } from '../pages/profile/ProfilePage'
 import { SettingsPage } from '../pages/settings/SettingsPage'
+import { WhatsAppSettingsPage } from '../pages/settings/WhatsAppSettingsPage'
+import { EmailSettingsPage } from '../pages/settings/EmailSettingsPage'
+import { SmsSettingsPage } from '../pages/settings/SmsSettingsPage'
+import { NotificationPreferencesPage } from '../pages/settings/NotificationPreferencesPage'
 import { useAuth } from '@core/stores/authStore'
 import { UserRole } from '@core/types/auth'
 
@@ -530,6 +534,50 @@ export const TenantRoutes = () => {
           <ProtectedTenantRoute>
             <AppLayout>
               <SettingsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
+        path="/settings/whatsapp"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Admin]}>
+            <AppLayout>
+              <WhatsAppSettingsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
+        path="/settings/email"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Admin]}>
+            <AppLayout>
+              <EmailSettingsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
+        path="/settings/sms"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Admin]}>
+            <AppLayout>
+              <SmsSettingsPage />
+            </AppLayout>
+          </ProtectedTenantRoute>
+        }
+      />
+
+      <Route
+        path="/settings/notifications"
+        element={
+          <ProtectedTenantRoute allowedRoles={[UserRole.Admin]}>
+            <AppLayout>
+              <NotificationPreferencesPage />
             </AppLayout>
           </ProtectedTenantRoute>
         }

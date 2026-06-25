@@ -2,6 +2,7 @@ using AutoMapper;
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Interfaces.Tenant;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Domain.Entities;
 using ClinicCare.Domain.Enums;
 using MediatR;
@@ -16,19 +17,22 @@ public class CreateConsultationHandler : IRequestHandler<CreateConsultationComma
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly ILogger<CreateConsultationHandler> _logger;
+    private readonly INotificationService _notificationService;
 
     public CreateConsultationHandler(
         IConsultationRepository repository,
         IAppointmentRepository appointmentRepository,
         ICurrentUserService currentUserService,
         IMapper mapper,
-        ILogger<CreateConsultationHandler> logger)
+        ILogger<CreateConsultationHandler> logger,
+        INotificationService notificationService)
     {
         _repository = repository;
         _appointmentRepository = appointmentRepository;
         _currentUserService = currentUserService;
         _mapper = mapper;
         _logger = logger;
+        _notificationService = notificationService;
     }
 
     public async Task<Result<ConsultationDto>> Handle(CreateConsultationCommand request, CancellationToken cancellationToken)
@@ -125,6 +129,20 @@ public class CreateConsultationHandler : IRequestHandler<CreateConsultationComma
                 PrescriptionId = null
             };
             _logger.LogInformation("Consultation DTO created successfully");
+
+            // Send consultation completed notification (fire and forget)
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _notificationService.SendConsultationCompletedNotificationAsync(created.Id, cancellationToken);
+                }
+                catch
+                {
+                    // Ignore notification errors - don't fail consultation creation
+                }
+            }, cancellationToken);
+
             return Result<ConsultationDto>.Success(dto);
         }
         catch (Exception ex)

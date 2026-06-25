@@ -90,7 +90,7 @@ export function useCreateInvoice() {
     mutationFn: (request: CreateInvoiceRequest) => invoiceService.createInvoice(request),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: invoiceKeys.all });
-      message.success('Invoice created successfully');
+      // Don't show message here - let the component handle it with invoice number
     },
     onError: (error: any) => {
       message.error(error?.response?.data?.message || 'Failed to create invoice');

@@ -1,5 +1,6 @@
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
 using ClinicCare.Domain.Entities;
 using ClinicCare.Domain.Enums;
@@ -15,15 +16,18 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<CreateInvoiceHandler> _logger;
+    private readonly INotificationService _notificationService;
 
     public CreateInvoiceHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
-        ILogger<CreateInvoiceHandler> logger)
+        ILogger<CreateInvoiceHandler> logger,
+        INotificationService notificationService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _logger = logger;
+        _notificationService = notificationService;
     }
 
     public async Task<Result<InvoiceDto>> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
@@ -197,6 +201,20 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
 
             // Map to DTO
             var dto = MapToDto(invoiceWithDetails);
+
+            // Send invoice created notification (fire and forget)
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _notificationService.SendInvoiceNotificationAsync(dto.Id, cancellationToken);
+                }
+                catch
+                {
+                    // Ignore notification errors - don't fail invoice creation
+                }
+            }, cancellationToken);
+
             return Result<InvoiceDto>.Success(dto);
         }
         catch (Exception ex)

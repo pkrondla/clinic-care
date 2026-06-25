@@ -152,12 +152,12 @@ public class CreatePrescriptionHandler : IRequestHandler<CreatePrescriptionComma
                 // In production, you might want to log this to a logging service or queue for retry
             }
 
-            // Send prescription ready notification (fire and forget)
+            // Send prescription created notification (fire and forget)
             _ = Task.Run(async () =>
             {
                 try
                 {
-                    await _notificationService.SendPrescriptionReadyNotificationAsync(dto.Id, cancellationToken);
+                    await _notificationService.SendPrescriptionCreatedNotificationAsync(dto.Id, cancellationToken);
                 }
                 catch
                 {

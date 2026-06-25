@@ -1,6 +1,7 @@
 using MediatR;
 using ClinicCare.Application.Common.Interfaces;
 using ClinicCare.Application.Common.Models;
+using ClinicCare.Application.Common.Services;
 using ClinicCare.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +11,16 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CancelAppointmen
     {
         private readonly IApplicationDbContext _context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly INotificationService _notificationService;
 
-        public CancelAppointmentHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
+        public CancelAppointmentHandler(
+            IApplicationDbContext context, 
+            ICurrentUserService currentUserService,
+            INotificationService notificationService)
         {
             _context = context;
             _currentUserService = currentUserService;
+            _notificationService = notificationService;
         }
 
         public async Task<Result<bool>> Handle(CancelAppointmentCommand request, CancellationToken cancellationToken)
@@ -36,6 +42,19 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CancelAppointmen
                 appointment.Cancel();
 
                 await _context.SaveChangesAsync(cancellationToken);
+
+                // Send appointment cancelled notification (fire and forget)
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _notificationService.SendAppointmentCancelledNotificationAsync(appointment.Id, cancellationToken);
+                    }
+                    catch
+                    {
+                        // Ignore notification errors - don't fail appointment cancellation
+                    }
+                }, cancellationToken);
 
                 return Result<bool>.Success(true);
             }

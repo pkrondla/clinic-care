@@ -70,3 +70,38 @@ public enum CourierStatus
     Delivered = 4,
     Returned = 5
 }
+
+public enum NotificationType
+{
+    // Appointment Notifications
+    AppointmentCreated = 1,
+    AppointmentReminder = 2,
+    AppointmentCancelled = 3,
+    TokenStatusUpdate = 4,
+    
+    // Consultation Notifications
+    ConsultationCompleted = 5,
+    
+    // Prescription Notifications
+    PrescriptionCreated = 6,
+    PrescriptionReadyForCollection = 7,
+    
+    // Invoice Notifications
+    InvoiceCreated = 8,
+    PaymentReceived = 9,
+    PaymentReminder = 10,
+    
+    // Courier Notifications
+    CourierDispatched = 11,
+    CourierDelivered = 12,
+    
+    // Follow-up Notifications
+    FollowUpReminder = 13
+}
+
+public enum WhatsAppProvider
+{
+    Meta = 1,
+    Twilio = 2,
+    Dialog360 = 3
+}

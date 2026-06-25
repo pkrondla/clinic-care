@@ -19,6 +19,7 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
         private readonly IMapper _mapper;
         private readonly ITokenNumberService _tokenNumberService;
         private readonly IQueueNotificationService _queueNotificationService;
+        private readonly INotificationService _notificationService;
 
         public CreateAppointmentHandler(
             IApplicationDbContext context, 
@@ -26,7 +27,8 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
             ICurrentUserService currentUserService, 
             IMapper mapper,
             ITokenNumberService tokenNumberService,
-            IQueueNotificationService queueNotificationService)
+            IQueueNotificationService queueNotificationService,
+            INotificationService notificationService)
         {
             _context = context;
             _appointmentRepository = appointmentRepository;
@@ -34,6 +36,7 @@ namespace ClinicCare.Application.Features.Appointments.Commands.CreateAppointmen
             _mapper = mapper;
             _tokenNumberService = tokenNumberService;
             _queueNotificationService = queueNotificationService;
+            _notificationService = notificationService;
         }
 
         public async Task<Result<AppointmentDto>> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)

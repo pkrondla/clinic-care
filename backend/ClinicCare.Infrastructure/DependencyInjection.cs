@@ -103,7 +103,21 @@ public static class DependencyInjection
         services.AddScoped<ClinicCare.Application.Common.Services.ITokenNumberService, TokenNumberService>();
         // QueueNotificationService is registered in API Program.cs because it requires IHubContext<QueueHub>
         services.AddScoped<ClinicCare.Application.Common.Services.IPdfService, PdfService>();
+        
+        // Data Protection for encrypting sensitive WhatsApp data
+        services.AddDataProtection();
+        services.AddScoped<ClinicCare.Application.Common.Interfaces.IDataProtectionService, DataProtectionService>();
+        
+        // HTTP Client for Meta WhatsApp API
+        services.AddHttpClient("MetaWhatsApp", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.BaseAddress = new Uri("https://graph.facebook.com/");
+        });
+        
+        services.AddScoped<ClinicCare.Application.Common.Services.WhatsAppProviderFactory>();
         services.AddScoped<ClinicCare.Application.Common.Services.IWhatsAppService, WhatsAppService>();
+        services.AddScoped<ClinicCare.Application.Common.Services.NotificationTemplateService>();
         services.AddScoped<ClinicCare.Application.Common.Services.IEmailService, EmailService>();
         services.AddScoped<ClinicCare.Application.Common.Services.ISmsService, SmsService>();
         services.AddScoped<ClinicCare.Application.Common.Services.INotificationService, NotificationService>();
