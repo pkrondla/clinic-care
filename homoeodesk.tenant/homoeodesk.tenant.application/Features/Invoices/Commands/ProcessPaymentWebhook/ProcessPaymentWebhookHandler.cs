@@ -1,7 +1,6 @@
 ﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Common.Services;
-using HomoeoDesk.Tenant.Application.Features.Invoices.Commands.PayInvoice;
 using HomoeoDesk.Tenant.Domain.Enums;
 using PaymentStatus = HomoeoDesk.Tenant.Application.Common.Services.PaymentStatus;
 using MediatR;
@@ -13,16 +12,16 @@ public class ProcessPaymentWebhookHandler : IRequestHandler<ProcessPaymentWebhoo
 {
     private readonly IApplicationDbContext _context;
     private readonly IPaymentGatewayFactory _paymentGatewayFactory;
-    private readonly IMediator _mediator;
+    private readonly IInvoicePaymentService _invoicePaymentService;
 
     public ProcessPaymentWebhookHandler(
         IApplicationDbContext context,
         IPaymentGatewayFactory paymentGatewayFactory,
-        IMediator mediator)
+        IInvoicePaymentService invoicePaymentService)
     {
         _context = context;
         _paymentGatewayFactory = paymentGatewayFactory;
-        _mediator = mediator;
+        _invoicePaymentService = invoicePaymentService;
     }
 
     public async Task<Result<PaymentWebhookProcessResultDto>> Handle(ProcessPaymentWebhookCommand request, CancellationToken cancellationToken)
@@ -62,15 +61,12 @@ public class ProcessPaymentWebhookHandler : IRequestHandler<ProcessPaymentWebhoo
 
                 if (invoice != null && invoice.Status != InvoiceStatus.Paid)
                 {
-                    // Process payment
-                    var payCommand = new PayInvoiceCommand(
+                    await _invoicePaymentService.ApplyPaymentAsync(
                         invoiceId.Value,
                         webhookResult.Amount,
                         webhookResult.PaymentMethod ?? "Online",
-                        webhookResult.TransactionId
-                    );
-
-                    await _mediator.Send(payCommand, cancellationToken);
+                        webhookResult.TransactionId,
+                        cancellationToken);
                 }
             }
 

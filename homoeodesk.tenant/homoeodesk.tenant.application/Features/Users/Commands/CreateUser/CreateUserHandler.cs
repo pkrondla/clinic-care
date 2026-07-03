@@ -26,21 +26,16 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserD
 
     public async Task<Result<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        _currentUserService.EnsureRole(UserRole.Admin);
+
         try
         {
             var currentUserId = _currentUserService.UserId;
-            var currentUserRole = _currentUserService.Role;
             var organizationId = _currentUserService.OrganizationId;
 
             if (!currentUserId.HasValue || !organizationId.HasValue)
             {
                 return Result<UserDto>.Failure("User not authenticated");
-            }
-
-            // Only Admin (OrganizationAdmin) can create users
-            if (currentUserRole != UserRole.Admin)
-            {
-                return Result<UserDto>.Failure("Access denied. Only Organization Admin can create users.");
             }
 
             // Check if email already exists

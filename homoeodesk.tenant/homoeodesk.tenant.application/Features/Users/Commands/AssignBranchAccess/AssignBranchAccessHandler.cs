@@ -20,21 +20,16 @@ public class AssignBranchAccessHandler : IRequestHandler<AssignBranchAccessComma
 
     public async Task<Result<bool>> Handle(AssignBranchAccessCommand request, CancellationToken cancellationToken)
     {
+        _currentUserService.EnsureRole(UserRole.Admin);
+
         try
         {
             var currentUserId = _currentUserService.UserId;
-            var currentUserRole = _currentUserService.Role;
             var organizationId = _currentUserService.OrganizationId;
 
             if (!currentUserId.HasValue || !organizationId.HasValue)
             {
                 return Result<bool>.Failure("User not authenticated");
-            }
-
-            // Only Admin (OrganizationAdmin) can assign clinic access
-            if (currentUserRole != UserRole.Admin)
-            {
-                return Result<bool>.Failure("Access denied. Only Organization Admin can assign clinic access.");
             }
 
             var user = await _context.Users

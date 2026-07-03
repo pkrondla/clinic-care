@@ -1,4 +1,5 @@
 ﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.Notifications.Queries.GetNotificationPreferences;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -10,13 +11,16 @@ public class UpdateNotificationPreferencesHandler : IRequestHandler<UpdateNotifi
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
+    private readonly INotificationPreferencesReadService _notificationPreferencesReadService;
 
     public UpdateNotificationPreferencesHandler(
         IApplicationDbContext context,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        INotificationPreferencesReadService notificationPreferencesReadService)
     {
         _context = context;
         _currentUserService = currentUserService;
+        _notificationPreferencesReadService = notificationPreferencesReadService;
     }
 
     public async Task<List<NotificationPreferenceDto>> Handle(UpdateNotificationPreferencesCommand request, CancellationToken cancellationToken)
@@ -68,9 +72,7 @@ public class UpdateNotificationPreferencesHandler : IRequestHandler<UpdateNotifi
         await _context.SaveChangesAsync(cancellationToken);
 
         // Return updated preferences
-        var query = new GetNotificationPreferencesQuery();
-        var handler = new GetNotificationPreferencesHandler(_context, _currentUserService);
-        var updated = await handler.Handle(query, cancellationToken);
+        var updated = await _notificationPreferencesReadService.GetPreferencesAsync(organizationId.Value, cancellationToken);
         return updated.Select(p => new NotificationPreferenceDto
         {
             NotificationType = p.NotificationType,

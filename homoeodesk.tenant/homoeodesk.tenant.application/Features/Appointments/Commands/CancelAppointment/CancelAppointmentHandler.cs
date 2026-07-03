@@ -75,7 +75,7 @@ namespace HomoeoDesk.Tenant.Application.Features.Appointments.Commands.CancelApp
                 return Result<bool>.Failure(new[] { "User not authenticated" });
 
             // Admin and Staff can cancel any appointment
-            if (role == UserRole.Admin || role == UserRole.SuperAdmin || role == UserRole.Staff)
+            if (_currentUserService.HasAnyRole(UserRole.Admin, UserRole.SuperAdmin, UserRole.Staff))
             {
                 return Result<bool>.Success(true);
             }

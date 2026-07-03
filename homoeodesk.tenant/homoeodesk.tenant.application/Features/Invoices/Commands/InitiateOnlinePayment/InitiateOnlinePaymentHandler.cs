@@ -1,7 +1,6 @@
 using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Common.Services;
-using HomoeoDesk.Tenant.Application.Features.Invoices.Queries.GetInvoice;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,18 +11,15 @@ public class InitiateOnlinePaymentHandler : IRequestHandler<InitiateOnlinePaymen
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IPaymentGatewayFactory _paymentGatewayFactory;
-    private readonly IMediator _mediator;
 
     public InitiateOnlinePaymentHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
-        IPaymentGatewayFactory paymentGatewayFactory,
-        IMediator mediator)
+        IPaymentGatewayFactory paymentGatewayFactory)
     {
         _context = context;
         _currentUserService = currentUserService;
         _paymentGatewayFactory = paymentGatewayFactory;
-        _mediator = mediator;
     }
 
     public async Task<Result<OnlinePaymentInitiationDto>> Handle(InitiateOnlinePaymentCommand request, CancellationToken cancellationToken)

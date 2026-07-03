@@ -2,7 +2,6 @@
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
-using HomoeoDesk.Tenant.Application.Features.Invoices.Queries.GetInvoice;
 using HomoeoDesk.Tenant.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +13,18 @@ public class UpdateCourierDocketHandler : IRequestHandler<UpdateCourierDocketCom
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly INotificationService _notificationService;
-    private readonly IMediator _mediator;
+    private readonly IInvoiceReadService _invoiceReadService;
 
     public UpdateCourierDocketHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
         INotificationService notificationService,
-        IMediator mediator)
+        IInvoiceReadService invoiceReadService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _notificationService = notificationService;
-        _mediator = mediator;
+        _invoiceReadService = invoiceReadService;
     }
 
     public async Task<Result<InvoiceDto>> Handle(UpdateCourierDocketCommand request, CancellationToken cancellationToken)
@@ -74,10 +73,7 @@ public class UpdateCourierDocketHandler : IRequestHandler<UpdateCourierDocketCom
             }, cancellationToken);
 
             // Return updated invoice
-            var getInvoiceQuery = new GetInvoiceQuery(request.InvoiceId);
-            var result = await _mediator.Send(getInvoiceQuery, cancellationToken);
-
-            return result;
+            return await _invoiceReadService.GetInvoiceDtoAsync(request.InvoiceId, cancellationToken);
         }
         catch (Exception ex)
         {

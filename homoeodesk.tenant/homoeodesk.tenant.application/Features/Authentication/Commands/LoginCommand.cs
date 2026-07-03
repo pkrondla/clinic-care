@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomoeoDesk.Tenant.Application.Features.Authentication.Commands;
 
-public class LoginCommand : IRequest<Result<LoginResponse>>
+public class LoginCommand : IRequest<Result<LoginResponse>>, ISkipTenantResolution
 {
     [Required]
     [EmailAddress]

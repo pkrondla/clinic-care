@@ -11,16 +11,13 @@ public class PerformStockAuditHandler : IRequestHandler<PerformStockAuditCommand
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMediator _mediator;
 
     public PerformStockAuditHandler(
         IApplicationDbContext context,
-        ICurrentUserService currentUserService,
-        IMediator mediator)
+        ICurrentUserService currentUserService)
     {
         _context = context;
         _currentUserService = currentUserService;
-        _mediator = mediator;
     }
 
     public async Task<Result<StockAuditResultDto>> Handle(PerformStockAuditCommand request, CancellationToken cancellationToken)

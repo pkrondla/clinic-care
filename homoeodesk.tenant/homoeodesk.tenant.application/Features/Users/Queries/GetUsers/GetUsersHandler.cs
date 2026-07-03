@@ -19,28 +19,16 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<List<UserDt
 
     public async Task<Result<List<UserDto>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
+        _currentUserService.EnsureRole(UserRole.Admin);
+
         try
         {
             var currentUserId = _currentUserService.UserId;
-            var currentUserRole = _currentUserService.Role;
             var organizationId = _currentUserService.OrganizationId;
-            var currentUserEmail = _currentUserService.Email;
-
-            // Log for debugging
-            Console.WriteLine($"GetUsersHandler: UserId={currentUserId}, Role={currentUserRole}, OrganizationId={organizationId}, Email={currentUserEmail}");
 
             if (!currentUserId.HasValue || !organizationId.HasValue)
             {
                 return Result<List<UserDto>>.Failure("User not authenticated");
-            }
-
-            // Only Admin (OrganizationAdmin) can view all users
-            // Check if role is Admin (which corresponds to OrganizationAdmin in the UI)
-            if (!currentUserRole.HasValue || currentUserRole.Value != UserRole.Admin)
-            {
-                var roleString = currentUserRole?.ToString() ?? "null";
-                var roleInt = currentUserRole?.ToString("D") ?? "null";
-                return Result<List<UserDto>>.Failure($"Access denied. Only Organization Admin can view users. Current role: {roleString} (value: {roleInt}), Required: Admin (value: 2)");
             }
 
             var query = _context.Users

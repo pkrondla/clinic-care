@@ -12,21 +12,30 @@ All file paths are relative to the repo root (`homoeodesk.tenant/...`).
 
 | # | Item | Status |
 |---|------|--------|
-| 1 | Prescription → Inventory decoupling via domain events | **In progress** — see checklist below |
-| 2 | FluentValidation validators + `ValidationBehaviour` | Not started |
-| 3 | Shared `EnsureRole` guard for Users handlers | Not started |
-| 4 | Remove command-calling-command chains | Not started |
-| 5 | `TenantService` fail-closed + `TenantBehaviour` fail-fast gate | Not started |
+| 1 | Prescription → Inventory decoupling via domain events | **Done** |
+| 2 | FluentValidation validators + `ValidationBehaviour` | **Done** |
+| 3 | Shared `EnsureRole` guard for Users handlers | **Done** |
+| 4 | Remove command-calling-command chains | **Done** |
+| 5 | `TenantService` fail-closed + `TenantBehaviour` fail-fast gate | **Done** (with one deviation from the original plan — see note below) |
 
-### Item 1 checklist (in progress)
+All 5 items build clean across the full solution (`dotnet build HomoeoDesk.sln`, 0 errors). No SQL Server instance was available in the implementation environment, so runtime/DB verification (per the Verification section below) was not performed — that still needs to happen against a real database before this ships.
 
-- [x] `homoeodesk.tenant.domain/Modules/Prescriptions/Events/PrescriptionCreatedEvent.cs` created — carries a `Prescription` entity reference (not a copied `int`), exposing `PrescriptionId => Prescription.Id` computed lazily so it reflects the ID assigned by EF Core after save.
-- [x] `AppointmentCreatedEvent.cs` fixed the same way — it previously captured `appointment.Id` at construction time, before the entity was ever saved, so it would always carry `AppointmentId = 0` once dispatch was wired up. Now holds the `Appointment` entity and reads `Id` lazily.
-- [x] `Appointment.Create()` (`homoeodesk.tenant.domain/Modules/Appointments/Entities/Appointment.cs`) updated to pass the entity itself (`new AppointmentCreatedEvent(appointment)`) instead of `appointment.Id`.
-- [x] `TenantDbContext` constructor now takes `MediatR.IPublisher` (no new package reference needed — `homoeodesk.tenant.infrastructure` already project-references `homoeodesk.tenant.application`, which pulls in `MediatR` 13.0.0 transitively).
-- [ ] `TenantDbContext.SaveChangesAsync` does **not yet** dispatch domain events — the field/constructor wiring is done, but the dispatch loop (iterate `ChangeTracker.Entries<BaseEntity>()`, publish via `_publisher.Publish(...)`, then `ClearDomainEvents()`) still needs to be added after the `base.SaveChangesAsync(...)` call.
-- [ ] `CreatePrescriptionHandler.cs` still has the original inline `DeductStockFromInventoryAsync` method and its silent `catch (Exception ex) { }` — not yet refactored to raise `PrescriptionCreatedEvent` instead.
-- [ ] New `DeductInventoryOnPrescriptionCreatedHandler.cs` (under `homoeodesk.tenant.application/Features/Prescriptions/Events/`) not yet created.
+### Deviation from plan: item 5 needed an extra guard
+
+While implementing the `TenantBehaviour` eager-resolution change, testing against the actual checked-in config (`TenantStamp:EnableFixedTenant: false` in **both** `appsettings.json` and `appsettings.Production.json` — not `true` as the original plan assumed) surfaced a real regression risk: `LoginCommandHandler` has its own internal try/catch that deliberately falls back to a cross-tenant email lookup when `ITenantService` throws (this is how login works at all today when `EnableFixedTenant` is false and no JWT exists yet to carry a tenant claim). Eagerly resolving the tenant in `TenantBehaviour` *before* the handler runs would bypass that fallback entirely and turn a graceful `Result.Failure` into an unhandled 401 for `LoginCommand`, `RefreshTokenCommand`, and `LogoutCommand` — none of which have a JWT tenant claim available yet when they're called.
+
+Fix: added a marker interface `ISkipTenantResolution` (`Common/Interfaces/ISkipTenantResolution.cs`) that `TenantBehaviour` checks before eagerly resolving — mirrors `TenantMiddleware.ShouldSkipTenantResolution`'s existing `/api/auth` skip-list at the HTTP layer. `LoginCommand`, `RefreshTokenCommand`, and `LogoutCommand` implement it. `ResetPasswordCommand` and `UpdateSelectedBranchCommand` did **not** need it — both require a valid JWT already, which always carries an `OrganizationId` claim, so resolution succeeds normally for them like every other authenticated handler.
+
+**Side effect worth knowing about:** this also *fixes* a latent bug in `LoginCommandHandler` — previously `ITenantService` silently returned tenant `1` instead of throwing, so the cross-tenant fallback lookup almost never actually triggered even though it was clearly designed to. Now that resolution reliably throws when it can't identify a tenant, the fallback engages correctly every time it's supposed to.
+
+**Known residual gap (not fixed, flagged for follow-up):** `POST /api/payments/webhook` and `GET /api/public/queues/*` are `AllowAnonymous` and are **not** in `TenantMiddleware`'s skip-list, so they still call `ITenantService.GetTenantIdAsync()` today. With `EnableFixedTenant=false` and no `X-Tenant-Id` header from the caller (a payment gateway or a public waiting-room kiosk have no way to send one), these will now get a 401 instead of the old silent-default-to-tenant-1 behavior. In the intended production deployment model (one stamp per tenant, `EnableFixedTenant=true` set via Key Vault per stamp) this never triggers. But if any stamp genuinely runs with `EnableFixedTenant=false`, these two endpoints need a real tenant-identification mechanism (e.g., a stamp-specific webhook URL, or a tenant slug in the public queue route) — that's a product/design decision, not something to silently invent here.
+
+### Item 1 implementation notes
+
+- `homoeodesk.tenant.domain/Modules/Prescriptions/Events/PrescriptionCreatedEvent.cs` — carries a `Prescription` entity reference (not a copied `int`), exposing `PrescriptionId => Prescription.Id` computed lazily so it reflects the ID assigned by EF Core after save.
+- `AppointmentCreatedEvent.cs` fixed the same way — it previously captured `appointment.Id` at construction time, before the entity was ever saved, so it would always carry `AppointmentId = 0` once dispatch was wired up. Now holds the `Appointment` entity and reads `Id` lazily.
+- `TenantDbContext.SaveChangesAsync` now dispatches domain events via injected `MediatR.IPublisher` after `base.SaveChangesAsync` succeeds — activates dispatch for all existing entities, not just the new one.
+- `CreatePrescriptionHandler` raises `PrescriptionCreatedEvent` instead of calling inventory deduction inline; `DeductInventoryOnPrescriptionCreatedHandler` (new, under `Features/Prescriptions/Events/`) owns the deduction logic and logs failures via `ILogger` instead of silently swallowing them.
 
 **Net effect right now:** the code still compiles and behaves exactly as before (stock deduction still happens inline in `CreatePrescriptionHandler`) — none of the new event plumbing is wired into the actual save/dispatch path yet, so this is safe to pause on.
 

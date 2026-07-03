@@ -19,21 +19,16 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Result<bool>
 
     public async Task<Result<bool>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
+        _currentUserService.EnsureRole(UserRole.Admin);
+
         try
         {
             var currentUserId = _currentUserService.UserId;
-            var currentUserRole = _currentUserService.Role;
             var organizationId = _currentUserService.OrganizationId;
 
             if (!currentUserId.HasValue || !organizationId.HasValue)
             {
                 return Result<bool>.Failure("User not authenticated");
-            }
-
-            // Only Admin (OrganizationAdmin) can delete users
-            if (currentUserRole != UserRole.Admin)
-            {
-                return Result<bool>.Failure("Access denied. Only Organization Admin can delete users.");
             }
 
             // Cannot delete yourself

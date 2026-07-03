@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomoeoDesk.Tenant.Application.Features.Authentication.Commands;
 
-public class RefreshTokenCommand : IRequest<Result<LoginResponse>>
+public class RefreshTokenCommand : IRequest<Result<LoginResponse>>, ISkipTenantResolution
 {
     [Required]
     public string RefreshToken { get; set; } = string.Empty;

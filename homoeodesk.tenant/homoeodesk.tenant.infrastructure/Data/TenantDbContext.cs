@@ -153,6 +153,22 @@ public class TenantDbContext : DbContext, IApplicationDbContext
             }
         }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        var result = await base.SaveChangesAsync(cancellationToken);
+        await DispatchDomainEventsAsync(cancellationToken);
+        return result;
+    }
+
+    private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
+    {
+        var entitiesWithEvents = ChangeTracker.Entries<BaseEntity>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Count > 0)
+            .ToList();
+
+        var domainEvents = entitiesWithEvents.SelectMany(e => e.DomainEvents).ToList();
+        entitiesWithEvents.ForEach(e => e.ClearDomainEvents());
+
+        foreach (var domainEvent in domainEvents)
+            await _publisher.Publish(domainEvent, cancellationToken);
     }
 }

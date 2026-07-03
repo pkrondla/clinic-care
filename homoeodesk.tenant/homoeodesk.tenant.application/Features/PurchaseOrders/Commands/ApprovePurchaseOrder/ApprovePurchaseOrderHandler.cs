@@ -1,6 +1,6 @@
 ﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
-using HomoeoDesk.Tenant.Application.Features.PurchaseOrders.Queries.GetPurchaseOrder;
+using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.PurchaseOrders.Queries.GetPurchaseOrders;
 using HomoeoDesk.Tenant.Domain.Enums;
 using MediatR;
@@ -12,16 +12,16 @@ public class ApprovePurchaseOrderHandler : IRequestHandler<ApprovePurchaseOrderC
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMediator _mediator;
+    private readonly IPurchaseOrderReadService _purchaseOrderReadService;
 
     public ApprovePurchaseOrderHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUserService,
-        IMediator mediator)
+        IPurchaseOrderReadService purchaseOrderReadService)
     {
         _context = context;
         _currentUserService = currentUserService;
-        _mediator = mediator;
+        _purchaseOrderReadService = purchaseOrderReadService;
     }
 
     public async Task<Result<PurchaseOrderDto>> Handle(ApprovePurchaseOrderCommand request, CancellationToken cancellationToken)
@@ -58,10 +58,7 @@ public class ApprovePurchaseOrderHandler : IRequestHandler<ApprovePurchaseOrderC
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            var getQuery = new GetPurchaseOrderQuery { Id = purchaseOrder.Id };
-            var result = await _mediator.Send(getQuery, cancellationToken);
-
-            return result;
+            return await _purchaseOrderReadService.GetPurchaseOrderDtoAsync(purchaseOrder.Id, organizationId.Value, cancellationToken);
         }
         catch (Exception ex)
         {

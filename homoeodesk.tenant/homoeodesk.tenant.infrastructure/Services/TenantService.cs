@@ -45,9 +45,8 @@ public class TenantService : ITenantService
         var context = _httpContextAccessor.HttpContext;
         if (context == null)
         {
-            _resolvedTenantId = 1;
-            _subdomain = "demo";
-            return _resolvedTenantId.Value;
+            throw new UnauthorizedAccessException(
+                "Unable to resolve tenant: no HTTP context and TenantStamp:EnableFixedTenant is not set.");
         }
 
         var tenantClaim = context.User.FindFirst("TenantId")
@@ -67,9 +66,8 @@ public class TenantService : ITenantService
             return headerTenantId;
         }
 
-        _resolvedTenantId = 1;
-        _subdomain = ResolveSubdomain();
-        return _resolvedTenantId.Value;
+        throw new UnauthorizedAccessException(
+            "Unable to resolve tenant for this request: no TenantId/OrganizationId claim and no X-Tenant-Id header.");
     }
 
     private string? ResolveSubdomain()
