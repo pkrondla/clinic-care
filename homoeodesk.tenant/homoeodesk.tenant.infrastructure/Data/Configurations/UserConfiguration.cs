@@ -41,7 +41,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Ignore(x => x.FullName);
 
         // Unique constraints within tenant
-        builder.HasIndex(x => new { x.OrganizationId, x.Email })
+        builder.HasIndex(x => new { x.TenantId, x.Email })
             .IsUnique()
             .HasDatabaseName("IX_Users_OrganizationId_Email");
 

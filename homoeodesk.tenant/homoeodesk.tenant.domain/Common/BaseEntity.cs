@@ -1,5 +1,7 @@
 namespace HomoeoDesk.Tenant.Domain.Common;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 public abstract class BaseEntity
 {
     public int Id { get; set; }
@@ -19,6 +21,7 @@ public abstract class TenantEntity : BaseEntity
     public int TenantId { get; set; }
 
     /// <summary>Legacy alias for TenantId during HomoeoDesk migration.</summary>
+    [NotMapped]
     public int OrganizationId
     {
         get => TenantId;

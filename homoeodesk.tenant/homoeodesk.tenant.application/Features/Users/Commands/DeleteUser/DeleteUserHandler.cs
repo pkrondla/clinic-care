@@ -38,7 +38,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Result<bool>
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == request.Id && u.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Id == request.Id && u.TenantId == organizationId.Value, cancellationToken);
 
             if (user == null)
             {

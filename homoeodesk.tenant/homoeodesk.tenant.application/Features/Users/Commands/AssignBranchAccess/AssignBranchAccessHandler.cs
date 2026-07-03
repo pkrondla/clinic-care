@@ -33,7 +33,7 @@ public class AssignBranchAccessHandler : IRequestHandler<AssignBranchAccessComma
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == request.UserId && u.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Id == request.UserId && u.TenantId == organizationId.Value, cancellationToken);
 
             if (user == null)
             {
@@ -44,7 +44,7 @@ public class AssignBranchAccessHandler : IRequestHandler<AssignBranchAccessComma
             if (request.BranchIds.Any())
             {
                 var validBranches = await _context.Branches
-                    .Where(c => request.BranchIds.Contains(c.Id) && c.OrganizationId == organizationId.Value && c.IsActive)
+                    .Where(c => request.BranchIds.Contains(c.Id) && c.TenantId == organizationId.Value && c.IsActive)
                     .CountAsync(cancellationToken);
 
                 if (validBranches != request.BranchIds.Count)

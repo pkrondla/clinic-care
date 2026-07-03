@@ -40,7 +40,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserD
 
             // Check if email already exists
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email && u.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Email == request.Email && u.TenantId == organizationId.Value, cancellationToken);
 
             if (existingUser != null)
             {
@@ -51,7 +51,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserD
             if (request.BranchIds.Any())
             {
                 var validBranches = await _context.Branches
-                    .Where(c => request.BranchIds.Contains(c.Id) && c.OrganizationId == organizationId.Value && c.IsActive)
+                    .Where(c => request.BranchIds.Contains(c.Id) && c.TenantId == organizationId.Value && c.IsActive)
                     .CountAsync(cancellationToken);
 
                 if (validBranches != request.BranchIds.Count)
@@ -123,7 +123,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserD
             {
                 // If no Branches specified, grant access to all Branches in organization
                 var allBranches = await _context.Branches
-                    .Where(c => c.OrganizationId == organizationId.Value && c.IsActive)
+                    .Where(c => c.TenantId == organizationId.Value && c.IsActive)
                     .ToListAsync(cancellationToken);
 
                 foreach (var clinic in allBranches)

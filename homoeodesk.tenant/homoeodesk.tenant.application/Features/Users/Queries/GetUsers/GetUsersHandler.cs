@@ -33,7 +33,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<List<UserDt
 
             var query = _context.Users
                 .Include(u => u.DoctorProfile)
-                .Where(u => u.OrganizationId == organizationId.Value)
+                .Where(u => u.TenantId == organizationId.Value)
                 .AsQueryable();
 
             // Apply filters

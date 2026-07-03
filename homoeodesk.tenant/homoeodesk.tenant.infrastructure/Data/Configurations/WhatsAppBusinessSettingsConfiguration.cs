@@ -1,4 +1,5 @@
 ﻿using HomoeoDesk.Tenant.Domain.Entities;
+using HomoeoDesk.Tenant.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +23,7 @@ public class WhatsAppBusinessSettingsConfiguration : IEntityTypeConfiguration<Wh
         builder.Property(x => x.Provider)
             .IsRequired()
             .HasConversion<int>()
-            .HasDefaultValue(1); // Meta
+            .HasDefaultValue(WhatsAppProvider.Meta);
 
         builder.Property(x => x.PhoneNumberId)
             .HasMaxLength(100);

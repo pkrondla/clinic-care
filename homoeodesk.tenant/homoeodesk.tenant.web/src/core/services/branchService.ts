@@ -56,22 +56,22 @@ export interface UpdateBranchRequest {
 
 export const branchService = {
   getAll: async (): Promise<Branch[]> => {
-    const response = await apiClient.get('/api/branches')
+    const response = await apiClient.get('/branches')
     return response.data.data
   },
 
   getById: async (id: number): Promise<Branch> => {
-    const response = await apiClient.get(`/api/branches/${id}`)
+    const response = await apiClient.get(`/branches/${id}`)
     return response.data.data
   },
 
   create: async (data: CreateBranchRequest): Promise<Branch> => {
-    const response = await apiClient.post('/api/branches', data)
+    const response = await apiClient.post('/branches', data)
     return response.data.data
   },
 
   update: async (id: number, data: UpdateBranchRequest): Promise<Branch> => {
-    const response = await apiClient.put(`/api/branches/${id}`, data)
+    const response = await apiClient.put(`/branches/${id}`, data)
     return response.data.data
   }
 }

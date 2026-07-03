@@ -81,7 +81,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
                 user = await _context.Users
                     .Include(x => x.DoctorProfile)
-                    .FirstOrDefaultAsync(x => x.Email == request.Email && x.OrganizationId == organizationId && x.IsActive, cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Email == request.Email && x.TenantId == organizationId && x.IsActive, cancellationToken);
             }
             catch
             {
@@ -186,7 +186,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
                          where access.UserId == userId 
                              && access.CanAccess 
                              && access.IsActive
-                             && clinic.OrganizationId == organizationId 
+                             && clinic.TenantId == organizationId 
                              && clinic.IsActive
                          select new BranchInfo
                          {
@@ -212,7 +212,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
                              on clinic.Id equals availability.BranchId
                          where availability.DoctorId == user.DoctorProfile.Id
                              && availability.AvailableDate >= DateOnly.FromDateTime(DateTime.Today)
-                             && clinic.OrganizationId == organizationId
+                             && clinic.TenantId == organizationId
                              && clinic.IsActive
                          select new BranchInfo
                          {
@@ -226,7 +226,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         // Default: Return all active Branches in the organization
         return await _context.Branches
-            .Where(x => x.OrganizationId == organizationId && x.IsActive)
+            .Where(x => x.TenantId == organizationId && x.IsActive)
             .Select(x => new BranchInfo
             {
                 Id = x.Id,

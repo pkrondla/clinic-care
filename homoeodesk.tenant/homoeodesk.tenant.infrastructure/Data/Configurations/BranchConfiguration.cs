@@ -29,7 +29,7 @@ public class BranchConfiguration : IEntityTypeConfiguration<Branch>
         builder.Property(x => x.ContactEmail)
             .HasMaxLength(255);
 
-        builder.HasIndex(x => new { x.OrganizationId, x.Code })
+        builder.HasIndex(x => new { x.TenantId, x.Code })
             .IsUnique()
             .HasDatabaseName("IX_Branches_OrganizationId_Code");
     }

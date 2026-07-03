@@ -40,7 +40,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, Result<UserD
 
             var user = await _context.Users
                 .Include(u => u.DoctorProfile)
-                .FirstOrDefaultAsync(u => u.Id == request.Id && u.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Id == request.Id && u.TenantId == organizationId.Value, cancellationToken);
 
             if (user == null)
             {
@@ -51,7 +51,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, Result<UserD
             if (user.Email != request.Email)
             {
                 var emailExists = await _context.Users
-                    .AnyAsync(u => u.Email == request.Email && u.Id != request.Id && u.OrganizationId == organizationId.Value, cancellationToken);
+                    .AnyAsync(u => u.Email == request.Email && u.Id != request.Id && u.TenantId == organizationId.Value, cancellationToken);
 
                 if (emailExists)
                 {
@@ -137,7 +137,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, Result<UserD
 
                 // Validate clinic IDs
                 var validBranches = await _context.Branches
-                    .Where(c => request.BranchIds.Contains(c.Id) && c.OrganizationId == organizationId.Value && c.IsActive)
+                    .Where(c => request.BranchIds.Contains(c.Id) && c.TenantId == organizationId.Value && c.IsActive)
                     .CountAsync(cancellationToken);
 
                 if (validBranches != request.BranchIds.Count)
