@@ -1,0 +1,45 @@
+# Build outputs
+**/bin/
+**/obj/
+**/dist/
+**/dist-ssr/
+**/.vs/
+
+# Dependencies
+**/node_modules/
+
+# Logs
+**/logs/
+*.log
+
+# User secrets and local config
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/.env
+**/.env.*
+!**/.env.example
+
+# IDE
+.idea/
+*.user
+*.suo
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+**/TestResults/
+**/coverage/
+
+# Publish
+**/publish/
+
+# Frontend generated config (dev)
+frontend/public/config.js
+homoeodesk.global/homoeodesk.global.web/public/config.js
+homoeodesk.tenant/homoeodesk.tenant.web/public/config.js
+
+# Legacy (removed after cutover)
+# _legacy/

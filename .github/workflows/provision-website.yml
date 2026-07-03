@@ -1,0 +1,22 @@
+name: Provision Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        default: dev
+        type: choice
+        options: [dev, uat, prod]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build marketing site
+        working-directory: homoeodesk.website
+        run: |
+          npm ci
+          npm run build

@@ -1,0 +1,6 @@
+@homoeodesk.tenant.api_HostAddress = http://localhost:5169
+
+GET {{homoeodesk.tenant.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,59 @@
+﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Models;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace HomoeoDesk.Tenant.Application.Features.Patients.Queries.SearchPatients;
+
+public class SearchPatientsHandler : IRequestHandler<SearchPatientsQuery, Result<List<PatientSearchDto>>>
+{
+    private readonly IApplicationDbContext _context;
+    private readonly ITenantService _tenantService;
+
+    public SearchPatientsHandler(IApplicationDbContext context, ITenantService tenantService)
+    {
+        _context = context;
+        _tenantService = tenantService;
+    }
+
+    public async Task<Result<List<PatientSearchDto>>> Handle(SearchPatientsQuery request, CancellationToken cancellationToken)
+    {
+        var organizationId = await _tenantService.GetOrganizationIdAsync();
+
+        if (string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            return Result<List<PatientSearchDto>>.Success(new List<PatientSearchDto>());
+        }
+
+        var searchTerm = request.SearchTerm.ToLower();
+
+        // Query patients with user info (no Include to avoid EF Core issues)
+        var patients = await _context.Patients
+            .Include(p => p.User)
+            .Where(p => p.OrganizationId == organizationId && 
+                       p.IsActive &&
+                       (p.User.FirstName.ToLower().Contains(searchTerm) ||
+                        p.User.LastName.ToLower().Contains(searchTerm) ||
+                        p.User.Email.ToLower().Contains(searchTerm) ||
+                        p.PatientCode.ToLower().Contains(searchTerm) ||
+                        p.User.Phone.Contains(searchTerm)))
+            .OrderBy(p => p.User.FirstName)
+            .ThenBy(p => p.User.LastName)
+            .Take(request.Limit)
+            .Select(p => new PatientSearchDto
+            {
+                Id = p.Id,
+                PatientCode = p.PatientCode,
+                FullName = $"{p.User.FirstName} {p.User.LastName}",
+                Email = p.User.Email,
+                Phone = p.User.Phone,
+                Age = p.Age,
+                Gender = p.Gender,
+                BloodGroup = p.BloodGroup,
+                LastVisitDate = null // Skip for search to avoid complex query issues
+            })
+            .ToListAsync(cancellationToken);
+
+        return Result<List<PatientSearchDto>>.Success(patients);
+    }
+}

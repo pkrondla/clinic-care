@@ -1,0 +1,14 @@
+{
+  "environment": "dev",
+  "profile": "nonprod-ultra-low",
+  "region": "centralindia",
+  "azureResourcePrefix": "tr-hd",
+  "stamp": {
+    "displayName": "HomoeoDesk Global",
+    "subdomain": "admin",
+    "apiProject": "homoeodesk.global/homoeodesk.global.api",
+    "webProject": "homoeodesk.global/homoeodesk.global.web",
+    "databaseProject": "homoeodesk.global/homoeodesk.global.database",
+    "databaseName": "HomoeoDesk_Global"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "defaults": {
+    "environment": "dev",
+    "profile": "nonprod-ultra-low",
+    "region": "centralindia",
+    "azureResourcePrefix": "tr-hd"
+  },
+  "profiles": {
+    "nonprod-ultra-low": {
+      "staticWebSku": "Free",
+      "apiPlanSku": "F1",
+      "sqlSku": "Basic"
+    },
+    "prod-min-safe": {
+      "staticWebSku": "Free",
+      "apiPlanSku": "B1",
+      "sqlSku": "Basic"
+    }
+  },
+  "tenants": [
+    {
+      "tenantKey": "demo",
+      "tenantId": 1,
+      "displayName": "Demo Clinic",
+      "subdomain": "demo",
+      "enabled": true,
+      "profile": "nonprod-ultra-low",
+      "environments": {
+        "dev": { "enabled": true },
+        "prod": { "enabled": false }
+      },
+      "overrides": {}
+    }
+  ]
+}

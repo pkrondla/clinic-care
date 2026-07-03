@@ -1,0 +1,150 @@
+:root {
+  color: #1a1a2e;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  background: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e8eef5;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1677ff;
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.nav-cta {
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  background: #1677ff;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
+  text-align: center;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0 0 0.75rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.lead {
+  font-size: 1.125rem;
+  color: #475569;
+  margin: 0 auto 2rem;
+  max-width: 620px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.button.primary {
+  background: #1677ff;
+  color: #fff;
+}
+
+.button.secondary {
+  background: #fff;
+  color: #1677ff;
+  border: 1px solid #1677ff;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.features article {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+}
+
+.features h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.features p {
+  margin: 0;
+  color: #64748b;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-top: 1px solid #e8eef5;
+  color: #64748b;
+  font-size: 0.9rem;
+}

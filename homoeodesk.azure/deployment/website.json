@@ -1,0 +1,11 @@
+{
+  "environment": "dev",
+  "profile": "nonprod-ultra-low",
+  "region": "centralindia",
+  "azureResourcePrefix": "tr-hd",
+  "stamp": {
+    "displayName": "HomoeoDesk Marketing",
+    "webProject": "homoeodesk.website",
+    "domain": "homoeodesk.com"
+  }
+}

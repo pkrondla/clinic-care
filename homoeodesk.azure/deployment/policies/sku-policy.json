@@ -1,0 +1,4 @@
+{
+  "defaultProfile": "nonprod-ultra-low",
+  "allowedProfiles": ["nonprod-ultra-low", "prod-min-safe"]
+}

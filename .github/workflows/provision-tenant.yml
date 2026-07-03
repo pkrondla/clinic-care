@@ -1,0 +1,74 @@
+name: Provision Tenant Stamp
+
+on:
+  workflow_dispatch:
+    inputs:
+      tenantKey:
+        description: Tenant key from tenants.json
+        required: true
+        default: demo
+      environment:
+        description: Target environment
+        required: true
+        default: dev
+        type: choice
+        options: [dev, uat, prod]
+
+env:
+  AZURE_RESOURCE_PREFIX: tr-hd
+  DOTNET_VERSION: '9.0.x'
+  NODE_VERSION: '20'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Validate tenant manifest
+        run: |
+          jq -e --arg k "${{ inputs.tenantKey }}" '.tenants[] | select(.tenantKey==$k)' homoeodesk.azure/deployment/tenants.json
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy tenant infrastructure
+        run: |
+          RG="rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-tenant-${{ inputs.tenantKey }}"
+          az group create --name "$RG" --location centralindia --tags environment=${{ inputs.environment }} product=homoeodesk stamp=tenant tenant=${{ inputs.tenantKey }}
+          az deployment group create \
+            --resource-group "$RG" \
+            --template-file homoeodesk.azure/iac/main.bicep \
+            --parameters stampType=tenant environment=${{ inputs.environment }} tenantKey=${{ inputs.tenantKey }} azureResourcePrefix=${AZURE_RESOURCE_PREFIX}
+
+      - name: Publish tenant API
+        run: dotnet publish homoeodesk.tenant/homoeodesk.tenant.api/homoeodesk.tenant.api.csproj -c Release -o ./publish/tenant-api
+
+      - name: Build tenant web
+        working-directory: homoeodesk.tenant/homoeodesk.tenant.web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy tenant API (zip)
+        run: |
+          RG="rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-tenant-${{ inputs.tenantKey }}"
+          APP="api-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-${{ inputs.tenantKey }}"
+          cd publish/tenant-api && zip -r ../tenant-api.zip .
+          az webapp deployment source config-zip \
+            --resource-group "$RG" \
+            --name "$APP" \
+            --src ../tenant-api.zip

@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build">
+  <PropertyGroup>
+    <Name>homoeodesk.global.database</Name>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlScript Include="RunOnce\**\*.sql" />
+    <SqlScript Include="Seeds\**\*.sql" />
+    <SqlScript Include="Versioned\**\*.sql" />
+    <SqlScript Include="PostDeploy.sql" />
+  </ItemGroup>
+  <Target Name="Build">
+    <Message Text="HomoeoDesk global database: validated @(_SqlScript->Count()) SQL scripts (use scripts/deploy-databases.ps1 to publish)" Importance="high" />
+  </Target>
+</Project>

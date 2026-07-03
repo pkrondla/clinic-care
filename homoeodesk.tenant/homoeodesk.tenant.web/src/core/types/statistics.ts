@@ -1,0 +1,10 @@
+export interface SystemStats {
+  totalOrganizations: number
+  activeUsers: number
+  totalMedicines: number
+  totalUsers: number
+  activeSubscriptions: number
+  monthlyRevenue: number
+  totalBranches: number
+  uptime: number
+}

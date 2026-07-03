@@ -1,0 +1,65 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      stampType:
+        description: Stamp type to deploy
+        required: true
+        default: global
+        type: choice
+        options: [global, tenant]
+      environment:
+        description: Target environment
+        required: true
+        default: dev
+        type: choice
+        options: [dev, uat, prod]
+      tenantKey:
+        description: Tenant key (required when stampType=tenant)
+        required: false
+        default: demo
+
+env:
+  AZURE_RESOURCE_PREFIX: tr-hd
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Validate Bicep
+        run: az bicep build --file homoeodesk.azure/iac/main.bicep
+
+      - name: Resolve resource group
+        id: rg
+        run: |
+          if [ "${{ inputs.stampType }}" = "global" ]; then
+            echo "name=rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-global" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-tenant-${{ inputs.tenantKey }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure resource group
+        run: |
+          az group create \
+            --name "${{ steps.rg.outputs.name }}" \
+            --location centralindia \
+            --tags environment=${{ inputs.environment }} product=homoeodesk stamp=${{ inputs.stampType }}
+
+      - name: Deploy Bicep stamp
+        run: |
+          az deployment group create \
+            --resource-group "${{ steps.rg.outputs.name }}" \
+            --template-file homoeodesk.azure/iac/main.bicep \
+            --parameters stampType=${{ inputs.stampType }} \
+                         environment=${{ inputs.environment }} \
+                         tenantKey=${{ inputs.tenantKey }} \
+                         azureResourcePrefix=${{ env.AZURE_RESOURCE_PREFIX }}

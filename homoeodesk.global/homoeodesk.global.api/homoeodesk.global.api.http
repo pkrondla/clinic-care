@@ -1,0 +1,6 @@
+@homoeodesk.global.api_HostAddress = http://localhost:5054
+
+GET {{homoeodesk.global.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,182 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{A1000001-0000-0000-0000-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tenant", "Tenant", "{A1000002-0000-0000-0000-000000000002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.global.domain", "homoeodesk.global\homoeodesk.global.domain\homoeodesk.global.domain.csproj", "{B1000001-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.global.application", "homoeodesk.global\homoeodesk.global.application\homoeodesk.global.application.csproj", "{B1000002-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.global.infrastructure", "homoeodesk.global\homoeodesk.global.infrastructure\homoeodesk.global.infrastructure.csproj", "{B1000003-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.global.api", "homoeodesk.global\homoeodesk.global.api\homoeodesk.global.api.csproj", "{B1000004-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.tenant.domain", "homoeodesk.tenant\homoeodesk.tenant.domain\homoeodesk.tenant.domain.csproj", "{C1000001-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.tenant.application", "homoeodesk.tenant\homoeodesk.tenant.application\homoeodesk.tenant.application.csproj", "{C1000002-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.tenant.infrastructure", "homoeodesk.tenant\homoeodesk.tenant.infrastructure\homoeodesk.tenant.infrastructure.csproj", "{C1000003-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.tenant.api", "homoeodesk.tenant\homoeodesk.tenant.api\homoeodesk.tenant.api.csproj", "{C1000004-0001-0001-0001-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "homoeodesk.global", "homoeodesk.global", "{1A4B8C3F-1F38-348C-0A0C-DB313C9C1AEE}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "homoeodesk.global.database", "homoeodesk.global\homoeodesk.global.database\homoeodesk.global.database.sqlproj", "{425B9A10-D54D-4404-B33B-9DC7ED6A043F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "homoeodesk.tenant", "homoeodesk.tenant", "{0D797D14-2431-AAEA-FFCD-DC802FCDF245}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "homoeodesk.tenant.database", "homoeodesk.tenant\homoeodesk.tenant.database\homoeodesk.tenant.database.sqlproj", "{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homoeodesk.shared", "homoeodesk.shared\homoeodesk.shared.csproj", "{3115168F-140E-4B6C-B910-809785449838}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1000002-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1000003-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1000004-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1000001-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1000002-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1000003-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|x64.Build.0 = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1000004-0001-0001-0001-000000000001}.Release|x86.Build.0 = Release|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Release|x64.ActiveCfg = Release|Any CPU
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F}.Release|x86.ActiveCfg = Release|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Release|x64.ActiveCfg = Release|Any CPU
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3}.Release|x86.ActiveCfg = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|x64.Build.0 = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Debug|x86.Build.0 = Debug|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|x64.ActiveCfg = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|x64.Build.0 = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|x86.ActiveCfg = Release|Any CPU
+		{3115168F-140E-4B6C-B910-809785449838}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1000001-0001-0001-0001-000000000001} = {A1000001-0000-0000-0000-000000000001}
+		{B1000002-0001-0001-0001-000000000001} = {A1000001-0000-0000-0000-000000000001}
+		{B1000003-0001-0001-0001-000000000001} = {A1000001-0000-0000-0000-000000000001}
+		{B1000004-0001-0001-0001-000000000001} = {A1000001-0000-0000-0000-000000000001}
+		{C1000001-0001-0001-0001-000000000001} = {A1000002-0000-0000-0000-000000000002}
+		{C1000002-0001-0001-0001-000000000001} = {A1000002-0000-0000-0000-000000000002}
+		{C1000003-0001-0001-0001-000000000001} = {A1000002-0000-0000-0000-000000000002}
+		{C1000004-0001-0001-0001-000000000001} = {A1000002-0000-0000-0000-000000000002}
+		{425B9A10-D54D-4404-B33B-9DC7ED6A043F} = {1A4B8C3F-1F38-348C-0A0C-DB313C9C1AEE}
+		{FBA92C27-A1AF-4766-94AA-F1FF3A7C45A3} = {0D797D14-2431-AAEA-FFCD-DC802FCDF245}
+	EndGlobalSection
+EndGlobal
