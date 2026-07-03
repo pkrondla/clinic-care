@@ -48,7 +48,7 @@ namespace HomoeoDesk.Tenant.Domain.Modules.Appointments.Entities
                 Notes = notes
             };
 
-            appointment.AddDomainEvent(new AppointmentCreatedEvent(appointment.Id));
+            appointment.AddDomainEvent(new AppointmentCreatedEvent(appointment));
             return appointment;
         }
 

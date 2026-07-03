@@ -2,6 +2,7 @@
 using HomoeoDesk.Tenant.Domain.Common;
 using HomoeoDesk.Tenant.Domain.Entities;
 using HomoeoDesk.Tenant.Domain.Modules.Appointments.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Reflection;
@@ -27,15 +28,18 @@ public class TenantDbContext : DbContext, IApplicationDbContext
 
     private readonly ITenantService _tenantService;
     private readonly IBranchService _branchService;
+    private readonly IPublisher _publisher;
 
     public TenantDbContext(
         DbContextOptions<TenantDbContext> options,
         ITenantService tenantService,
-        IBranchService branchService)
+        IBranchService branchService,
+        IPublisher publisher)
         : base(options)
     {
         _tenantService = tenantService;
         _branchService = branchService;
+        _publisher = publisher;
     }
 
     DatabaseFacade IApplicationDbContext.Database => Database;
