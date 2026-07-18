@@ -75,13 +75,13 @@ namespace HomoeoDesk.Tenant.Infrastructure.Data.Configurations
 
             // Configure indexes - Note: EF Core doesn't support indexes on value object properties directly
             // We'll create indexes on the underlying properties instead
-            builder.HasIndex(x => new { x.OrganizationId, x.BranchId, x.DoctorId, x.TokenNumber })
+            builder.HasIndex(x => new { x.TenantId, x.BranchId, x.DoctorId, x.TokenNumber })
                 .HasDatabaseName("IX_Appointments_ClinicDoctorToken");
 
-            builder.HasIndex(x => new { x.OrganizationId, x.DoctorId })
+            builder.HasIndex(x => new { x.TenantId, x.DoctorId })
                 .HasDatabaseName("IX_Appointments_Doctor");
 
-            builder.HasIndex(x => new { x.OrganizationId, x.PatientId })
+            builder.HasIndex(x => new { x.TenantId, x.PatientId })
                 .HasDatabaseName("IX_Appointments_Patient");
         }
     }

@@ -28,7 +28,7 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
 
         // Check if user with email already exists
         var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email && u.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Email == request.Email && u.TenantId == organizationId, cancellationToken);
 
         if (existingUser != null)
         {

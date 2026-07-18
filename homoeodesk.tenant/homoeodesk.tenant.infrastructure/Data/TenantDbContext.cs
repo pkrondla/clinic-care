@@ -74,8 +74,18 @@ public class TenantDbContext : DbContext, IApplicationDbContext
         base.OnModelCreating(builder);
         builder.Ignore<DomainEvent>();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        IgnoreOrganizationIdAlias(builder);
         RemoveShadowProperties(builder);
         ApplyQueryFilters(builder);
+    }
+
+    private static void IgnoreOrganizationIdAlias(ModelBuilder builder)
+    {
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            if (!typeof(TenantEntity).IsAssignableFrom(entityType.ClrType)) continue;
+            builder.Entity(entityType.ClrType).Ignore(nameof(TenantEntity.OrganizationId));
+        }
     }
 
     private static void RemoveShadowProperties(ModelBuilder builder)
