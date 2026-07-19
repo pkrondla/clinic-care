@@ -37,7 +37,7 @@ public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<Patient
                 .ThenInclude(c => c.Prescriptions)
             .Include(p => p.Consultations)
                 .ThenInclude(c => c.Photos)
-            .FirstOrDefaultAsync(p => p.Id == request.Id && p.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(p => p.Id == request.Id && p.TenantId == organizationId, cancellationToken);
 
         if (patient == null)
         {

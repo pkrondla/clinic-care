@@ -29,7 +29,7 @@ try {
   process.exit(1);
 }
 
-const apiBase = appSettings.API_BASE_URL || 'http://localhost:7000';
+const apiBase = appSettings.API_BASE_URL || 'http://localhost:5169';
 const apiUrl = appSettings.API_URL || `${apiBase}/api`;
 
 const configContent = `// Runtime configuration for HomoeoDesk Frontend

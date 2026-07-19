@@ -35,7 +35,7 @@ public class PerformStockAuditHandler : IRequestHandler<PerformStockAuditCommand
             // Validate clinic
             var clinic = await _context.Branches
                 .FirstOrDefaultAsync(c => c.Id == request.BranchId 
-                    && c.OrganizationId == organizationId.Value 
+                    && c.TenantId == organizationId.Value 
                     && c.IsActive, cancellationToken);
 
             if (clinic == null)
@@ -54,7 +54,7 @@ public class PerformStockAuditHandler : IRequestHandler<PerformStockAuditCommand
                     .Include(i => i.Medicine)
                     .FirstOrDefaultAsync(i => i.Id == auditItem.InventoryId 
                         && i.BranchId == request.BranchId 
-                        && i.OrganizationId == organizationId.Value 
+                        && i.TenantId == organizationId.Value 
                         && i.IsActive, cancellationToken);
 
                 if (inventory == null)

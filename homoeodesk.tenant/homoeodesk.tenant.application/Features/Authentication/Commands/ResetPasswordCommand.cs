@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Domain.Enums;
 using MediatR;
@@ -72,8 +72,8 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
                     return Result<ResetPasswordResponse>.Failure("Organization ID not found for current user");
 
                 user = request.UserId.HasValue
-                    ? await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId.Value && x.OrganizationId == organizationId && x.IsActive, cancellationToken)
-                    : await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email && x.OrganizationId == organizationId && x.IsActive, cancellationToken);
+                    ? await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId.Value && x.TenantId == organizationId && x.IsActive, cancellationToken)
+                    : await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email && x.TenantId == organizationId && x.IsActive, cancellationToken);
             }
 
             if (user == null)

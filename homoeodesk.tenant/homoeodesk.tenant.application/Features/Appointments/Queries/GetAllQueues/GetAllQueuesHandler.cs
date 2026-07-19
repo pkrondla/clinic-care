@@ -33,7 +33,7 @@ public class GetAllQueuesHandler : IRequestHandler<GetAllQueuesQuery, Result<Lis
             // Get all doctors for the clinic/organization
             var doctorsQuery = _context.DoctorProfiles
                 .Include(d => d.User)
-                .Where(d => d.OrganizationId == organizationId.Value && d.IsActive);
+                .Where(d => d.TenantId == organizationId.Value && d.IsActive);
 
             if (BranchId.HasValue)
             {
@@ -58,7 +58,7 @@ public class GetAllQueuesHandler : IRequestHandler<GetAllQueuesQuery, Result<Lis
                         .ThenInclude(p => p.User)
                     .Where(a => a.DoctorId == doctor.Id
                              && a.AppointmentDate.Value == date
-                             && a.OrganizationId == organizationId.Value
+                             && a.TenantId == organizationId.Value
                              && a.IsActive);
 
                 if (BranchId.HasValue)

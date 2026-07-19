@@ -37,7 +37,7 @@ public class CreateClinicMedicineHandler : IRequestHandler<CreateClinicMedicineC
                 return Result<ClinicMedicineDto>.Failure(new[] { "A medicine with the same name, potency, and manufacturer already exists in this branch." });
             }
 
-            var clinic = await _context.Branches.FirstOrDefaultAsync(c => c.Id == request.BranchId && c.OrganizationId == organizationId.Value, cancellationToken);
+            var clinic = await _context.Branches.FirstOrDefaultAsync(c => c.Id == request.BranchId && c.TenantId == organizationId.Value, cancellationToken);
             if (clinic == null)
             {
                 return Result<ClinicMedicineDto>.Failure(new[] { "Branch not found or does not belong to your organization." });

@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,7 @@ public class TestWhatsAppConnectionHandler : IRequestHandler<TestWhatsAppConnect
         // Check if settings exist
         var settings = await _context.WhatsAppBusinessSettings
             .FirstOrDefaultAsync(
-                s => s.OrganizationId == organizationId.Value && s.IsActive,
+                s => s.TenantId == organizationId.Value && s.IsActive,
                 cancellationToken);
 
         if (settings == null)

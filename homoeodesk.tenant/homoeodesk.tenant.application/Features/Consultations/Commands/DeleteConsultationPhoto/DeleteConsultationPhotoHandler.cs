@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +21,7 @@ public class DeleteConsultationPhotoHandler : IRequestHandler<DeleteConsultation
         var organizationId = await _tenantService.GetOrganizationIdAsync();
 
         var photo = await _context.ConsultationPhotos
-            .FirstOrDefaultAsync(p => p.Id == request.PhotoId && p.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(p => p.Id == request.PhotoId && p.TenantId == organizationId, cancellationToken);
 
         if (photo == null)
         {

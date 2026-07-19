@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ public class DeleteSupplierHandler : IRequestHandler<DeleteSupplierCommand, Resu
 
             var supplier = await _context.Suppliers
                 .FirstOrDefaultAsync(s => s.Id == request.Id 
-                    && s.OrganizationId == organizationId.Value, cancellationToken);
+                    && s.TenantId == organizationId.Value, cancellationToken);
 
             if (supplier == null)
             {
@@ -40,7 +40,7 @@ public class DeleteSupplierHandler : IRequestHandler<DeleteSupplierCommand, Resu
             // Check if supplier has any purchase orders
             var hasPurchaseOrders = await _context.PurchaseOrders
                 .AnyAsync(po => po.SupplierId == request.Id 
-                    && po.OrganizationId == organizationId.Value 
+                    && po.TenantId == organizationId.Value 
                     && po.IsActive, cancellationToken);
 
             if (hasPurchaseOrders)

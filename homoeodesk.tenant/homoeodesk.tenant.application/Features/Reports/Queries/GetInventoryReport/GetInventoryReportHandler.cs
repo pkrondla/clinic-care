@@ -31,7 +31,7 @@ public class GetInventoryReportHandler : IRequestHandler<GetInventoryReportQuery
 
             // Get all Branches in organization
             var BranchesQuery = _context.Branches
-                .Where(c => c.OrganizationId == organizationId.Value && c.IsActive);
+                .Where(c => c.TenantId == organizationId.Value && c.IsActive);
 
             if (request.BranchId.HasValue)
             {
@@ -45,7 +45,7 @@ public class GetInventoryReportHandler : IRequestHandler<GetInventoryReportQuery
             var inventoryQuery = _context.Inventories
                 .Include(i => i.Medicine)
                 .Include(i => i.Branch)
-                .Where(i => i.OrganizationId == organizationId.Value 
+                .Where(i => i.TenantId == organizationId.Value 
                     && i.IsActive 
                     && BranchIds.Contains(i.BranchId));
 
@@ -65,7 +65,7 @@ public class GetInventoryReportHandler : IRequestHandler<GetInventoryReportQuery
             var transactionsQuery = _context.StockTransactions
                 .Include(t => t.Medicine)
                 .Include(t => t.Branch)
-                .Where(t => t.OrganizationId == organizationId.Value 
+                .Where(t => t.TenantId == organizationId.Value 
                     && t.IsActive
                     && BranchIds.Contains(t.BranchId));
 

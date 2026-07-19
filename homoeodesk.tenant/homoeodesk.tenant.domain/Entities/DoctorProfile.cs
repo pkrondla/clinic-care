@@ -7,9 +7,9 @@ public class DoctorProfile : TenantEntity
 {
     public int UserId { get; set; }
     public string RegistrationNumber { get; set; } = string.Empty;
-    public string Qualification { get; set; } = string.Empty;
+    public string? Qualification { get; set; }
     public int ExperienceYears { get; set; }
-    public string Specialization { get; set; } = string.Empty;
+    public string? Specialization { get; set; }
     public decimal ConsultationFeeInPerson { get; set; }
     public decimal ConsultationFeeTele { get; set; }
     public decimal FollowupFeeInPerson { get; set; }

@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Features.WhatsApp.Queries.GetWhatsAppSettings;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -33,7 +33,7 @@ public class CreateOrUpdateWhatsAppSettingsHandler : IRequestHandler<CreateOrUpd
         // Check if settings already exist
         var existingSettings = await _context.WhatsAppBusinessSettings
             .FirstOrDefaultAsync(
-                s => s.OrganizationId == organizationId.Value && s.IsActive,
+                s => s.TenantId == organizationId.Value && s.IsActive,
                 cancellationToken);
 
         WhatsAppBusinessSettings settings;

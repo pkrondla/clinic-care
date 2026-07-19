@@ -108,14 +108,14 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
             .OnDelete(DeleteBehavior.Restrict);
 
         // Configure indexes
-        builder.HasIndex(x => new { x.OrganizationId, x.AppointmentId })
+        builder.HasIndex(x => new { x.TenantId, x.AppointmentId })
             .IsUnique()
             .HasDatabaseName("IX_Consultations_OrganizationAppointment");
 
-        builder.HasIndex(x => new { x.OrganizationId, x.DoctorId, x.ConsultationDate })
+        builder.HasIndex(x => new { x.TenantId, x.DoctorId, x.ConsultationDate })
             .HasDatabaseName("IX_Consultations_DoctorDate");
 
-        builder.HasIndex(x => new { x.OrganizationId, x.PatientId, x.ConsultationDate })
+        builder.HasIndex(x => new { x.TenantId, x.PatientId, x.ConsultationDate })
             .HasDatabaseName("IX_Consultations_PatientDate");
     }
 }

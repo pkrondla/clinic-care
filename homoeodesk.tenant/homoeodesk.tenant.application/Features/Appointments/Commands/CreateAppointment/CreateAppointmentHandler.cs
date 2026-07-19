@@ -116,21 +116,21 @@ namespace HomoeoDesk.Tenant.Application.Features.Appointments.Commands.CreateApp
         {
             // Check if doctor exists and is available
             var doctorExists = await _context.DoctorProfiles
-                .AnyAsync(x => x.Id == request.DoctorId && x.OrganizationId == _currentUserService.OrganizationId, cancellationToken);
+                .AnyAsync(x => x.Id == request.DoctorId && x.TenantId == _currentUserService.OrganizationId, cancellationToken);
 
             if (!doctorExists)
                 return Result<bool>.Failure(new[] { "Doctor not found" });
 
             // Check if patient exists
             var patientExists = await _context.Patients
-                .AnyAsync(x => x.Id == request.PatientId && x.OrganizationId == _currentUserService.OrganizationId, cancellationToken);
+                .AnyAsync(x => x.Id == request.PatientId && x.TenantId == _currentUserService.OrganizationId, cancellationToken);
 
             if (!patientExists)
                 return Result<bool>.Failure(new[] { "Patient not found" });
 
             // Check if clinic exists
             var clinicExists = await _context.Branches
-                .AnyAsync(x => x.Id == request.BranchId && x.OrganizationId == _currentUserService.OrganizationId, cancellationToken);
+                .AnyAsync(x => x.Id == request.BranchId && x.TenantId == _currentUserService.OrganizationId, cancellationToken);
 
             if (!clinicExists)
                 return Result<bool>.Failure(new[] { "Branch not found" });

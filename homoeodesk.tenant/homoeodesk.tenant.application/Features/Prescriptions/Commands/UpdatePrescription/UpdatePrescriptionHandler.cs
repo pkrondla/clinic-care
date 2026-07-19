@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Features.Prescriptions.Commands.CreatePrescription;
@@ -56,7 +56,7 @@ public class UpdatePrescriptionHandler : IRequestHandler<UpdatePrescriptionComma
                 return Result<PrescriptionDto>.Failure(new[] { "Prescription not found" });
             }
 
-            if (prescription.OrganizationId != organizationId.Value)
+            if (prescription.TenantId != organizationId.Value)
             {
                 return Result<PrescriptionDto>.Failure(new[] { "Unauthorized access to prescription" });
             }

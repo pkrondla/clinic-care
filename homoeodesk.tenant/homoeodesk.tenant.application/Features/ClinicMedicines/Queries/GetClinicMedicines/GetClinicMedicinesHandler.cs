@@ -43,7 +43,7 @@ public class GetClinicMedicinesHandler : IRequestHandler<GetClinicMedicinesQuery
                 .OrderBy(m => m.Name)
                 .ToListAsync(cancellationToken);
 
-            medicines = medicines.Where(m => m.OrganizationId == organizationId.Value).ToList();
+            medicines = medicines.Where(m => m.TenantId == organizationId.Value).ToList();
 
             if (request.IsActive.HasValue)
             {
@@ -60,7 +60,7 @@ public class GetClinicMedicinesHandler : IRequestHandler<GetClinicMedicinesQuery
             if (medicines.Count > 0)
             {
                 var allBranches = await _context.Branches
-                    .Where(c => c.OrganizationId == organizationId.Value)
+                    .Where(c => c.TenantId == organizationId.Value)
                     .Select(c => new { c.Id, c.Name })
                     .ToListAsync(cancellationToken);
 

@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -123,7 +123,7 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
         var todayEnd = todayStart.AddDays(1);
 
         var todayPatientCount = await _context.Patients
-            .Where(p => p.OrganizationId == organizationId && 
+            .Where(p => p.TenantId == organizationId && 
                        p.CreatedAt >= todayStart && 
                        p.CreatedAt < todayEnd)
             .CountAsync(cancellationToken);

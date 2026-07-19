@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Features.Consultations.Commands.AddConsultationPhoto;
@@ -34,7 +34,7 @@ public class GetConsultationHandler : IRequestHandler<GetConsultationQuery, Resu
 
             // Load consultation first (no includes to avoid INNER JOIN query filter issues)
             var consultation = await _context.Consultations
-                .FirstOrDefaultAsync(c => c.Id == request.Id && c.OrganizationId == organizationId.Value && c.IsActive, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == request.Id && c.TenantId == organizationId.Value && c.IsActive, cancellationToken);
             
             if (consultation == null)
             {

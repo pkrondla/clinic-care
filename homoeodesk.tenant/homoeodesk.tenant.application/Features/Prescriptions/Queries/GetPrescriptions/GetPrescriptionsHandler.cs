@@ -40,7 +40,7 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                 // Try to find doctor by DoctorProfile.Id first, then by UserId
                 var doctorProfile = await _context.DoctorProfiles
                     .FirstOrDefaultAsync(d => (d.Id == request.DoctorId.Value || d.UserId == request.DoctorId.Value)
-                                           && d.OrganizationId == organizationId.Value
+                                           && d.TenantId == organizationId.Value
                                            && d.IsActive, cancellationToken);
                 
                 if (doctorProfile != null)
@@ -65,7 +65,7 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                         .ThenInclude(d => d!.User)
                 .Include(p => p.PrescriptionItems)
                 // Don't include Medicine navigation property to avoid ClinicMedicineId shadow property issue
-                .Where(p => p.OrganizationId == organizationId.Value && p.IsActive && p.Consultation != null);
+                .Where(p => p.TenantId == organizationId.Value && p.IsActive && p.Consultation != null);
 
             // Apply filters
             if (request.BranchId.HasValue)

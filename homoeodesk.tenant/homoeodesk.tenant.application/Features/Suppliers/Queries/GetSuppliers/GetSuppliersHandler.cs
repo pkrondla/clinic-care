@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +29,7 @@ public class GetSuppliersHandler : IRequestHandler<GetSuppliersQuery, Result<Lis
             }
 
             var query = _context.Suppliers
-                .Where(s => s.OrganizationId == organizationId.Value);
+                .Where(s => s.TenantId == organizationId.Value);
 
             if (request.IsActive.HasValue)
             {
@@ -41,9 +41,9 @@ public class GetSuppliersHandler : IRequestHandler<GetSuppliersQuery, Result<Lis
                 var searchTerm = request.SearchTerm.ToLower();
                 query = query.Where(s =>
                     s.Name.ToLower().Contains(searchTerm) ||
-                    s.ContactPerson.ToLower().Contains(searchTerm) ||
-                    s.Email.ToLower().Contains(searchTerm) ||
-                    s.Phone.Contains(searchTerm) ||
+                    (s.ContactPerson != null && s.ContactPerson.ToLower().Contains(searchTerm)) ||
+                    (s.Email != null && s.Email.ToLower().Contains(searchTerm)) ||
+                    (s.Phone != null && s.Phone.Contains(searchTerm)) ||
                     (s.GSTNumber != null && s.GSTNumber.ToLower().Contains(searchTerm)));
             }
 

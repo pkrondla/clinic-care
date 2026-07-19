@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.Invoices.Commands.CreateInvoiceFromPrescription;
@@ -39,7 +39,7 @@ public class UpdateCourierDocketHandler : IRequestHandler<UpdateCourierDocketCom
 
             var invoice = await _context.Invoices
                 .FirstOrDefaultAsync(i => i.Id == request.InvoiceId 
-                                       && i.OrganizationId == organizationId.Value 
+                                       && i.TenantId == organizationId.Value 
                                        && i.IsActive, cancellationToken);
 
             if (invoice == null)

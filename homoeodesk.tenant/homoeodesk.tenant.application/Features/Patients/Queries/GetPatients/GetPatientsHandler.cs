@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ public class GetPatientsHandler : IRequestHandler<GetPatientsQuery, Result<Pagin
         // Build a simple query using raw SQL for pagination to avoid EF Core OFFSET issues
         var patients = await _context.Patients
             .AsNoTracking()
-            .Where(p => p.OrganizationId == organizationId && p.IsActive)
+            .Where(p => p.TenantId == organizationId && p.IsActive)
             .Include(p => p.User)
             .Include(p => p.Appointments)
             .OrderByDescending(p => p.Id) // Simple ordering by Id

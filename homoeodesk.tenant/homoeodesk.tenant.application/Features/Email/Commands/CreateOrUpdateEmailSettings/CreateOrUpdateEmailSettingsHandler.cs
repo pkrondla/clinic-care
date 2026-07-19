@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Features.Email.Queries.GetEmailSettings;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -32,7 +32,7 @@ public class CreateOrUpdateEmailSettingsHandler : IRequestHandler<CreateOrUpdate
 
         var existingSettings = await _context.EmailSettings
             .FirstOrDefaultAsync(
-                s => s.OrganizationId == organizationId.Value && s.IsActive,
+                s => s.TenantId == organizationId.Value && s.IsActive,
                 cancellationToken);
 
         EmailSettings settings;

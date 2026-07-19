@@ -36,7 +36,7 @@ public class GetPurchaseOrdersHandler : IRequestHandler<GetPurchaseOrdersQuery, 
                 .Include(po => po.ReceivedByUser)
                 .Include(po => po.Items)
                     .ThenInclude(item => item.Medicine)
-                .Where(po => po.OrganizationId == organizationId.Value && po.IsActive);
+                .Where(po => po.TenantId == organizationId.Value && po.IsActive);
 
             if (request.BranchId.HasValue)
             {

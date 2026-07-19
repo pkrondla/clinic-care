@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ public class DeletePatientHandler : IRequestHandler<DeletePatientCommand, Result
         var patient = await _context.Patients
             .Include(p => p.User)
             .Include(p => p.Appointments)
-            .FirstOrDefaultAsync(p => p.Id == request.Id && p.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(p => p.Id == request.Id && p.TenantId == organizationId, cancellationToken);
 
         if (patient == null)
         {

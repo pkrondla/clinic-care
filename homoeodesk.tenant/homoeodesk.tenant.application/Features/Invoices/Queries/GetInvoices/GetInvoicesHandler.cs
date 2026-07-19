@@ -36,7 +36,7 @@ public class GetInvoicesHandler : IRequestHandler<GetInvoicesQuery, Result<List<
                     .ThenInclude(p => p.User)
                 .Include(i => i.Prescription)
                 .Include(i => i.InvoiceItems)
-                .Where(i => i.OrganizationId == organizationId.Value && i.IsActive);
+                .Where(i => i.TenantId == organizationId.Value && i.IsActive);
 
             if (request.BranchId.HasValue)
             {

@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Features.Suppliers.Queries.GetSuppliers;
 using MediatR;
@@ -31,7 +31,7 @@ public class UpdateSupplierHandler : IRequestHandler<UpdateSupplierCommand, Resu
 
             var supplier = await _context.Suppliers
                 .FirstOrDefaultAsync(s => s.Id == request.Id 
-                    && s.OrganizationId == organizationId.Value, cancellationToken);
+                    && s.TenantId == organizationId.Value, cancellationToken);
 
             if (supplier == null)
             {
@@ -40,7 +40,7 @@ public class UpdateSupplierHandler : IRequestHandler<UpdateSupplierCommand, Resu
 
             // Check if another supplier with same name exists
             var existingSupplier = await _context.Suppliers
-                .FirstOrDefaultAsync(s => s.OrganizationId == organizationId.Value 
+                .FirstOrDefaultAsync(s => s.TenantId == organizationId.Value 
                     && s.Id != request.Id
                     && s.Name.ToLower() == request.Name.ToLower() 
                     && s.IsActive, cancellationToken);

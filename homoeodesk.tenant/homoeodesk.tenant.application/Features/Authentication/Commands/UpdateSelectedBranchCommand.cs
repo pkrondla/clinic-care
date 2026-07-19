@@ -53,7 +53,7 @@ public class UpdateSelectedBranchCommandHandler : IRequestHandler<UpdateSelected
 
         // Get clinic to verify it exists and user has access
         var clinic = await _context.Branches
-            .FirstOrDefaultAsync(x => x.Id == request.BranchId && x.OrganizationId == user.OrganizationId && x.IsActive, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.BranchId && x.TenantId == user.OrganizationId && x.IsActive, cancellationToken);
 
         if (clinic == null)
         {

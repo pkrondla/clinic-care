@@ -17,7 +17,7 @@ public class NotificationPreferencesReadService : INotificationPreferencesReadSe
     public async Task<List<NotificationPreferenceDto>> GetPreferencesAsync(int organizationId, CancellationToken cancellationToken)
     {
         var preferences = await _context.NotificationPreferences
-            .Where(p => p.OrganizationId == organizationId && p.IsActive)
+            .Where(p => p.TenantId == organizationId && p.IsActive)
             .ToListAsync(cancellationToken);
 
         var allNotificationTypes = Enum.GetValues<NotificationType>();

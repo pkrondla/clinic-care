@@ -37,7 +37,7 @@ public class UpdateClinicMedicineHandler : IRequestHandler<UpdateClinicMedicineC
                 return Result<ClinicMedicineDto>.Failure(new[] { "Clinic medicine not found." });
             }
 
-            if (medicine.OrganizationId != organizationId.Value)
+            if (medicine.TenantId != organizationId.Value)
             {
                 return Result<ClinicMedicineDto>.Failure(new[] { "You do not have permission to update this medicine." });
             }

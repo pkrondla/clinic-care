@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -23,7 +23,7 @@ public class AddConsultationPhotoHandler : IRequestHandler<AddConsultationPhotoC
 
         // Verify consultation exists and belongs to organization
         var consultation = await _context.Consultations
-            .FirstOrDefaultAsync(c => c.Id == request.ConsultationId && c.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Id == request.ConsultationId && c.TenantId == organizationId, cancellationToken);
 
         if (consultation == null)
         {

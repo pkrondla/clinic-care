@@ -33,7 +33,7 @@ public class GetStockAuditHistoryHandler : IRequestHandler<GetStockAuditHistoryQ
             var query = _context.StockTransactions
                 .Include(t => t.Branch)
                 .Include(t => t.Medicine)
-                .Where(t => t.OrganizationId == organizationId.Value 
+                .Where(t => t.TenantId == organizationId.Value 
                     && t.TransactionType == TransactionType.Adjustment
                     && t.Reference.StartsWith("STOCK_AUDIT_")
                     && t.IsActive);
@@ -111,7 +111,7 @@ public class GetStockAuditHistoryHandler : IRequestHandler<GetStockAuditHistoryQ
                         var inventory = await _context.Inventories
                             .FirstOrDefaultAsync(i => i.MedicineId == transaction.MedicineId 
                                 && i.BranchId == transaction.BranchId 
-                                && i.OrganizationId == organizationId.Value 
+                                && i.TenantId == organizationId.Value 
                                 && i.IsActive, cancellationToken);
 
                         if (inventory != null)

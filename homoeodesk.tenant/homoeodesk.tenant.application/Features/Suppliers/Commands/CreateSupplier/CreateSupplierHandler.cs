@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Features.Suppliers.Queries.GetSuppliers;
 using HomoeoDesk.Tenant.Domain.Entities;
@@ -32,7 +32,7 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Resu
 
             // Check if supplier with same name already exists
             var existingSupplier = await _context.Suppliers
-                .FirstOrDefaultAsync(s => s.OrganizationId == organizationId.Value 
+                .FirstOrDefaultAsync(s => s.TenantId == organizationId.Value 
                     && s.Name.ToLower() == request.Name.ToLower() 
                     && s.IsActive, cancellationToken);
 

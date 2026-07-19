@@ -37,7 +37,7 @@ public class InitiateOnlinePaymentHandler : IRequestHandler<InitiateOnlinePaymen
                 .Include(i => i.Patient)
                     .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync(i => i.Id == request.InvoiceId 
-                    && i.OrganizationId == organizationId.Value 
+                    && i.TenantId == organizationId.Value 
                     && i.IsActive, cancellationToken);
 
             if (invoice == null)

@@ -25,7 +25,7 @@ public class PurchaseOrderReadService : IPurchaseOrderReadService
             .Include(po => po.Items)
                 .ThenInclude(item => item.Medicine)
             .FirstOrDefaultAsync(po => po.Id == purchaseOrderId
-                && po.OrganizationId == organizationId
+                && po.TenantId == organizationId
                 && po.IsActive, cancellationToken);
 
         if (purchaseOrder == null)

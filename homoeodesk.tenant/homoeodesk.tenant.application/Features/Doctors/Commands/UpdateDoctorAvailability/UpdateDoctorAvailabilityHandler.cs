@@ -34,7 +34,7 @@ public class UpdateDoctorAvailabilityHandler : IRequestHandler<UpdateDoctorAvail
                     .ThenInclude(d => d.User)
                 .Include(da => da.Branch)
                 .FirstOrDefaultAsync(da => da.Id == request.Id 
-                    && da.OrganizationId == organizationId.Value, cancellationToken);
+                    && da.TenantId == organizationId.Value, cancellationToken);
 
             if (availability == null)
             {

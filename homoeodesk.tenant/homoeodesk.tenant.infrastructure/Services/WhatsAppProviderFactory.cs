@@ -44,7 +44,7 @@ public class WhatsAppProviderFactory : IWhatsAppProviderFactory
             // Load WhatsApp settings for the organization
             var settings = await _context.WhatsAppBusinessSettings
                 .FirstOrDefaultAsync(
-                    s => s.OrganizationId == organizationId 
+                    s => s.TenantId == organizationId 
                       && s.IsActive 
                       && s.IsEnabled, 
                     cancellationToken);

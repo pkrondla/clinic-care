@@ -132,10 +132,13 @@ public class TenantDbContext : DbContext, IApplicationDbContext
     {
         if (BranchScopedTypes.Contains(typeof(T)))
         {
+            // Compare against int? directly — never use BranchId.Value here.
+            // Hangfire/background jobs have no HTTP context, so BranchId is null;
+            // accessing .Value throws "Nullable object must have a value" during query compilation.
             builder.Entity<T>().HasQueryFilter(e =>
                 e.TenantId == _tenantService.TenantId &&
-                (!_branchService.BranchId.HasValue ||
-                 EF.Property<int>(e, "BranchId") == _branchService.BranchId.Value));
+                (_branchService.BranchId == null ||
+                 EF.Property<int>(e, "BranchId") == _branchService.BranchId));
         }
         else
         {

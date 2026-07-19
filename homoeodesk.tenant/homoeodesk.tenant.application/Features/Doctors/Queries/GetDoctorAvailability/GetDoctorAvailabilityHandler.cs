@@ -32,7 +32,7 @@ public class GetDoctorAvailabilityHandler : IRequestHandler<GetDoctorAvailabilit
                 .Include(da => da.Doctor)
                     .ThenInclude(d => d.User)
                 .Include(da => da.Branch)
-                .Where(da => da.OrganizationId == organizationId.Value && da.IsActive);
+                .Where(da => da.TenantId == organizationId.Value && da.IsActive);
 
             if (request.DoctorId.HasValue)
             {

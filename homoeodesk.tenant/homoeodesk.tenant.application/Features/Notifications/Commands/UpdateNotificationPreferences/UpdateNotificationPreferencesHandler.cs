@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.Notifications.Queries.GetNotificationPreferences;
 using HomoeoDesk.Tenant.Domain.Entities;
@@ -35,7 +35,7 @@ public class UpdateNotificationPreferencesHandler : IRequestHandler<UpdateNotifi
         {
             var existing = await _context.NotificationPreferences
                 .FirstOrDefaultAsync(
-                    p => p.OrganizationId == organizationId.Value 
+                    p => p.TenantId == organizationId.Value 
                       && p.NotificationType == prefUpdate.NotificationType,
                     cancellationToken);
 

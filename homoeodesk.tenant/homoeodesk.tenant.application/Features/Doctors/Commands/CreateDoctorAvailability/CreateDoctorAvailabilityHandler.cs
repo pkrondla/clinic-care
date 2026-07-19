@@ -34,7 +34,7 @@ public class CreateDoctorAvailabilityHandler : IRequestHandler<CreateDoctorAvail
             var doctor = await _context.DoctorProfiles
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(d => d.Id == request.DoctorId 
-                    && d.OrganizationId == organizationId.Value 
+                    && d.TenantId == organizationId.Value 
                     && d.IsActive, cancellationToken);
 
             if (doctor == null)
@@ -45,7 +45,7 @@ public class CreateDoctorAvailabilityHandler : IRequestHandler<CreateDoctorAvail
             // Validate clinic exists and belongs to organization
             var clinic = await _context.Branches
                 .FirstOrDefaultAsync(c => c.Id == request.BranchId 
-                    && c.OrganizationId == organizationId.Value 
+                    && c.TenantId == organizationId.Value 
                     && c.IsActive, cancellationToken);
 
             if (clinic == null)

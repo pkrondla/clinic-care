@@ -44,7 +44,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<List<UserDt
                     u.Email.ToLower().Contains(searchTerm) ||
                     u.FirstName.ToLower().Contains(searchTerm) ||
                     u.LastName.ToLower().Contains(searchTerm) ||
-                    u.Phone.Contains(searchTerm));
+                    (u.Phone != null && u.Phone.Contains(searchTerm)));
             }
 
             if (request.Role.HasValue)
@@ -106,7 +106,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<List<UserDt
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     FullName = user.FullName,
-                    Phone = user.Phone,
+                    Phone = user.Phone ?? string.Empty,
                     Role = user.Role,
                     OrganizationId = user.OrganizationId,
                     OrganizationName = "Organization", // Will be fetched from Global DB if needed
@@ -118,8 +118,8 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<List<UserDt
                     DoctorProfile = user.DoctorProfile != null ? new DoctorProfileDto
                     {
                         Id = user.DoctorProfile.Id,
-                        Qualification = user.DoctorProfile.Qualification,
-                        Specialization = user.DoctorProfile.Specialization,
+                        Qualification = user.DoctorProfile.Qualification ?? string.Empty,
+                        Specialization = user.DoctorProfile.Specialization ?? string.Empty,
                         RegistrationNumber = user.DoctorProfile.RegistrationNumber,
                         ExperienceYears = user.DoctorProfile.ExperienceYears,
                         ConsultationFeeInPerson = user.DoctorProfile.ConsultationFeeInPerson,

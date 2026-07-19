@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ public class GetWhatsAppSettingsHandler : IRequestHandler<GetWhatsAppSettingsQue
 
         var settings = await _context.WhatsAppBusinessSettings
             .FirstOrDefaultAsync(
-                s => s.OrganizationId == organizationId.Value && s.IsActive,
+                s => s.TenantId == organizationId.Value && s.IsActive,
                 cancellationToken);
 
         if (settings == null)

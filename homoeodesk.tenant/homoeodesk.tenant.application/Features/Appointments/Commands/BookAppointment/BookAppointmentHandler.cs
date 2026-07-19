@@ -50,7 +50,7 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Re
             var patient = await _context.Patients
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.UserId == userId.Value 
-                                       && p.OrganizationId == organizationId.Value 
+                                       && p.TenantId == organizationId.Value 
                                        && p.IsActive, cancellationToken);
 
             if (patient == null)
@@ -61,7 +61,7 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Re
             // Validate doctor exists
             var doctorExists = await _context.DoctorProfiles
                 .AnyAsync(d => d.Id == request.DoctorId 
-                            && d.OrganizationId == organizationId.Value 
+                            && d.TenantId == organizationId.Value 
                             && d.IsActive, cancellationToken);
 
             if (!doctorExists)
@@ -72,7 +72,7 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Re
             // Validate clinic exists
             var clinicExists = await _context.Branches
                 .AnyAsync(c => c.Id == request.BranchId 
-                            && c.OrganizationId == organizationId.Value 
+                            && c.TenantId == organizationId.Value 
                             && c.IsActive, cancellationToken);
 
             if (!clinicExists)

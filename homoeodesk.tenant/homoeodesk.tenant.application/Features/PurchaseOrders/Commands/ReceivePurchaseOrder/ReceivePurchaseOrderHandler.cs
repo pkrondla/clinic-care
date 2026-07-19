@@ -40,7 +40,7 @@ public class ReceivePurchaseOrderHandler : IRequestHandler<ReceivePurchaseOrderC
             var purchaseOrder = await _context.PurchaseOrders
                 .Include(po => po.Items)
                 .FirstOrDefaultAsync(po => po.Id == request.Id 
-                    && po.OrganizationId == organizationId.Value 
+                    && po.TenantId == organizationId.Value 
                     && po.IsActive, cancellationToken);
 
             if (purchaseOrder == null)
@@ -85,7 +85,7 @@ public class ReceivePurchaseOrderHandler : IRequestHandler<ReceivePurchaseOrderC
                 var inventory = await _context.Inventories
                     .FirstOrDefaultAsync(i => i.BranchId == purchaseOrder.BranchId 
                         && i.MedicineId == orderItem.MedicineId 
-                        && i.OrganizationId == organizationId.Value 
+                        && i.TenantId == organizationId.Value 
                         && i.IsActive, cancellationToken);
 
                 if (inventory != null)
@@ -108,7 +108,7 @@ public class ReceivePurchaseOrderHandler : IRequestHandler<ReceivePurchaseOrderC
                     // Create new inventory item
                     var medicine = await _context.ClinicMedicines
                         .FirstOrDefaultAsync(m => m.Id == orderItem.MedicineId 
-                            && m.OrganizationId == organizationId.Value 
+                            && m.TenantId == organizationId.Value 
                             && m.IsActive, cancellationToken);
 
                     if (medicine == null)

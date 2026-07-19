@@ -46,6 +46,7 @@ public class NotificationJobs
                 .Include(a => a.Doctor)
                 .Include(a => a.Branch)
                 .Where(a => a.Status == AppointmentStatus.Scheduled
+                    && a.AppointmentDate != null
                     && a.AppointmentDate.Value == reminderDate
                     && a.IsActive) // Only active appointments
                 .ToListAsync(cancellationToken);
@@ -100,6 +101,7 @@ public class NotificationJobs
             var inProgressAppointments = await _context.Appointments
                 .Include(a => a.Patient)
                 .Where(a => a.Status == AppointmentStatus.InProgress
+                    && a.AppointmentDate != null
                     && a.AppointmentDate.Value == today
                     && a.IsActive)
                 .ToListAsync(cancellationToken);
@@ -114,6 +116,7 @@ public class NotificationJobs
                     var currentToken = await _context.Appointments
                         .Where(a => a.DoctorId == appointment.DoctorId
                             && a.BranchId == appointment.BranchId
+                            && a.AppointmentDate != null
                             && a.AppointmentDate.Value == today
                             && a.Status == AppointmentStatus.InProgress
                             && a.TokenNumber <= appointment.TokenNumber)

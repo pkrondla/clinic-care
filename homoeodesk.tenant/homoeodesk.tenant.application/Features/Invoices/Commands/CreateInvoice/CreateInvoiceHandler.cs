@@ -42,7 +42,7 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
 
             // Validate clinic
             var clinic = await _context.Branches
-                .FirstOrDefaultAsync(c => c.Id == request.BranchId && c.OrganizationId == organizationId.Value && c.IsActive, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == request.BranchId && c.TenantId == organizationId.Value && c.IsActive, cancellationToken);
             if (clinic == null)
             {
                 return Result<InvoiceDto>.Failure("Branch not found");
@@ -51,7 +51,7 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
             // Validate patient
             var patient = await _context.Patients
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.Id == request.PatientId && p.OrganizationId == organizationId.Value && p.IsActive, cancellationToken);
+                .FirstOrDefaultAsync(p => p.Id == request.PatientId && p.TenantId == organizationId.Value && p.IsActive, cancellationToken);
             if (patient == null)
             {
                 return Result<InvoiceDto>.Failure("Patient not found");
@@ -136,7 +136,7 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
                     var inventory = await _context.Inventories
                         .FirstOrDefaultAsync(i => i.MedicineId == item.MedicineId.Value 
                                                 && i.BranchId == request.BranchId 
-                                                && i.OrganizationId == organizationId.Value 
+                                                && i.TenantId == organizationId.Value 
                                                 && i.IsActive, cancellationToken);
 
                     if (inventory != null)
@@ -230,7 +230,7 @@ public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Result
         var prefix = $"INV{today:yyyyMMdd}";
         
         var lastInvoice = await _context.Invoices
-            .Where(i => i.InvoiceNumber.StartsWith(prefix) && i.OrganizationId == organizationId)
+            .Where(i => i.InvoiceNumber.StartsWith(prefix) && i.TenantId == organizationId)
             .OrderByDescending(i => i.InvoiceNumber)
             .FirstOrDefaultAsync(cancellationToken);
 

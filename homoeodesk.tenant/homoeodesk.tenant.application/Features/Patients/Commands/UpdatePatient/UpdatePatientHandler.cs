@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ public class UpdatePatientHandler : IRequestHandler<UpdatePatientCommand, Result
 
         var patient = await _context.Patients
             .Include(p => p.User)
-            .FirstOrDefaultAsync(p => p.Id == request.Id && p.OrganizationId == organizationId, cancellationToken);
+            .FirstOrDefaultAsync(p => p.Id == request.Id && p.TenantId == organizationId, cancellationToken);
 
         if (patient == null)
         {
@@ -34,7 +34,7 @@ public class UpdatePatientHandler : IRequestHandler<UpdatePatientCommand, Result
         {
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email && 
-                                        u.OrganizationId == organizationId && 
+                                        u.TenantId == organizationId && 
                                         u.Id != patient.UserId, cancellationToken);
 
             if (existingUser != null)

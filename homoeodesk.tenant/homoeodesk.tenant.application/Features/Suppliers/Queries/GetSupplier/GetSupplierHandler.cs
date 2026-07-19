@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Features.Suppliers.Queries.GetSuppliers;
 using MediatR;
@@ -31,7 +31,7 @@ public class GetSupplierHandler : IRequestHandler<GetSupplierQuery, Result<Suppl
 
             var supplier = await _context.Suppliers
                 .FirstOrDefaultAsync(s => s.Id == request.Id 
-                    && s.OrganizationId == organizationId.Value 
+                    && s.TenantId == organizationId.Value 
                     && s.IsActive, cancellationToken);
 
             if (supplier == null)

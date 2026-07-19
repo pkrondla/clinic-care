@@ -38,7 +38,7 @@ public class CreatePurchaseOrderHandler : IRequestHandler<CreatePurchaseOrderCom
             // Validate clinic
             var clinic = await _context.Branches
                 .FirstOrDefaultAsync(c => c.Id == request.BranchId 
-                    && c.OrganizationId == organizationId.Value 
+                    && c.TenantId == organizationId.Value 
                     && c.IsActive, cancellationToken);
 
             if (clinic == null)
@@ -49,7 +49,7 @@ public class CreatePurchaseOrderHandler : IRequestHandler<CreatePurchaseOrderCom
             // Validate supplier
             var supplier = await _context.Suppliers
                 .FirstOrDefaultAsync(s => s.Id == request.SupplierId 
-                    && s.OrganizationId == organizationId.Value 
+                    && s.TenantId == organizationId.Value 
                     && s.IsActive, cancellationToken);
 
             if (supplier == null)
@@ -61,7 +61,7 @@ public class CreatePurchaseOrderHandler : IRequestHandler<CreatePurchaseOrderCom
             var medicineIds = request.Items.Select(i => i.MedicineId).ToList();
             var medicines = await _context.ClinicMedicines
                 .Where(m => medicineIds.Contains(m.Id) 
-                    && m.OrganizationId == organizationId.Value 
+                    && m.TenantId == organizationId.Value 
                     && m.IsActive)
                 .ToListAsync(cancellationToken);
 
@@ -153,7 +153,7 @@ public class CreatePurchaseOrderHandler : IRequestHandler<CreatePurchaseOrderCom
         var prefix = $"PO{today:yyyyMMdd}";
 
         var lastOrder = await _context.PurchaseOrders
-            .Where(po => po.OrderNumber.StartsWith(prefix) && po.OrganizationId == organizationId)
+            .Where(po => po.OrderNumber.StartsWith(prefix) && po.TenantId == organizationId)
             .OrderByDescending(po => po.OrderNumber)
             .FirstOrDefaultAsync(cancellationToken);
 

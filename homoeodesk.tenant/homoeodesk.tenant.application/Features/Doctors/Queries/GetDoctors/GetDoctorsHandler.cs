@@ -28,7 +28,7 @@ public class GetDoctorsHandler : IRequestHandler<GetDoctorsQuery, Result<List<Do
 
             var query = _context.DoctorProfiles
                 .Include(d => d.User)
-                .Where(d => d.OrganizationId == organizationId.Value);
+                .Where(d => d.TenantId == organizationId.Value);
 
             // Filter by active status
             if (request.IsActive.HasValue)

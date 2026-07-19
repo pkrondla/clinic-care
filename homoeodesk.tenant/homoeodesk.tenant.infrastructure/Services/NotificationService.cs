@@ -326,7 +326,7 @@ public class NotificationService : INotificationService
             // Check notification preferences
             var preference = await _context.NotificationPreferences
                 .FirstOrDefaultAsync(
-                    p => p.OrganizationId == organizationId 
+                    p => p.TenantId == organizationId 
                       && p.NotificationType == notificationType 
                       && p.IsActive,
                     cancellationToken);
@@ -339,7 +339,7 @@ public class NotificationService : INotificationService
             // Check global settings - if globally disabled, override preference
             var whatsAppSettings = await _context.WhatsAppBusinessSettings
                 .FirstOrDefaultAsync(
-                    s => s.OrganizationId == organizationId 
+                    s => s.TenantId == organizationId 
                       && s.IsActive 
                       && s.IsEnabled,
                     cancellationToken);
@@ -352,7 +352,7 @@ public class NotificationService : INotificationService
 
             var emailSettings = await _context.EmailSettings
                 .FirstOrDefaultAsync(
-                    s => s.OrganizationId == organizationId 
+                    s => s.TenantId == organizationId 
                       && s.IsActive 
                       && s.IsEnabled,
                     cancellationToken);
@@ -365,7 +365,7 @@ public class NotificationService : INotificationService
 
             var smsSettings = await _context.SmsSettings
                 .FirstOrDefaultAsync(
-                    s => s.OrganizationId == organizationId 
+                    s => s.TenantId == organizationId 
                       && s.IsActive 
                       && s.IsEnabled,
                     cancellationToken);

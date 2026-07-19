@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Features.Sms.Queries.GetSmsSettings;
 using HomoeoDesk.Tenant.Domain.Entities;
 using MediatR;
@@ -32,7 +32,7 @@ public class CreateOrUpdateSmsSettingsHandler : IRequestHandler<CreateOrUpdateSm
 
         var existingSettings = await _context.SmsSettings
             .FirstOrDefaultAsync(
-                s => s.OrganizationId == organizationId.Value && s.IsActive,
+                s => s.TenantId == organizationId.Value && s.IsActive,
                 cancellationToken);
 
         SmsSettings settings;

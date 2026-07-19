@@ -36,7 +36,7 @@ public class AddClinicMedicineFromGlobalHandler : IRequestHandler<AddClinicMedic
                 return Result<ClinicMedicineDto>.Failure(new[] { "Global medicine not found." });
 
             var branch = await _context.Branches
-                .FirstOrDefaultAsync(b => b.Id == request.BranchId && b.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(b => b.Id == request.BranchId && b.TenantId == organizationId.Value, cancellationToken);
 
             if (branch == null)
                 return Result<ClinicMedicineDto>.Failure(new[] { "Branch not found or does not belong to your organization." });

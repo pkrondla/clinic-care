@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using HomoeoDesk.Tenant.Application.Common.Services;
 using HomoeoDesk.Tenant.Application.Features.PurchaseOrders.Queries.GetPurchaseOrders;
@@ -38,7 +38,7 @@ public class ApprovePurchaseOrderHandler : IRequestHandler<ApprovePurchaseOrderC
 
             var purchaseOrder = await _context.PurchaseOrders
                 .FirstOrDefaultAsync(po => po.Id == request.Id 
-                    && po.OrganizationId == organizationId.Value 
+                    && po.TenantId == organizationId.Value 
                     && po.IsActive, cancellationToken);
 
             if (purchaseOrder == null)

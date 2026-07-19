@@ -52,7 +52,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
 
             // Get user's available Branches
             var AvailableBranches = await _context.Branches
-                .Where(c => c.OrganizationId == user.OrganizationId && c.IsActive)
+                .Where(c => c.TenantId == user.OrganizationId && c.IsActive)
                 .Select(c => new BranchInfo
                 {
                     Id = c.Id,

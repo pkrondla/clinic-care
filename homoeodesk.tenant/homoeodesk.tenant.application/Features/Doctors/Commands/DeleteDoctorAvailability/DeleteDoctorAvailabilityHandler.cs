@@ -30,7 +30,7 @@ public class DeleteDoctorAvailabilityHandler : IRequestHandler<DeleteDoctorAvail
 
             var availability = await _context.DoctorAvailabilities
                 .FirstOrDefaultAsync(da => da.Id == request.Id 
-                    && da.OrganizationId == organizationId.Value, cancellationToken);
+                    && da.TenantId == organizationId.Value, cancellationToken);
 
             if (availability == null)
             {

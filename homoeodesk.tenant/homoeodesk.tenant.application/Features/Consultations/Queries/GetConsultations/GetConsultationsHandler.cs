@@ -42,7 +42,7 @@ public class GetConsultationsHandler : IRequestHandler<GetConsultationsQuery, Re
                     .ThenInclude(d => d.User)
                 .Include(c => c.Prescriptions)
                 .Include(c => c.Photos)
-                .Where(c => c.OrganizationId == organizationId.Value && c.IsActive);
+                .Where(c => c.TenantId == organizationId.Value && c.IsActive);
 
             // Apply filters
             if (request.BranchId.HasValue)

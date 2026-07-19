@@ -43,7 +43,7 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
             // Get existing invoice
             var invoice = await _context.Invoices
                 .Include(i => i.InvoiceItems)
-                .FirstOrDefaultAsync(i => i.Id == request.Id && i.OrganizationId == organizationId.Value && i.IsActive, cancellationToken);
+                .FirstOrDefaultAsync(i => i.Id == request.Id && i.TenantId == organizationId.Value && i.IsActive, cancellationToken);
 
             if (invoice == null)
             {
@@ -57,7 +57,7 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
             if (request.BranchId.HasValue)
             {
                 var clinic = await _context.Branches
-                    .FirstOrDefaultAsync(c => c.Id == request.BranchId.Value && c.OrganizationId == organizationId.Value && c.IsActive, cancellationToken);
+                    .FirstOrDefaultAsync(c => c.Id == request.BranchId.Value && c.TenantId == organizationId.Value && c.IsActive, cancellationToken);
                 if (clinic == null)
                 {
                     return Result<InvoiceDto>.Failure("Branch not found");
@@ -69,7 +69,7 @@ public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Result
             if (request.PatientId.HasValue)
             {
                 var patient = await _context.Patients
-                    .FirstOrDefaultAsync(p => p.Id == request.PatientId.Value && p.OrganizationId == organizationId.Value && p.IsActive, cancellationToken);
+                    .FirstOrDefaultAsync(p => p.Id == request.PatientId.Value && p.TenantId == organizationId.Value && p.IsActive, cancellationToken);
                 if (patient == null)
                 {
                     return Result<InvoiceDto>.Failure("Patient not found");

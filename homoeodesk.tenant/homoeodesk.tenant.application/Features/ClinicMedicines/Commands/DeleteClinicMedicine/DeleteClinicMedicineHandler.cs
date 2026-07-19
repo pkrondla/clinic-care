@@ -36,7 +36,7 @@ public class DeleteClinicMedicineHandler : IRequestHandler<DeleteClinicMedicineC
                 return Result<bool>.Failure(new[] { "Clinic medicine not found." });
             }
 
-            if (medicine.OrganizationId != organizationId.Value)
+            if (medicine.TenantId != organizationId.Value)
             {
                 return Result<bool>.Failure(new[] { "You do not have permission to delete this medicine." });
             }

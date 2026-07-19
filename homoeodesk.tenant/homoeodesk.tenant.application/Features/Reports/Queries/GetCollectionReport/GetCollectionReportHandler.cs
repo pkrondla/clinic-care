@@ -42,7 +42,7 @@ public class GetCollectionReportHandler : IRequestHandler<GetCollectionReportQue
                         .ThenInclude(c => c!.Doctor)
                             .ThenInclude(d => d.User)
                 // Explicitly exclude Appointment navigation to prevent EF Core from creating shadow properties
-                .Where(i => i.OrganizationId == organizationId.Value
+                .Where(i => i.TenantId == organizationId.Value
                     && i.InvoiceDate >= startDate
                     && i.InvoiceDate <= endDate
                     && i.IsActive);

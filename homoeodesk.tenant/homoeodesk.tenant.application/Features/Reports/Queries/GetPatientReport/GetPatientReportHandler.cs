@@ -53,7 +53,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         var patient = await _context.Patients
             .Include(p => p.User)
             .FirstOrDefaultAsync(p => p.Id == patientId 
-                && p.OrganizationId == organizationId 
+                && p.TenantId == organizationId 
                 && p.IsActive, cancellationToken);
 
         if (patient == null)
@@ -70,7 +70,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
             .Include(a => a.Doctor)
                 .ThenInclude(d => d.User)
             .Where(a => a.PatientId == patientId
-                && a.OrganizationId == organizationId
+                && a.TenantId == organizationId
                 && a.IsActive);
 
         if (request.BranchId.HasValue)
@@ -106,7 +106,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
             .Include(c => c.Appointment)
                 .ThenInclude(a => a!.Branch)
             .Where(c => c.PatientId == patientId
-                && c.OrganizationId == organizationId
+                && c.TenantId == organizationId
                 && c.IsActive);
 
         if (request.BranchId.HasValue)
@@ -143,7 +143,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
                 // Don't include Medicine navigation property - it's ignored in configuration
             .Where(p => p.Consultation != null 
                 && p.Consultation.PatientId == patientId
-                && p.OrganizationId == organizationId
+                && p.TenantId == organizationId
                 && p.IsActive);
 
         if (request.BranchId.HasValue)
@@ -178,7 +178,7 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         // Get invoices
         var invoicesQuery = _context.Invoices
             .Where(i => i.PatientId == patientId
-                && i.OrganizationId == organizationId
+                && i.TenantId == organizationId
                 && i.IsActive);
 
         if (request.BranchId.HasValue)
@@ -298,16 +298,16 @@ public class GetPatientReportHandler : IRequestHandler<GetPatientReportQuery, Re
         var endDate = request.EndDate?.Date.AddDays(1).AddTicks(-1) ?? DateTime.MaxValue;
 
         var appointmentsQuery = _context.Appointments
-            .Where(a => a.OrganizationId == organizationId && a.IsActive);
+            .Where(a => a.TenantId == organizationId && a.IsActive);
 
         var consultationsQuery = _context.Consultations
-            .Where(c => c.OrganizationId == organizationId && c.IsActive);
+            .Where(c => c.TenantId == organizationId && c.IsActive);
 
         var prescriptionsQuery = _context.Prescriptions
-            .Where(p => p.OrganizationId == organizationId && p.IsActive);
+            .Where(p => p.TenantId == organizationId && p.IsActive);
 
         var invoicesQuery = _context.Invoices
-            .Where(i => i.OrganizationId == organizationId && i.IsActive);
+            .Where(i => i.TenantId == organizationId && i.IsActive);
 
         if (request.BranchId.HasValue)
         {

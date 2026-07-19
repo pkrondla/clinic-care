@@ -27,7 +27,7 @@ export function getApiBaseUrl(): string {
   return runtime.API_BASE_URL
     || import.meta.env.VITE_API_BASE_URL
     || import.meta.env.VITE_API_URL
-    || 'http://localhost:7000';
+    || 'http://localhost:5169';
 }
 
 export function getApiUrl(): string {
@@ -36,7 +36,7 @@ export function getApiUrl(): string {
   return runtime.API_URL
     || import.meta.env.VITE_API_BASE_URL
     || import.meta.env.VITE_API_URL
-    || 'http://localhost:7000/api';
+    || 'http://localhost:5169/api';
 }
 
 export function getSignalRUrl(): string {

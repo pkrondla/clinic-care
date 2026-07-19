@@ -36,7 +36,7 @@ public class GetQueueHandler : IRequestHandler<GetQueueQuery, Result<DoctorQueue
             var doctor = await _context.DoctorProfiles
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(d => d.Id == request.DoctorId 
-                                       && d.OrganizationId == organizationId.Value 
+                                       && d.TenantId == organizationId.Value 
                                        && d.IsActive, cancellationToken);
 
             // If not found by DoctorProfile.Id, try finding by UserId (for doctor viewing their own queue)
@@ -45,7 +45,7 @@ public class GetQueueHandler : IRequestHandler<GetQueueQuery, Result<DoctorQueue
                 doctor = await _context.DoctorProfiles
                     .Include(d => d.User)
                     .FirstOrDefaultAsync(d => d.UserId == request.DoctorId 
-                                           && d.OrganizationId == organizationId.Value 
+                                           && d.TenantId == organizationId.Value 
                                            && d.IsActive, cancellationToken);
             }
 
@@ -61,7 +61,7 @@ public class GetQueueHandler : IRequestHandler<GetQueueQuery, Result<DoctorQueue
                     .ThenInclude(p => p.User)
                 .Where(a => a.DoctorId == doctor.Id
                          && a.AppointmentDate.Value == date
-                         && a.OrganizationId == organizationId.Value
+                         && a.TenantId == organizationId.Value
                          && a.IsActive);
 
             if (request.BranchId.HasValue)

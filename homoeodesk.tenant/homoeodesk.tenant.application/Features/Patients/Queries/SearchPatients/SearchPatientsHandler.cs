@@ -1,4 +1,4 @@
-﻿using HomoeoDesk.Tenant.Application.Common.Interfaces;
+using HomoeoDesk.Tenant.Application.Common.Interfaces;
 using HomoeoDesk.Tenant.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ public class SearchPatientsHandler : IRequestHandler<SearchPatientsQuery, Result
         // Query patients with user info (no Include to avoid EF Core issues)
         var patients = await _context.Patients
             .Include(p => p.User)
-            .Where(p => p.OrganizationId == organizationId && 
+            .Where(p => p.TenantId == organizationId && 
                        p.IsActive &&
                        (p.User.FirstName.ToLower().Contains(searchTerm) ||
                         p.User.LastName.ToLower().Contains(searchTerm) ||

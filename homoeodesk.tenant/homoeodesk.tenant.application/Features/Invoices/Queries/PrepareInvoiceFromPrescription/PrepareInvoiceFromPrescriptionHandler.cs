@@ -77,7 +77,7 @@ public class PrepareInvoiceFromPrescriptionHandler
 
             // 4. Get clinic
             var clinic = await _context.Branches
-                .FirstOrDefaultAsync(c => c.Id == appointment.BranchId && c.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == appointment.BranchId && c.TenantId == organizationId.Value, cancellationToken);
             if (clinic == null)
             {
                 return Result<InvoicePreparationDto>.Failure("Branch not found");
@@ -86,7 +86,7 @@ public class PrepareInvoiceFromPrescriptionHandler
             // 5. Get patient
             var patient = await _context.Patients
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.Id == consultation.PatientId && p.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(p => p.Id == consultation.PatientId && p.TenantId == organizationId.Value, cancellationToken);
             if (patient == null || patient.User == null)
             {
                 return Result<InvoicePreparationDto>.Failure("Patient not found");
@@ -95,7 +95,7 @@ public class PrepareInvoiceFromPrescriptionHandler
             // 6. Get doctor profile for consultation fee calculation
             var doctor = await _context.DoctorProfiles
                 .Include(d => d.User)
-                .FirstOrDefaultAsync(d => d.Id == consultation.DoctorId && d.OrganizationId == organizationId.Value, cancellationToken);
+                .FirstOrDefaultAsync(d => d.Id == consultation.DoctorId && d.TenantId == organizationId.Value, cancellationToken);
             if (doctor == null)
             {
                 return Result<InvoicePreparationDto>.Failure("Doctor not found");
@@ -105,7 +105,7 @@ public class PrepareInvoiceFromPrescriptionHandler
             var isNewPatient = !await _context.Consultations
                 .AnyAsync(c => c.PatientId == consultation.PatientId 
                            && c.Id != consultation.Id 
-                           && c.OrganizationId == organizationId.Value, cancellationToken);
+                           && c.TenantId == organizationId.Value, cancellationToken);
 
             // 8. Calculate consultation fee based on appointment type and patient type
             decimal consultationFee = appointment.Type == AppointmentType.Teleconsultation
@@ -136,7 +136,7 @@ public class PrepareInvoiceFromPrescriptionHandler
                     var clinicMedicine = await _context.ClinicMedicines
                         .FirstOrDefaultAsync(m => m.Id == prescriptionItem.MedicineId.Value 
                                                 && m.BranchId == appointment.BranchId 
-                                                && m.OrganizationId == organizationId.Value, cancellationToken);
+                                                && m.TenantId == organizationId.Value, cancellationToken);
 
                     if (clinicMedicine != null)
                     {
