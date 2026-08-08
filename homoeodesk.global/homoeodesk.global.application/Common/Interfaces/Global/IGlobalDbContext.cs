@@ -12,6 +12,7 @@ public interface IGlobalDbContext
     DbSet<SystemUser> SystemUsers { get; }
     DbSet<PaymentTransaction> PaymentTransactions { get; }
     DbSet<AuditLog> AuditLogs { get; }
+    DbSet<TrialRequest> TrialRequests { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

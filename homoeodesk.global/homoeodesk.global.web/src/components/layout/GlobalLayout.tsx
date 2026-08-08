@@ -5,7 +5,8 @@ import {
   DashboardOutlined,
   TeamOutlined,
   MedicineBoxOutlined,
-  BarChartOutlined
+  FormOutlined,
+  CreditCardOutlined
 } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@core/stores/authStore'
@@ -34,9 +35,19 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
       label: 'Dashboard'
     },
     {
+      key: 'trial-requests',
+      icon: <FormOutlined />,
+      label: 'Trial Requests'
+    },
+    {
       key: 'organizations',
       icon: <TeamOutlined />,
       label: 'Organizations'
+    },
+    {
+      key: 'subscriptions',
+      icon: <CreditCardOutlined />,
+      label: 'Subscriptions'
     },
     {
       key: 'medicines',
@@ -65,8 +76,14 @@ export const GlobalLayout = ({ children }: GlobalLayoutProps) => {
       case 'dashboard':
         navigate('/dashboard')
         break
+      case 'trial-requests':
+        navigate('/trial-requests')
+        break
       case 'organizations':
         navigate('/organizations')
+        break
+      case 'subscriptions':
+        navigate('/subscriptions')
         break
       case 'medicines':
         navigate('/medicines')

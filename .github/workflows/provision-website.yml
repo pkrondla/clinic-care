@@ -10,13 +10,76 @@ on:
         type: choice
         options: [dev, uat, prod]
 
+env:
+  AZURE_RESOURCE_PREFIX: tr-hd
+  NODE_VERSION: '20'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Resolve demo / API URLs
+        id: urls
+        shell: bash
+        run: |
+          ENV="${{ inputs.environment }}"
+          if [ "$ENV" = "prod" ]; then
+            echo "demo_url=https://demo.homoeodesk.com" >> "$GITHUB_OUTPUT"
+            echo "api_url=https://api.homoeodesk.com" >> "$GITHUB_OUTPUT"
+            echo "site_url=https://homoeodesk.com" >> "$GITHUB_OUTPUT"
+          else
+            echo "demo_url=https://demo-${ENV}.homoeodesk.com" >> "$GITHUB_OUTPUT"
+            echo "api_url=https://api-${ENV}-global.homoeodesk.com" >> "$GITHUB_OUTPUT"
+            echo "site_url=https://${ENV}.homoeodesk.com" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build marketing site
         working-directory: homoeodesk.website
+        env:
+          VITE_DEMO_TENANT_URL: ${{ steps.urls.outputs.demo_url }}
+          VITE_GLOBAL_API_URL: ${{ steps.urls.outputs.api_url }}
+          VITE_SITE_URL: ${{ steps.urls.outputs.site_url }}
+          VITE_CONTACT_EMAIL: hello@homoeodesk.com
+          VITE_ANALYTICS_ID: ${{ vars.WEBSITE_ANALYTICS_ID }}
+          VITE_BOOKING_URL: ${{ vars.WEBSITE_BOOKING_URL }}
         run: |
           npm ci
           npm run build
+
+      - name: Ensure website resource group
+        run: |
+          RG="rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-website"
+          az group create --name "$RG" --location centralindia \
+            --tags environment=${{ inputs.environment }} product=homoeodesk stamp=website
+
+      - name: Deploy Static Web App infrastructure
+        run: |
+          RG="rg-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-website"
+          NAME="swa-${AZURE_RESOURCE_PREFIX}-${{ inputs.environment }}-website"
+          az deployment group create \
+            --resource-group "$RG" \
+            --template-file homoeodesk.azure/iac/modules/static-web.bicep \
+            --parameters name="$NAME" location=centralus sku=Free
+
+      - name: Deploy site to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WEBSITE }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: homoeodesk.website/dist
+          skip_app_build: true
+          skip_api_build: true

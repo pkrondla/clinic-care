@@ -20,6 +20,7 @@ public class GlobalDbContext : DbContext, IGlobalDbContext
     public DbSet<SystemUser> SystemUsers => Set<SystemUser>();
     public DbSet<PaymentTransaction> PaymentTransactions => Set<PaymentTransaction>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<TrialRequest> TrialRequests => Set<TrialRequest>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

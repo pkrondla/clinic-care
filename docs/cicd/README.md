@@ -7,6 +7,14 @@ Configure per environment (`dev`, `uat`, `prod`):
 | Secret | Purpose |
 |--------|---------|
 | `AZURE_CREDENTIALS` | Service principal JSON for `azure/login@v2` |
+| `AZURE_STATIC_WEB_APPS_API_TOKEN_WEBSITE` | Deployment token for marketing Static Web App |
+
+Optional environment variables for `provision-website.yml`:
+
+| Variable | Purpose |
+|----------|---------|
+| `WEBSITE_ANALYTICS_ID` | Plausible domain or GA measurement ID |
+| `WEBSITE_BOOKING_URL` | Optional calendar booking link |
 
 ## Workflows
 

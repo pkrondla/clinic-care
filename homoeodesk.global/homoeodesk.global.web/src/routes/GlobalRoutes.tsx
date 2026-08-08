@@ -3,6 +3,8 @@ import { GlobalDashboardPage as DashboardPage } from '../pages/dashboard/GlobalD
 import { OrganizationsPage } from '../pages/organizations/OrganizationsPage'
 import { GlobalMedicinesPage } from '../pages/medicines/GlobalMedicinesPage'
 import { GlobalLoginPage } from '../pages/auth/GlobalLoginPage'
+import { TrialRequestsPage } from '../pages/trialRequests/TrialRequestsPage'
+import { SubscriptionsPage } from '../pages/subscriptions/SubscriptionsPage'
 import { GlobalLayout } from '../components/layout/GlobalLayout'
 import { useAuth } from '@core/stores/authStore'
 import { UserRole } from '@core/types/auth'
@@ -78,6 +80,24 @@ export const GlobalRoutes = () => {
         element={
           <ProtectedGlobalRoute>
             <GlobalMedicinesPage />
+          </ProtectedGlobalRoute>
+        }
+      />
+
+      <Route
+        path="/trial-requests"
+        element={
+          <ProtectedGlobalRoute>
+            <TrialRequestsPage />
+          </ProtectedGlobalRoute>
+        }
+      />
+
+      <Route
+        path="/subscriptions"
+        element={
+          <ProtectedGlobalRoute>
+            <SubscriptionsPage />
           </ProtectedGlobalRoute>
         }
       />

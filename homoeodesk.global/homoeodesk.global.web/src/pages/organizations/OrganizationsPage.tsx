@@ -89,7 +89,7 @@ export const OrganizationsPage = () => {
       dataIndex: 'subdomain',
       key: 'subdomain',
       render: (subdomain: string) => (
-        <Tag color="blue">{subdomain}.cliniccare.com</Tag>
+        <Tag color="blue">{subdomain}.homoeodesk.com</Tag>
       )
     },
     {

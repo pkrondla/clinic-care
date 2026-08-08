@@ -63,9 +63,13 @@ public static class ApiHostExtensions
                 policy.WithOrigins(
                         "http://localhost:5173",
                         "http://localhost:3000",
+                        "http://localhost:3001",
+                        "http://localhost:3200",
                         "http://localhost:4173",
                         "https://localhost:5173",
                         "https://localhost:3000",
+                        "https://localhost:3001",
+                        "https://localhost:3200",
                         "https://localhost:4173")
                     .AllowAnyMethod()
                     .AllowAnyHeader()

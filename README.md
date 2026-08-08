@@ -8,7 +8,7 @@ Multi-tenant homoeopathy clinic management SaaS.
 homoeodesk.global/     Control plane (tenant registry, global medicines, platform admin)
 homoeodesk.tenant/     Per-tenant clinic operations (patients, appointments, billing, etc.)
 homoeodesk.azure/      Bicep IaC and deployment manifests
-homoeodesk.website/    Marketing landing site
+homoeodesk.website/    Public product website (trial, demo, pricing)
 homoeodesk.shared/     Shared API hosting extensions (CORS, Key Vault, App Insights)
 ```
 
