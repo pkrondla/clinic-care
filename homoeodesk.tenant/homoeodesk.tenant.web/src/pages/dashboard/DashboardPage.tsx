@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useAppointments, useAppointmentStats } from '@core/hooks/queries/useAppointments'
+import { useConsultations } from '@core/hooks/queries/useConsultations'
 import { useUser, useSelectedBranch } from '@core/stores/authStore'
 import { UserRole, AppointmentStatus, AppointmentType } from '@core/types'
 import dayjs from 'dayjs'
@@ -37,15 +38,34 @@ export const DashboardPage = () => {
   }
 
   // Get today's appointments (only if clinic is selected)
+  const today = dayjs().format('YYYY-MM-DD')
   const { data: todayAppointments, isLoading: appointmentsLoading, refetch: refetchAppointments } = useAppointments({
-    date: dayjs().format('YYYY-MM-DD'),
+    date: today,
     BranchId: selectedClinic?.id
   })
+
+  // Today's consultations for fee earnings (doctor dashboard)
+  const isDoctor = user?.role === UserRole.Doctor
+  const { data: todayConsultations, isLoading: consultationsLoading } = useConsultations(
+    isDoctor && selectedClinic?.id
+      ? {
+          BranchId: selectedClinic.id,
+          doctorId: user?.id,
+          startDate: today,
+          endDate: today,
+        }
+      : undefined
+  )
+
+  const consultationFeesEarned = (todayConsultations ?? []).reduce(
+    (sum, consultation) => sum + (Number(consultation.consultationFee) || 0),
+    0
+  )
 
   // Get appointment statistics (only if clinic is selected)
   useAppointmentStats(
     selectedClinic?.id,
-    user?.role === UserRole.Doctor ? user.id : undefined
+    isDoctor ? user.id : undefined
   )
 
   // Show message if no clinic is selected
@@ -251,9 +271,10 @@ export const DashboardPage = () => {
               <div style={{ textAlign: 'center' }}>
                 <Statistic
                   title="Consultation Fees Earned"
-                  value={1250}
+                  value={consultationFeesEarned}
                   prefix="₹"
                   precision={2}
+                  loading={consultationsLoading}
                 />
               </div>
             </Card>

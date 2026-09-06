@@ -83,6 +83,27 @@ export interface UpdateUserRequest {
   followupFeeTele?: number
 }
 
+/** Map frontend role labels to backend UserRole enum names. */
+function toBackendRole(role: string): string {
+  switch (role) {
+    case 'OrganizationAdmin':
+    case 'Admin':
+      return 'Admin'
+    case 'Reception':
+    case 'Staff':
+    case 'Pharmacy':
+      return 'Staff'
+    case 'Doctor':
+      return 'Doctor'
+    case 'Patient':
+      return 'Patient'
+    case 'SuperAdmin':
+      return 'SuperAdmin'
+    default:
+      return role
+  }
+}
+
 class UserService {
   async getUsers(filters?: UserFilters): Promise<User[]> {
     const params = new URLSearchParams()
@@ -114,12 +135,18 @@ class UserService {
   }
 
   async createUser(user: CreateUserRequest): Promise<User> {
-    const response = await api.post<User>('/users', user)
+    const response = await api.post<User>('/users', {
+      ...user,
+      role: toBackendRole(user.role),
+    })
     return response.data
   }
 
   async updateUser(id: number, user: UpdateUserRequest): Promise<User> {
-    const response = await api.put<User>(`/users/${id}`, user)
+    const response = await api.put<User>(`/users/${id}`, {
+      ...user,
+      role: toBackendRole(user.role),
+    })
     return response.data
   }
 

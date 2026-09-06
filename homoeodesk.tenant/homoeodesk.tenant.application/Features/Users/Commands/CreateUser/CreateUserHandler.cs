@@ -47,14 +47,15 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<UserD
                 return Result<UserDto>.Failure("A user with this email already exists.");
             }
 
-            // Validate clinic IDs
+            // Validate clinic IDs (filter in memory — DB compat level < 130 can't translate Contains to OPENJSON)
             if (request.BranchIds.Any())
             {
-                var validBranches = await _context.Branches
-                    .Where(c => request.BranchIds.Contains(c.Id) && c.TenantId == organizationId.Value && c.IsActive)
-                    .CountAsync(cancellationToken);
+                var activeBranchIds = await _context.Branches
+                    .Where(c => c.TenantId == organizationId.Value && c.IsActive)
+                    .Select(c => c.Id)
+                    .ToListAsync(cancellationToken);
 
-                if (validBranches != request.BranchIds.Count)
+                if (request.BranchIds.Any(id => !activeBranchIds.Contains(id)))
                 {
                     return Result<UserDto>.Failure("One or more clinic IDs are invalid.");
                 }

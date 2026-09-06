@@ -17,7 +17,8 @@ export const useConsultations = (params?: GetConsultationsParams) => {
   return useQuery({
     queryKey: consultationKeys.list(params),
     queryFn: () => consultationService.getAll(params),
-    enabled: !!params?.BranchId || !params?.BranchId // Enable if BranchId is provided or not required
+    enabled: !!params?.BranchId,
+    staleTime: 30 * 1000,
   })
 }
 
