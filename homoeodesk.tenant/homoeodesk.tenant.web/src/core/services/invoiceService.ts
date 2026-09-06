@@ -125,8 +125,11 @@ export interface GetInvoicesParams {
 }
 
 export interface InvoicePreparation {
-  BranchId: number;
-  clinicName: string;
+  branchId: number;
+  /** @deprecated Prefer branchId — kept for older responses */
+  BranchId?: number;
+  branchName?: string;
+  clinicName?: string;
   patientId: number;
   patientName: string;
   patientCode: string;

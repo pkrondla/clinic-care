@@ -126,7 +126,8 @@ export const InvoiceFormPage = () => {
   useEffect(() => {
     if (!isEditMode && invoicePreparation) {
       form.setFieldsValue({
-        BranchId: invoicePreparation.BranchId,
+        // API returns camelCase; older typings used BranchId
+        BranchId: invoicePreparation.branchId ?? invoicePreparation.BranchId,
         consultationId: invoicePreparation.consultationId,
         prescriptionId: invoicePreparation.prescriptionId,
         invoiceDate: dayjs(),
