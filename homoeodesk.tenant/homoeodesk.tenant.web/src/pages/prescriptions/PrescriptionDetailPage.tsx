@@ -78,19 +78,15 @@ export const PrescriptionDetailPage = () => {
 
   const handlePrintLabels = () => {
     if (!prescription || !prescription.medicines) return
-    
+
     const clinicName = selectedClinic?.name || 'Clinic'
-    
-    // Create a print window with label layout
-    const printWindow = window.open('', '_blank', 'width=800,height=600')
-    if (!printWindow) return
-    
+
     let labelsHtml = ''
-    
+
     prescription.medicines.forEach((medicine, index) => {
       const serialNo = index + 1
       const quantity = medicine.quantity || 1
-      
+
       // Generate labels based on quantity
       for (let i = 0; i < quantity; i++) {
         labelsHtml += `
@@ -101,71 +97,100 @@ export const PrescriptionDetailPage = () => {
         `
       }
     })
-    
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Medicine Labels - ${prescription.prescriptionNumber}</title>
-          <style>
-            @page {
-              size: 1.5in 1in;
-              margin: 0;
-            }
-            
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: Arial, sans-serif;
-            }
-            
-            .label {
-              width: 1.5in;
-              height: 1in;
-              padding: 4px 6px;
-              box-sizing: border-box;
-              page-break-after: always;
-              border: 1px solid #ddd;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-            }
-            
-            .clinic-name {
-              font-size: 10px;
-              font-weight: bold;
-              margin-bottom: 3px;
-              text-align: center;
-              border-bottom: 1px solid #000;
-              padding-bottom: 2px;
-            }
-            
-            .medicine-info {
-              font-size: 9px;
-              line-height: 1.3;
-              text-align: center;
-            }
-            
-            @media print {
-              .label {
-                border: none;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          ${labelsHtml}
-        </body>
-      </html>
-    `)
-    
-    printWindow.document.close()
-    
-    // Trigger print after content loads
-    printWindow.onload = () => {
-      printWindow.focus()
-      printWindow.print()
+
+    const html = `<!DOCTYPE html>
+<html>
+  <head>
+    <title>Medicine Labels - ${prescription.prescriptionNumber}</title>
+    <style>
+      @page {
+        size: 1.5in 1in;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .label {
+        width: 1.5in;
+        height: 1in;
+        padding: 4px 6px;
+        box-sizing: border-box;
+        page-break-after: always;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .clinic-name {
+        font-size: 10px;
+        font-weight: bold;
+        margin-bottom: 3px;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 2px;
+      }
+
+      .medicine-info {
+        font-size: 9px;
+        line-height: 1.3;
+        text-align: center;
+      }
+
+      @media print {
+        .label {
+          border: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    ${labelsHtml}
+  </body>
+</html>`
+
+    // Prefer a hidden iframe: window.open often returns null (popup blocked)
+    // or opens a blank tab the script cannot write into.
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('title', 'Print labels')
+    iframe.style.position = 'fixed'
+    iframe.style.right = '0'
+    iframe.style.bottom = '0'
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    iframe.style.border = '0'
+    iframe.style.opacity = '0'
+    iframe.style.pointerEvents = 'none'
+    document.body.appendChild(iframe)
+
+    const frameWindow = iframe.contentWindow
+    const frameDoc = frameWindow?.document
+    if (!frameWindow || !frameDoc) {
+      iframe.remove()
+      return
     }
+
+    frameDoc.open()
+    frameDoc.write(html)
+    frameDoc.close()
+
+    const cleanup = () => {
+      iframe.remove()
+    }
+
+    setTimeout(() => {
+      try {
+        frameWindow.focus()
+        frameWindow.print()
+      } finally {
+        // Keep iframe briefly so the print dialog can use its document
+        setTimeout(cleanup, 1000)
+      }
+    }, 250)
   }
 
   const medicineColumns = [
