@@ -103,6 +103,7 @@ public class UpdatePrescriptionHandler : IRequestHandler<UpdatePrescriptionComma
                     Frequency = m.Frequency,
                     Duration = m.Duration,
                     Timing = m.Timing,
+                    DosePattern = m.DosePattern,
                     ContainerSize = m.ContainerSize,
                     Quantity = m.Quantity,
                     DispensedQuantity = dispensedQuantity,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom'
-import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select, AutoComplete, Typography, Tag, Descriptions, Spin } from 'antd'
+import { Card, Form, Input, InputNumber, Button, message, Space, Table, Modal, Select, AutoComplete, Typography, Tag, Descriptions, Spin, Checkbox } from 'antd'
 import { SaveOutlined, ArrowLeftOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { prescriptionService, type CreatePrescriptionRequest, type UpdatePrescriptionRequest, type PrescriptionMedicine, type Prescription } from '@core/services/prescriptionService'
@@ -37,7 +37,6 @@ const FREQUENCIES = [
   'Daily once',
   'Daily 2 times',
   'Daily 3 times',
-  'Daily 4 times',
   'Weekly once',
   'Weekly twice',
   'Every 6 hours',
@@ -45,6 +44,36 @@ const FREQUENCIES = [
   'Every 12 hours',
   'As needed'
 ]
+
+const DOSE_SLOTS = [
+  { value: 'morning', label: 'Morning' },
+  { value: 'afternoon', label: 'Afternoon' },
+  { value: 'night', label: 'Night' }
+] as const
+
+type DoseSlot = typeof DOSE_SLOTS[number]['value']
+
+const getRequiredDoseSlotCount = (frequency?: string): number | null => {
+  if (frequency === 'Daily once') return 1
+  if (frequency === 'Daily 2 times') return 2
+  if (frequency === 'Daily 3 times') return 3
+  return null
+}
+
+const parseDoseAmount = (dosage?: string): string => {
+  if (!dosage) return '0'
+  const match = dosage.match(/(\d+(?:\.\d+)?)/)
+  return match?.[1] ?? '0'
+}
+
+const buildDosePattern = (dosage: string | undefined, slots: DoseSlot[] = []): string | undefined => {
+  if (!slots.length) return undefined
+  const amount = parseDoseAmount(dosage)
+  const morning = slots.includes('morning') ? amount : '0'
+  const afternoon = slots.includes('afternoon') ? amount : '0'
+  const night = slots.includes('night') ? amount : '0'
+  return `${morning}-${afternoon}-${night}`
+}
 
 const TIMINGS = [
   'Before food',
@@ -156,7 +185,6 @@ export const PrescriptionFormPage = () => {
     if (freqLower.includes('daily once')) return 1
     if (freqLower.includes('daily 2 times')) return 2
     if (freqLower.includes('daily 3 times')) return 3
-    if (freqLower.includes('daily 4 times')) return 4
     if (freqLower.includes('weekly once')) return 1 / 7
     if (freqLower.includes('weekly twice')) return 2 / 7
     if (freqLower.includes('every 6 hours')) return 4
@@ -288,6 +316,9 @@ export const PrescriptionFormPage = () => {
       
       const quantity = values.quantity || 1
       const containerSize = values.dispensingForm === 1 ? values.containerSize : undefined
+      const requiredSlots = getRequiredDoseSlotCount(values.frequency)
+      const doseSlots = (values.doseSlots || []) as DoseSlot[]
+      const dosePattern = requiredSlots ? buildDosePattern(values.dosage, doseSlots) : undefined
       
       const medicine: PrescriptionMedicine = {
         medicineId: values.medicineId || 0, // Set from selected medicine, or 0 for custom
@@ -297,6 +328,7 @@ export const PrescriptionFormPage = () => {
         frequency: values.frequency,
         duration: duration, // Formatted as "4 weeks" or "7 days"
         timing: values.timing || '',
+        dosePattern,
         containerSize: containerSize, // Only for Globules
         quantity: quantity, // Prescribed quantity for patient
         dispensedQuantity: calculateDispensedQuantity(values.dispensingForm, quantity, containerSize), // Internal: for inventory
@@ -333,6 +365,7 @@ export const PrescriptionFormPage = () => {
       frequency: med.frequency,
       duration: med.duration,
       timing: med.timing,
+      dosePattern: med.dosePattern,
       containerSize: med.containerSize,
       quantity: med.quantity,
       dispensedQuantity: med.dispensedQuantity,
@@ -455,6 +488,7 @@ export const PrescriptionFormPage = () => {
             </div>
             <div style={{ fontSize: '13px', color: '#666', marginTop: '4px', lineHeight: '1.5' }}>
               Take {displayDosage}, {record.frequency}, {record.timing}
+              {record.dosePattern ? ` (${record.dosePattern})` : ''}
             </div>
             <div style={{ fontSize: '13px', color: '#666', marginTop: '2px' }}>
               Duration: {record.duration}
@@ -820,7 +854,10 @@ export const PrescriptionFormPage = () => {
             >
               <Select 
                 placeholder="Select frequency"
-                onChange={() => handleDurationOrFrequencyChange()}
+                onChange={() => {
+                  medicineForm.setFieldsValue({ doseSlots: undefined })
+                  handleDurationOrFrequencyChange()
+                }}
               >
                 {FREQUENCIES.map(freq => (
                   <Option key={freq} value={freq}>{freq}</Option>
@@ -829,17 +866,83 @@ export const PrescriptionFormPage = () => {
             </Form.Item>
 
             <Form.Item
-              label="Timing"
-              name="timing"
-              rules={[{ required: true, message: 'Please select timing' }]}
+              noStyle
+              shouldUpdate={(prev, curr) =>
+                prev.frequency !== curr.frequency || prev.dosage !== curr.dosage || prev.doseSlots !== curr.doseSlots
+              }
             >
-              <Select placeholder="Select timing">
-                {TIMINGS.map(timing => (
-                  <Option key={timing} value={timing}>{timing}</Option>
-                ))}
-              </Select>
+              {({ getFieldValue }) => {
+                const frequency = getFieldValue('frequency') as string | undefined
+                const requiredSlots = getRequiredDoseSlotCount(frequency)
+                if (!requiredSlots) {
+                  return (
+                    <Form.Item
+                      label="Timing"
+                      name="timing"
+                      rules={[{ required: true, message: 'Please select timing' }]}
+                    >
+                      <Select placeholder="Select timing">
+                        {TIMINGS.map(timing => (
+                          <Option key={timing} value={timing}>{timing}</Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  )
+                }
+
+                const dosage = getFieldValue('dosage') as string | undefined
+                const doseSlots = (getFieldValue('doseSlots') || []) as DoseSlot[]
+                const preview = buildDosePattern(dosage, doseSlots)
+
+                return (
+                  <Form.Item
+                    label={`Dose times (select ${requiredSlots})`}
+                    name="doseSlots"
+                    rules={[
+                      { required: true, message: 'Please select dose times' },
+                      {
+                        validator: async (_, value: DoseSlot[] | undefined) => {
+                          const selected = value?.length ?? 0
+                          if (selected !== requiredSlots) {
+                            throw new Error(`Select exactly ${requiredSlots} time${requiredSlots > 1 ? 's' : ''} of day`)
+                          }
+                        }
+                      }
+                    ]}
+                    extra={preview ? `Label notation: ${preview}` : 'Select Morning / Afternoon / Night for the label notation'}
+                  >
+                    <Checkbox.Group
+                      options={DOSE_SLOTS.map(slot => ({ label: slot.label, value: slot.value }))}
+                    />
+                  </Form.Item>
+                )
+              }}
             </Form.Item>
           </div>
+
+          <Form.Item
+            noStyle
+            shouldUpdate={(prev, curr) => prev.frequency !== curr.frequency}
+          >
+            {({ getFieldValue }) => {
+              const requiredSlots = getRequiredDoseSlotCount(getFieldValue('frequency') as string | undefined)
+              if (!requiredSlots) return null
+
+              return (
+                <Form.Item
+                  label="Timing"
+                  name="timing"
+                  rules={[{ required: true, message: 'Please select timing' }]}
+                >
+                  <Select placeholder="Select timing">
+                    {TIMINGS.map(timing => (
+                      <Option key={timing} value={timing}>{timing}</Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              )
+            }}
+          </Form.Item>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <Form.Item

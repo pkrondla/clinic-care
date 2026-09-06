@@ -114,6 +114,7 @@ public class CreatePrescriptionHandler : IRequestHandler<CreatePrescriptionComma
                         Frequency = m.Frequency,
                         Duration = m.Duration, // Now comes as "4 weeks" format from frontend
                         Timing = m.Timing ?? string.Empty,
+                        DosePattern = m.DosePattern,
                         ContainerSize = m.ContainerSize,
                         Quantity = quantity, // Prescribed quantity for patient
                         DispensedQuantity = dispensedQuantity, // Internal: quantity for inventory deduction

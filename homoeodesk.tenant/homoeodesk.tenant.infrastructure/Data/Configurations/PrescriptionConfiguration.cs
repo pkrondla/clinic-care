@@ -86,6 +86,10 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
         builder.Property(x => x.Timing)
             .HasMaxLength(100);
 
+        builder.Property(x => x.DosePattern)
+            .IsRequired(false)
+            .HasMaxLength(50);
+
         builder.Property(x => x.ContainerSize)
             .IsRequired(false);
 

@@ -9,6 +9,7 @@ export interface PrescriptionMedicine {
   frequency: string // e.g., "Daily 3 times", "Weekly once"
   duration: string // e.g., "4 weeks"
   timing: string // e.g., "Before food", "Before brushing"
+  dosePattern?: string // e.g., "4-0-4" from Morning/Afternoon/Night
   containerSize?: number // Only for Globules: 1, 2, or 3 dram
   quantity?: number // Required for all forms (prescribed quantity for patient)
   dispensedQuantity?: number // Internal: quantity dispensed from inventory (auto-calculated)

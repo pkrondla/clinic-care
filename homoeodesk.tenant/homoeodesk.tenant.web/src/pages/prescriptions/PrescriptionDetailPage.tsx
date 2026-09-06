@@ -89,12 +89,23 @@ export const PrescriptionDetailPage = () => {
 
       // Generate labels based on quantity
       for (let i = 0; i < quantity; i++) {
-        labelsHtml += `
+        if (medicine.dosePattern) {
+          const detailLine = [medicine.timing, medicine.duration].filter(Boolean).join(' · ')
+          labelsHtml += `
+          <div class="label">
+            <div class="clinic-name">${clinicName}</div>
+            <div class="dose-pattern">#${serialNo}  ${medicine.dosePattern}</div>
+            ${detailLine ? `<div class="medicine-info">${detailLine}</div>` : ''}
+          </div>
+        `
+        } else {
+          labelsHtml += `
           <div class="label">
             <div class="clinic-name">${clinicName}</div>
             <div class="medicine-info">#${serialNo}, ${medicine.dosage || '-'}, ${medicine.frequency || '-'}, ${medicine.timing || '-'}</div>
           </div>
         `
+        }
       }
     })
 
@@ -133,6 +144,14 @@ export const PrescriptionDetailPage = () => {
         text-align: center;
         border-bottom: 1px solid #000;
         padding-bottom: 2px;
+      }
+
+      .dose-pattern {
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.2;
+        text-align: center;
+        margin: 2px 0;
       }
 
       .medicine-info {
@@ -225,7 +244,15 @@ export const PrescriptionDetailPage = () => {
       title: 'Frequency',
       dataIndex: 'frequency',
       key: 'frequency',
-      width: 150
+      width: 150,
+      render: (frequency: string, record: Prescription['medicines'][0]) => (
+        <div>
+          <div>{frequency}</div>
+          {record.dosePattern && (
+            <div style={{ fontSize: '12px', color: '#666' }}>{record.dosePattern}</div>
+          )}
+        </div>
+      )
     },
     {
       title: 'Duration',

@@ -25,6 +25,7 @@ public class PrescriptionMedicineDto
     public string Frequency { get; set; } = string.Empty; // e.g., "Daily 3 times", "Weekly once"
     public string Duration { get; set; } = string.Empty; // e.g., "4 weeks"
     public string Timing { get; set; } = string.Empty; // e.g., "Before food", "Before brushing"
+    public string? DosePattern { get; set; } // e.g., "4-0-4" for Morning/Afternoon/Night
     public int? ContainerSize { get; set; } // Only for Globules: 1, 2, or 3 dram
     public int? Quantity { get; set; } // Required for all forms (prescribed quantity for patient)
     public decimal? DispensedQuantity { get; set; } // Internal: quantity dispensed from inventory (auto-calculated, not shown to patient)

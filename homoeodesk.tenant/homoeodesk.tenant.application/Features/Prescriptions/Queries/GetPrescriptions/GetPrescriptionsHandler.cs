@@ -137,8 +137,10 @@ public class GetPrescriptionsHandler : IRequestHandler<GetPrescriptionsQuery, Re
                     Frequency = item.Frequency,
                     Duration = item.Duration,
                     Timing = item.Timing,
+                    DosePattern = item.DosePattern,
                     ContainerSize = item.ContainerSize,
                     Quantity = item.Quantity,
+                    DispensedQuantity = item.DispensedQuantity,
                     Instructions = item.Instructions
                 }).ToList(),
                 Notes = p.PatientInstructions,
